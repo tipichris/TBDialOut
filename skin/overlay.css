@@ -1,0 +1,31 @@
+
+#tbdialout-home-toolbar-button
+{
+  list-style-image: url("chrome://tbdialout/skin/homephone.png");
+}
+
+[iconsize="small"] #tbdialout-home-toolbar-button
+{
+  list-style-image: url("chrome://tbdialout/skin/homephone-small.png");
+}
+
+
+#tbdialout-work-toolbar-button
+{
+  list-style-image: url("chrome://tbdialout/skin/officephone.png");
+}
+
+[iconsize="small"] #tbdialout-work-toolbar-button
+{
+  list-style-image: url("chrome://tbdialout/skin/officephone-small.png");
+}
+
+#tbdialout-cell-toolbar-button
+{
+  list-style-image: url("chrome://tbdialout/skin/cellphone.png");
+}
+
+[iconsize="small"] #tbdialout-cell-toolbar-button
+{
+  list-style-image: url("chrome://tbdialout/skin/cellphone-small.png");
+}
