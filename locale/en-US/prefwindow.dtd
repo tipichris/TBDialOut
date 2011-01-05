@@ -1,0 +1,8 @@
+<!ENTITY tbdoprefwindow.title "TBDialOut preferences">
+<!ENTITY tbdopane1.title "TBDialOut preferences">
+<!ENTITY tbdoproto_menu.label "URL Scheme to use">
+<!ENTITY tbdoproto_menu.accesskey "U">
+<!ENTITY tbdoprefix_text.label "Prefix called numbers with">
+<!ENTITY tbdoprefix_text.accesskey "P">
+<!ENTITY tbdoplus_text.label "Replace leading + with">
+<!ENTITY tbdoplus_text.accesskey "R">

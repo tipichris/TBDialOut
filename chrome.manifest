@@ -1,0 +1,6 @@
+content	tbdialout	content/
+locale	tbdialout	en-US	locale/en-US/
+locale	tbdialout	en-GB	locale/en-GB/
+skin	tbdialout	classic/1.0	skin/
+overlay	chrome://messenger/content/addressbook/addressbook.xul	chrome://tbdialout/content/thunderbirdOverlay.xul
+style	chrome://global/content/customizeToolbar.xul	chrome://tbdialout/skin/overlay.css

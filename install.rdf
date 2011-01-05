@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>tbdialout@oak-wood.co.uk</em:id>
+    <em:localized>
+      <Description>
+        <em:locale>en</em:locale>
+        <em:name>TBDialOut</em:name>
+        <em:description>Place phone calls directly from Thunderbird's address book</em:description>
+      </Description>
+    </em:localized>
+
+
+    <em:name>TBDialOut</em:name>
+    <em:description>Place phone calls directly from Thunderbird's address book</em:description>
+    <em:version>1.3</em:version>
+    <em:creator>Chris Hastie</em:creator>
+    <em:developer>MSelector</em:developer>
+    <em:homepageURL>http://www.oak-wood.co.uk/tbdialout</em:homepageURL>
+    <!-- <em:updateURL>https://secure.raggedstaff.net/tbdialout/update.rdf</em:updateURL> -->
+	<em:optionsURL>chrome://tbdialout/content/options.xul</em:optionsURL>
+
+    <em:targetApplication>
+      <Description>
+        <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- thunderbird -->
+        <em:minVersion>3.0</em:minVersion>
+        <em:maxVersion>3.1.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+  </Description>
+</RDF>

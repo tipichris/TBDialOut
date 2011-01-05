@@ -1,0 +1,9 @@
+<!ENTITY tbdialoutHome.label "Call home phone">
+<!ENTITY tbdialoutToolbarHome.label "Dial home">
+<!ENTITY tbdialoutToolbarHome.tooltip "Dial this contact's home number">
+<!ENTITY tbdialoutWork.label "Call work phone">
+<!ENTITY tbdialoutToolbarWork.label "Dial work">
+<!ENTITY tbdialoutToolbarWork.tooltip "Dial this contact's work phone">
+<!ENTITY tbdialoutCell.label "Call cell phone">
+<!ENTITY tbdialoutToolbarCell.label "Dial cell">
+<!ENTITY tbdialoutToolbarCell.tooltip "Dial this contact's cell phone">
