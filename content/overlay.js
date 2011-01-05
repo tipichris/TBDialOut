@@ -48,7 +48,8 @@ var tbdialout = {
   // num should be "CellularNumber", "WorkPhone" or "HomePhone"
   onMenuItemCommandDial: function(num) {
 
-    var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+    var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+
                                   .getService(Components.interfaces.nsIPromptService);
 
     var cards = GetSelectedAbCards();
@@ -56,44 +57,47 @@ var tbdialout = {
     // dial for the selected card, if exactly one card is selected.
     if (cards.length == 1)
     {
-	  try {
-		var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-		var proto = prefs.getCharPref( "extensions.tbdialout.proto" );
-		var prefix = prefs.getCharPref( "extensions.tbdialout.prefix" );
-		var plus = prefs.getCharPref( "extensions.tbdialout.plus" );
-	  } catch (err) {
-		promptService.alert(window, this.strings.getString("warningDefaultTitle"),
+      try {
+        var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+        var proto = prefs.getCharPref( "extensions.tbdialout.proto" );
+        var prefix = prefs.getCharPref( "extensions.tbdialout.prefix" );
+        var plus = prefs.getCharPref( "extensions.tbdialout.plus" );
+      } catch (err) {
+        promptService.alert(window, this.strings.getString("warningDefaultTitle"),
+
                                this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.description);
         return;
-	  }
-	  if( proto === void(0) ) proto = "callto:";
-	  if( prefix === void(0) ) prefix = "";
-	  if( plus === void(0) ) plus = "";
+      }
+      if( proto === void(0) ) proto = "callto:";
+      if( prefix === void(0) ) prefix = "";
+      if( plus === void(0) ) plus = "";
 
-	  var pnumber;
-	  var leadingplus = false;
-	  pnumber = cards[0].getProperty(num, "");
-	  if (pnumber.charAt(0) == '+') {
-	    leadingplus = true;
-	  }
-	  pnumber = pnumber.replace(/[^0-9\*#]/g,'');
+      var pnumber;
+      var leadingplus = false;
+      pnumber = cards[0].getProperty(num, "");
+      if (pnumber.charAt(0) == '+') {
+        leadingplus = true;
+      }
+      pnumber = pnumber.replace(/[^0-9\*#]/g,'');
 
       // only dial if we actually have a number to dial
       if (pnumber.length > 0) {
-		if (leadingplus) {
-		  pnumber = plus+pnumber;
-		}
-		LaunchUrl(proto+prefix+pnumber);
+        if (leadingplus) {
+          pnumber = plus+pnumber;
+        }
+        LaunchUrl(proto+prefix+pnumber);
       }
       else {
         var phoneType = [this.strings.getString(num)];
         //phoneType[0] = num;
-        promptService.alert(window, this.strings.getString("warningDefaultTitle"),
+        promptService.alert(window, this.strings.getString("warningDefaultTitle"),
+
                                this.strings.getFormattedString("noValidNumberMsg", phoneType));
       }
     }
     else {
-      promptService.alert(window, this.strings.getString("warningDefaultTitle"),
+      promptService.alert(window, this.strings.getString("warningDefaultTitle"),
+
                                this.strings.getString("selectExactlyOneMsg"));
     }
   },

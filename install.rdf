@@ -19,7 +19,7 @@
     <em:developer>MSelector</em:developer>
     <em:homepageURL>http://www.oak-wood.co.uk/tbdialout</em:homepageURL>
     <!-- <em:updateURL>https://secure.raggedstaff.net/tbdialout/update.rdf</em:updateURL> -->
-	<em:optionsURL>chrome://tbdialout/content/options.xul</em:optionsURL>
+    <em:optionsURL>chrome://tbdialout/content/options.xul</em:optionsURL>
 
     <em:targetApplication>
       <Description>

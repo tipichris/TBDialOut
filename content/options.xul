@@ -48,38 +48,38 @@
       <preference id="plus_pref" name="extensions.tbdialout.plus" type="string"/>
     </preferences>
 
-	<grid flex="1">
-	  
-	  <columns>
-		<column flex="2"/>
-		<column flex="1"/>
-	  </columns>
-	  
-	  <rows>
-		<row align="center">
-		  <label control="proto_menu" value="&tbdoproto_menu.label;:" accesskey="&tbdoproto_menu.accesskey;"/>
-		  <menulist id="proto_menu" preference="proto_pref" >
-			<menupopup>
-				<menuitem label="callto:" value="callto:"/>
-				<menuitem label="tel:" value="tel:"/>
-				<menuitem label="sip:" value="sip:"/>
-				<menuitem label="skype:" value="skype:"/>
-			</menupopup>
-		  </menulist>
-		</row>
+    <grid flex="1">
+      
+      <columns>
+        <column flex="2"/>
+        <column flex="1"/>
+      </columns>
+      
+      <rows>
+        <row align="center">
+          <label control="proto_menu" value="&tbdoproto_menu.label;:" accesskey="&tbdoproto_menu.accesskey;"/>
+          <menulist id="proto_menu" preference="proto_pref" >
+            <menupopup>
+                <menuitem label="callto:" value="callto:"/>
+                <menuitem label="tel:" value="tel:"/>
+                <menuitem label="sip:" value="sip:"/>
+                <menuitem label="skype:" value="skype:"/>
+            </menupopup>
+          </menulist>
+        </row>
 
-		<row align="center">
-		  <label control="plus_text" value="&tbdoplus_text.label;:" accesskey="&tbdoplus_text.accesskey;"/>
-		  <textbox id="plus_text" preference="plus_pref" size="2" />
-		</row>
-		
-		<row align="center">
-		  <label control="prefix_text" value="&tbdoprefix_text.label;:" accesskey="&tbdoprefix_text.accesskey;"/>
-		  <textbox id="prefix_text" preference="prefix_pref" size="2" />
-		</row>
+        <row align="center">
+          <label control="plus_text" value="&tbdoplus_text.label;:" accesskey="&tbdoplus_text.accesskey;"/>
+          <textbox id="plus_text" preference="plus_pref" size="2" />
+        </row>
+        
+        <row align="center">
+          <label control="prefix_text" value="&tbdoprefix_text.label;:" accesskey="&tbdoprefix_text.accesskey;"/>
+          <textbox id="prefix_text" preference="prefix_pref" size="2" />
+        </row>
 
-	  </rows>
-	</grid>
-	
+      </rows>
+    </grid>
+    
   </prefpane>
 </prefwindow>
