@@ -42,14 +42,44 @@ var tbdialout = {
     // initialization code
     this.initialized = true;
     this.strings = document.getElementById("tbdialout-strings");
+    document.getElementById("abResultsTree").addEventListener("select", this.onSelectNewRow, true);
   },
-
+  
+  // Check whether or not there are phone numbers for the selected
+  // contact and disable or enable buttons and menu as appropriate
+  onSelectNewRow: function(e) {
+    var numtypes = ["CellularNumber", "WorkPhone", "HomePhone"];
+    var buttIDs = ["tbdialout-cell-toolbar-button", "tbdialout-work-toolbar-button", "tbdialout-home-toolbar-button"];
+    var menuIDs= ["tbdialout-cell", "tbdialout-work", "tbdialout-home"];
+    var idx;
+    
+    var cards = GetSelectedAbCards();
+    
+    if (cards.length == 1) {
+      for (idx in numtypes) {
+        pnumber = cards[0].getProperty(numtypes[idx], "");
+        pnumber = pnumber.replace(/[^0-9\*#]/g,'');
+        if (pnumber.length > 0) {
+          document.getElementById(buttIDs[idx]).disabled = false;
+          document.getElementById(menuIDs[idx]).disabled = false;
+        } else {
+          document.getElementById(buttIDs[idx]).disabled = true;
+          document.getElementById(menuIDs[idx]).disabled = true;
+        }
+      }
+    } else {
+      for (idx in numtypes) {
+        document.getElementById(buttIDs[idx]).disabled = true;
+        document.getElementById(menuIDs[idx]).disabled = true;
+      }
+    }
+  },
+  
   // Dial the number stored as num
   // num should be "CellularNumber", "WorkPhone" or "HomePhone"
   onMenuItemCommandDial: function(num) {
 
     var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-
                                   .getService(Components.interfaces.nsIPromptService);
 
     var cards = GetSelectedAbCards();
@@ -89,15 +119,12 @@ var tbdialout = {
       }
       else {
         var phoneType = [this.strings.getString(num)];
-        //phoneType[0] = num;
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
-
                                this.strings.getFormattedString("noValidNumberMsg", phoneType));
       }
     }
     else {
       promptService.alert(window, this.strings.getString("warningDefaultTitle"),
-
                                this.strings.getString("selectExactlyOneMsg"));
     }
   },
@@ -110,3 +137,4 @@ var tbdialout = {
 };
 
 window.addEventListener("load", function(e) { tbdialout.onLoad(e); }, false);
+
