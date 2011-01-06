@@ -4,15 +4,29 @@
   list-style-image: url("chrome://tbdialout/skin/homephone.png");
 }
 
+#tbdialout-home-toolbar-button[disabled="true"]
+{
+  list-style-image: url("chrome://tbdialout/skin/homephone-dis.png");
+}
+
 [iconsize="small"] #tbdialout-home-toolbar-button
 {
   list-style-image: url("chrome://tbdialout/skin/homephone-small.png");
 }
 
+[iconsize="small"] #tbdialout-home-toolbar-button[disabled="true"]
+{
+  list-style-image: url("chrome://tbdialout/skin/homephone-small-dis.png");
+}
 
 #tbdialout-work-toolbar-button
 {
   list-style-image: url("chrome://tbdialout/skin/officephone.png");
+}
+
+#tbdialout-work-toolbar-button[disabled="true"]
+{
+  list-style-image: url("chrome://tbdialout/skin/officephone-dis.png");
 }
 
 [iconsize="small"] #tbdialout-work-toolbar-button
@@ -20,12 +34,27 @@
   list-style-image: url("chrome://tbdialout/skin/officephone-small.png");
 }
 
+[iconsize="small"] #tbdialout-work-toolbar-button[disabled="true"]
+{
+  list-style-image: url("chrome://tbdialout/skin/officephone-small-dis.png");
+}
+
 #tbdialout-cell-toolbar-button
 {
   list-style-image: url("chrome://tbdialout/skin/cellphone.png");
 }
 
+#tbdialout-cell-toolbar-button[disabled="true"]
+{
+  list-style-image: url("chrome://tbdialout/skin/cellphone-dis.png");
+}
+
 [iconsize="small"] #tbdialout-cell-toolbar-button
 {
   list-style-image: url("chrome://tbdialout/skin/cellphone-small.png");
+}
+
+[iconsize="small"] #tbdialout-cell-toolbar-button[disabled="true"]
+{
+  list-style-image: url("chrome://tbdialout/skin/cellphone-small-dis.png");
 }
