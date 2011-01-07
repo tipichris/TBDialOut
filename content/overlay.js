@@ -44,17 +44,18 @@ var tbdialout = {
     this.strings = document.getElementById("tbdialout-strings");
     document.getElementById("abResultsTree").addEventListener("select", this.onSelectNewRow, true);
   },
-  
+
   // Check whether or not there are phone numbers for the selected
   // contact and disable or enable buttons and menu as appropriate
   onSelectNewRow: function(e) {
     var numtypes = ["CellularNumber", "WorkPhone", "HomePhone"];
     var buttIDs = ["tbdialout-cell-toolbar-button", "tbdialout-work-toolbar-button", "tbdialout-home-toolbar-button"];
     var menuIDs= ["tbdialout-cell", "tbdialout-work", "tbdialout-home"];
+
     var idx;
-    
+
     var cards = GetSelectedAbCards();
-    
+
     if (cards.length == 1) {
       for (idx in numtypes) {
         pnumber = cards[0].getProperty(numtypes[idx], "");
@@ -74,7 +75,7 @@ var tbdialout = {
       }
     }
   },
-  
+
   // Dial the number stored as num
   // num should be "CellularNumber", "WorkPhone" or "HomePhone"
   onMenuItemCommandDial: function(num) {
@@ -94,7 +95,6 @@ var tbdialout = {
         var plus = prefs.getCharPref( "extensions.tbdialout.plus" );
       } catch (err) {
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
-
                                this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.description);
         return;
       }
@@ -133,6 +133,11 @@ var tbdialout = {
     // just reuse the function above.
     tbdialout.onMenuItemCommandDial(num);
   },
+
+  onLinkClickDial: function(num) {
+    // just reuse the function above.
+    tbdialout.onMenuItemCommandDial(num);
+  }
 
 };
 

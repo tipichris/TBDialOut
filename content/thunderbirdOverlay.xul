@@ -42,11 +42,11 @@
 <overlay id="tbdialout-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script src="overlay.js"/>
-  
+
   <stringbundleset id="stringbundleset">
     <stringbundle id="tbdialout-strings" src="chrome://tbdialout/locale/tbdialout.properties"/>
   </stringbundleset>
-  
+
   <menupopup id="abResultsTreeContext">
     <menuitem id="tbdialout-home" label="&tbdialoutHome.label;" 
               oncommand="tbdialout.onMenuItemCommandDial('HomePhone');"/>
@@ -72,4 +72,9 @@
     oncommand="tbdialout.onToolbarButtonCommandDial('CellularNumber')"
     class="toolbarbutton-1 chromeclass-toolbar-additional"/>
   </toolbarpalette>
+
+  <description id="cvPhCellular" onclick="tbdialout.onLinkClickDial('CellularNumber')" tooltiptext="&tbdialoutToolbarCell.tooltip;" class="CardViewLink tbdialout-phone-number-link" />
+  <description id="cvPhWork" onclick="tbdialout.onLinkClickDial('WorkNumber')" tooltiptext="&tbdialoutToolbarWork.tooltip;" class="CardViewLink tbdialout-phone-number-link" />
+  <description id="cvPhHome" onclick="tbdialout.onLinkClickDial('HomeNumber')" tooltiptext="&tbdialoutToolbarHome.tooltip;" class="CardViewLink tbdialout-phone-number-link" />
+
 </overlay>
