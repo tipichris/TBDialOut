@@ -137,7 +137,7 @@ var tbdialout = {
   onLinkClickDial: function(num) {
     // just reuse the function above.
     tbdialout.onMenuItemCommandDial(num);
-  }
+  },
 
 };
 

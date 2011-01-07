@@ -74,7 +74,7 @@
   </toolbarpalette>
 
   <description id="cvPhCellular" onclick="tbdialout.onLinkClickDial('CellularNumber')" tooltiptext="&tbdialoutToolbarCell.tooltip;" class="CardViewLink tbdialout-phone-number-link" />
-  <description id="cvPhWork" onclick="tbdialout.onLinkClickDial('WorkNumber')" tooltiptext="&tbdialoutToolbarWork.tooltip;" class="CardViewLink tbdialout-phone-number-link" />
-  <description id="cvPhHome" onclick="tbdialout.onLinkClickDial('HomeNumber')" tooltiptext="&tbdialoutToolbarHome.tooltip;" class="CardViewLink tbdialout-phone-number-link" />
+  <description id="cvPhWork" onclick="tbdialout.onLinkClickDial('WorkPhone')" tooltiptext="&tbdialoutToolbarWork.tooltip;" class="CardViewLink tbdialout-phone-number-link" />
+  <description id="cvPhHome" onclick="tbdialout.onLinkClickDial('HomePhone')" tooltiptext="&tbdialoutToolbarHome.tooltip;" class="CardViewLink tbdialout-phone-number-link" />
 
 </overlay>
