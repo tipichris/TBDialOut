@@ -55,22 +55,37 @@
     <menuitem id="tbdialout-cell" label="&tbdialoutCell.label;" 
               oncommand="tbdialout.onMenuItemCommandDial('CellularNumber');"/>
   </menupopup>
+
   <toolbarpalette id="AddressBookToolbarPalette">
-  <toolbarbutton id="tbdialout-home-toolbar-button"
-    label="&tbdialoutToolbarHome.label;"
-    tooltiptext="&tbdialoutToolbarHome.tooltip;"
-    oncommand="tbdialout.onToolbarButtonCommandDial('HomePhone')"
-    class="toolbarbutton-1 chromeclass-toolbar-additional"/>
-  <toolbarbutton id="tbdialout-work-toolbar-button"
-    label="&tbdialoutToolbarWork.label;"
-    tooltiptext="&tbdialoutToolbarWork.tooltip;"
-    oncommand="tbdialout.onToolbarButtonCommandDial('WorkPhone')"
-    class="toolbarbutton-1 chromeclass-toolbar-additional"/>
-  <toolbarbutton id="tbdialout-cell-toolbar-button"
-    label="&tbdialoutToolbarCell.label;"
-    tooltiptext="&tbdialoutToolbarCell.tooltip;"
-    oncommand="tbdialout.onToolbarButtonCommandDial('CellularNumber')"
-    class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    <toolbarbutton id="tbdialout-home-toolbar-button"
+      label="&tbdialoutToolbarHome.label;"
+      tooltiptext="&tbdialoutToolbarHome.tooltip;"
+      oncommand="tbdialout.onToolbarButtonCommandDial('HomePhone')"
+      class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    <toolbarbutton id="tbdialout-work-toolbar-button"
+      label="&tbdialoutToolbarWork.label;"
+      tooltiptext="&tbdialoutToolbarWork.tooltip;"
+      oncommand="tbdialout.onToolbarButtonCommandDial('WorkPhone')"
+      class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    <toolbarbutton id="tbdialout-cell-toolbar-button"
+      label="&tbdialoutToolbarCell.label;"
+      tooltiptext="&tbdialoutToolbarCell.tooltip;"
+      oncommand="tbdialout.onToolbarButtonCommandDial('CellularNumber')"
+      class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    <toolbarbutton id="tbdialout-menu-toolbar-button"
+      label="&tbdialoutToolbarMenu.label;"
+      tooltiptext="&tbdialoutToolbarMenu.tooltip;"
+      type="menu"
+      class="toolbarbutton-1 chromeclass-toolbar-additional" >
+        <menupopup id="tbdialout-menu-toolbar-menu">
+          <menuitem id="tbdialout-menu-toolbar-menu-home" label="&tbdialoutButtonMenuHome.label;" 
+                    oncommand="tbdialout.onToolbarButtonCommandDial('HomePhone');"/>
+          <menuitem id="tbdialout-menu-toolbar-menu-work" label="&tbdialoutButtonMenuWork.label;" 
+                    oncommand="tbdialout.onToolbarButtonCommandDial('WorkPhone');"/>
+          <menuitem id="tbdialout-menu-toolbar-menu-cell" label="&tbdialoutButtonMenuCell.label;" 
+                    oncommand="tbdialout.onToolbarButtonCommandDial('CellularNumber');"/>
+        </menupopup>
+    </toolbarbutton>
   </toolbarpalette>
 
   <description id="cvPhCellular" onclick="tbdialout.onLinkClickDial('CellularNumber')" tooltiptext="&tbdialoutToolbarCell.tooltip;" class="CardViewLink tbdialout-phone-number-link" />

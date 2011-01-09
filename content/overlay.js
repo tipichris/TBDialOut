@@ -42,7 +42,14 @@ var tbdialout = {
     // initialization code
     this.initialized = true;
     this.strings = document.getElementById("tbdialout-strings");
+    this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).getBranch("extensions.tbdialout.");
+    // listen for changes of selected cards
     document.getElementById("abResultsTree").addEventListener("select", this.onSelectNewRow, true);
+
+    var tbbuttonadded = this.prefs.getBoolPref("tbbuttonadded");
+    if (!tbbuttonadded) {
+      window.setTimeout(this.AddToolbarButton, 200);
+    }
   },
 
   // Check whether or not there are phone numbers for the selected
@@ -51,27 +58,37 @@ var tbdialout = {
     var numtypes = ["CellularNumber", "WorkPhone", "HomePhone"];
     var buttIDs = ["tbdialout-cell-toolbar-button", "tbdialout-work-toolbar-button", "tbdialout-home-toolbar-button"];
     var menuIDs= ["tbdialout-cell", "tbdialout-work", "tbdialout-home"];
+    var buttMenuIDs = ["tbdialout-menu-toolbar-menu-cell", "tbdialout-menu-toolbar-menu-work", "tbdialout-menu-toolbar-menu-home"];
 
     var idx;
 
     var cards = GetSelectedAbCards();
+
+    // disable the combined button until we know at least one suitable phone number exists
+    try { document.getElementById("tbdialout-menu-toolbar-button").disabled = true; } catch (e) {}
 
     if (cards.length == 1) {
       for (idx in numtypes) {
         pnumber = cards[0].getProperty(numtypes[idx], "");
         pnumber = pnumber.replace(/[^0-9\*#]/g,'');
         if (pnumber.length > 0) {
-          document.getElementById(buttIDs[idx]).disabled = false;
-          document.getElementById(menuIDs[idx]).disabled = false;
+          try { document.getElementById(buttIDs[idx]).disabled = false; } catch (e) {}
+          try { document.getElementById(menuIDs[idx]).disabled = false; } catch (e) {}
+          try { document.getElementById(buttMenuIDs[idx]).disabled = false; } catch (e) {}
+          // we got at least one good number, so enable the combined button
+          try { document.getElementById("tbdialout-menu-toolbar-button").disabled = false; } catch (e) {}
         } else {
-          document.getElementById(buttIDs[idx]).disabled = true;
-          document.getElementById(menuIDs[idx]).disabled = true;
+          try { document.getElementById(buttIDs[idx]).disabled = true; } catch (e) {}
+          try { document.getElementById(menuIDs[idx]).disabled = true; } catch (e) {}
+          try { document.getElementById(buttMenuIDs[idx]).disabled = true; } catch (e) {}
         }
       }
-    } else {
+    }
+    // disable everything if not exactly one card is selected
+    else {
       for (idx in numtypes) {
-        document.getElementById(buttIDs[idx]).disabled = true;
-        document.getElementById(menuIDs[idx]).disabled = true;
+        try { document.getElementById(buttIDs[idx]).disabled = true; } catch (e) {}
+        try { document.getElementById(menuIDs[idx]).disabled = true; } catch (e) {}
       }
     }
   },
@@ -89,15 +106,16 @@ var tbdialout = {
     if (cards.length == 1)
     {
       try {
-        var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-        var proto = prefs.getCharPref( "extensions.tbdialout.proto" );
-        var prefix = prefs.getCharPref( "extensions.tbdialout.prefix" );
-        var plus = prefs.getCharPref( "extensions.tbdialout.plus" );
+        var proto = this.prefs.getCharPref( "proto" );
+        var prefix = this.prefs.getCharPref( "prefix" );
+        var plus = this.prefs.getCharPref( "plus" );
       } catch (err) {
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.description);
         return;
       }
+
+      // some defaults
       if( proto === void(0) ) proto = "callto:";
       if( prefix === void(0) ) prefix = "";
       if( plus === void(0) ) plus = "";
@@ -105,13 +123,17 @@ var tbdialout = {
       var pnumber;
       var leadingplus = false;
       pnumber = cards[0].getProperty(num, "");
+
+      // check for a leading +
       if (pnumber.charAt(0) == '+') {
         leadingplus = true;
       }
+      // strip non-numeric characters (except * and # - valid dialing digits)
       pnumber = pnumber.replace(/[^0-9\*#]/g,'');
 
       // only dial if we actually have a number to dial
       if (pnumber.length > 0) {
+        // do replacement of leading +
         if (leadingplus) {
           pnumber = plus+pnumber;
         }
@@ -137,6 +159,34 @@ var tbdialout = {
   onLinkClickDial: function(num) {
     // just reuse the function above.
     tbdialout.onMenuItemCommandDial(num);
+  },
+
+  // Add the combined button to the Address Book tool bar at first run.
+  AddToolbarButton: function() {
+    try {
+      var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).getBranch("extensions.tbdialout.");
+      var ButtonId    = "tbdialout-menu-toolbar-button"; // ID of button to add
+      var afterId = "button-newmessage";
+      var ToolBar  = document.getElementById("ab-bar2");
+      var curSetStr  = ToolBar.currentSet;
+
+      if (curSetStr.indexOf(ButtonId) == -1) {
+
+        var curSet = curSetStr.split(",")
+        var pos = curSet.indexOf(afterId) + 1 || curSet.length;
+        var set = curSet.slice(0, pos).concat(ButtonId).concat(curSet.slice(pos));
+
+        ToolBar.setAttribute("currentset", set.join(","));
+        ToolBar.currentSet = set.join(",");
+        document.persist(ToolBar.id, "currentset");
+        try {
+          BrowserToolboxCustomizeDone(true);
+        }
+        catch (e) {}
+      }
+    prefs.setBoolPref("tbbuttonadded", true);
+    }
+    catch (e) {}
   },
 
 };
