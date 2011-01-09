@@ -4,6 +4,12 @@
 <!ENTITY tbdialoutWork.label "Call work phone">
 <!ENTITY tbdialoutToolbarWork.label "Dial work">
 <!ENTITY tbdialoutToolbarWork.tooltip "Dial this contact's work phone">
-<!ENTITY tbdialoutCell.label "Call cell phone">
-<!ENTITY tbdialoutToolbarCell.label "Dial cell">
-<!ENTITY tbdialoutToolbarCell.tooltip "Dial this contact's cell phone">
+<!ENTITY tbdialoutCell.label "Call mobile phone">
+<!ENTITY tbdialoutToolbarCell.label "Dial mobile">
+<!ENTITY tbdialoutToolbarCell.tooltip "Dial this contact's mobile phone">
+<!ENTITY tbdialoutToolbarMenu.label "Dial">
+<!ENTITY tbdialoutToolbarMenu.tooltip "Place a call to this contact">
+<!ENTITY tbdialoutButtonMenuHome.label "Home">
+<!ENTITY tbdialoutButtonMenuWork.label "Work">
+<!ENTITY tbdialoutButtonMenuCell.label "Cell">
+

@@ -49,12 +49,12 @@
     </preferences>
 
     <grid flex="1">
-      
+
       <columns>
         <column flex="2"/>
         <column flex="1"/>
       </columns>
-      
+
       <rows>
         <row align="center">
           <label control="proto_menu" value="&tbdoproto_menu.label;:" accesskey="&tbdoproto_menu.accesskey;"/>
@@ -72,7 +72,7 @@
           <label control="plus_text" value="&tbdoplus_text.label;:" accesskey="&tbdoplus_text.accesskey;"/>
           <textbox id="plus_text" preference="plus_pref" size="2" />
         </row>
-        
+
         <row align="center">
           <label control="prefix_text" value="&tbdoprefix_text.label;:" accesskey="&tbdoprefix_text.accesskey;"/>
           <textbox id="prefix_text" preference="prefix_pref" size="2" />
@@ -80,6 +80,6 @@
 
       </rows>
     </grid>
-    
+
   </prefpane>
 </prefwindow>
