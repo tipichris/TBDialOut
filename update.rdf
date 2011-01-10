@@ -8,7 +8,7 @@
       <RDF:Seq>
         <RDF:li>
           <RDF:Description>
-            <em:version>1.5</em:version> 
+            <em:version>1.5.1</em:version> 
 
             <!-- One targetApplication for each application the add-on is compatible with -->
             <em:targetApplication>
@@ -18,7 +18,7 @@
                 <em:maxVersion>3.1.*</em:maxVersion>
 
                 <!-- This is where this version of the add-on will be downloaded from -->
-                <em:updateLink>https://secure.raggedstaff.net/tbdialout/tbdialout-1.5.xpi</em:updateLink>
+                <em:updateLink>https://secure.raggedstaff.net/tbdialout/tbdialout-1.5.1.xpi</em:updateLink>
 
               </RDF:Description>
             </em:targetApplication>
