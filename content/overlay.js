@@ -100,6 +100,13 @@ var tbdialout = {
     var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
                                   .getService(Components.interfaces.nsIPromptService);
 
+    var OKArgs = ["CellularNumber", "WorkPhone", "HomePhone"];
+    if ((OKArgs.join(",")+",").indexOf(num + ",") == -1) {
+        promptService.alert(window, this.strings.getString("warningDefaultTitle"),
+                               this.strings.getString("errorBadArgsMsg") );
+        return;
+    }
+
     var cards = GetSelectedAbCards();
 
     // dial for the selected card, if exactly one card is selected.
