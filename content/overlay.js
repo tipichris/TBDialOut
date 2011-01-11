@@ -42,7 +42,7 @@ var tbdialout = {
     // initialization code
     this.initialized = true;
     this.strings = document.getElementById("tbdialout-strings");
-    this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).getBranch("extensions.tbdialout.");
+    this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
     // listen for changes of selected cards
     document.getElementById("abResultsTree").addEventListener("select", this.onSelectNewRow, true);
 
