@@ -1,0 +1,9 @@
+<!ENTITY tbdoprefwindow.title "TBDialOut Einstellungen">
+<!ENTITY tbdopane1.title "TBDialOut Einstellungen">
+<!ENTITY tbdoproto_menu.label "URL Schema">
+<!ENTITY tbdoproto_menu.accesskey "U">
+<!ENTITY tbdoprefix_text.label "Prefix Nummer mit z.B. 00">
+<!ENTITY tbdoprefix_text.accesskey "P">
+<!ENTITY tbdoplus_text.label "Ersetze + mit">
+<!ENTITY tbdoplus_text.accesskey "E">
+
