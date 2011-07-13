@@ -9,14 +9,20 @@
         <em:name>TBDialOut</em:name>
         <em:description>Place phone calls directly from Thunderbird's address book</em:description>
       </Description>
+      <Description>
+        <em:locale>de</em:locale>
+        <em:name>TBDialOut</em:name>
+        <em:description>Place phone calls directly from Thunderbird's address book</em:description>
+      </Description>
     </em:localized>
 
 
     <em:name>TBDialOut</em:name>
     <em:description>Place phone calls directly from Thunderbird's address book</em:description>
-    <em:version>1.5.3</em:version>
+    <em:version>1.5.4</em:version>
     <em:creator>Chris Hastie</em:creator>
     <em:developer>MSelector</em:developer>
+    <em:translator>Rainer Piper</em:translator>
     <em:homepageURL>http://www.oak-wood.co.uk/tbdialout</em:homepageURL>
     <!-- <em:updateURL>https://secure.raggedstaff.net/tbdialout/update.rdf</em:updateURL> -->
     <em:optionsURL>chrome://tbdialout/content/options.xul</em:optionsURL>
