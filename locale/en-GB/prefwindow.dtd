@@ -6,5 +6,12 @@
 <!ENTITY tbdoprefix_text.accesskey "P">
 <!ENTITY tbdoplus_text.label "Replace leading + with">
 <!ENTITY tbdoplus_text.accesskey "R">
-
-
+<!ENTITY tbdocustomurl_text.label "Custom URL">
+<!ENTITY tbdocustomurl_text.accesskey "C">
+<!ENTITY tbdocustomuser_text.label "User name">
+<!ENTITY tbdocustomuser_text.accesskey "s">
+<!ENTITY tbdocustompass_text.label "Password">
+<!ENTITY tbdocustompass_text.accesskey "w">
+<!ENTITY tbdocustomhint_text "Enter a custom URL for TBDialOut to contact. Replace the phone number with &#37;NUM&#37;" >
+<!ENTITY tbdocustomurl_menu.label  "Custom URL">
+<!ENTITY tbdocustomurl_boxcaption.label "Custom URL options">

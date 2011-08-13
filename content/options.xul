@@ -40,33 +40,38 @@
 
 <!DOCTYPE prefwindow SYSTEM "chrome://tbdialout/locale/prefwindow.dtd">
 <prefwindow id="tbdialoutPreferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="&tbdoprefwindow.title;" buttons="accept,cancel">
-  <prefpane id="tbdialoutPrefPane1" label="&tbdopane1.title;">
+  <prefpane id="tbdialoutPrefPane1" label="&tbdopane1.title;" onpaneload="setCustomOptViz()">
 
     <preferences>
       <preference id="proto_pref" name="extensions.tbdialout.proto" type="string"/>
       <preference id="prefix_pref" name="extensions.tbdialout.prefix" type="string"/>
       <preference id="plus_pref" name="extensions.tbdialout.plus" type="string"/>
+      <preference id="customurl_pref" name="extensions.tbdialout.customurl" type="string"/>
+      <preference id="customuser_pref" name="extensions.tbdialout.customuser" type="string"/>
+      <preference id="custompass_pref" name="extensions.tbdialout.custompass" type="string"/>
     </preferences>
 
     <grid flex="1">
 
       <columns>
-        <column flex="2"/>
         <column flex="1"/>
+        <column flex="2"/>
       </columns>
 
       <rows>
         <row align="center">
           <label control="proto_menu" value="&tbdoproto_menu.label;:" accesskey="&tbdoproto_menu.accesskey;"/>
-          <menulist id="proto_menu" preference="proto_pref" >
+          <menulist id="proto_menu" preference="proto_pref" oncommand="setCustomOptViz()">
             <menupopup>
                 <menuitem label="callto:" value="callto:"/>
                 <menuitem label="tel:" value="tel:"/>
                 <menuitem label="sip:" value="sip:"/>
                 <menuitem label="skype:" value="skype:"/>
+                <menuitem label="&tbdocustomurl_menu.label;" value="custom" />
             </menupopup>
           </menulist>
         </row>
+        
 
         <row align="center">
           <label control="plus_text" value="&tbdoplus_text.label;:" accesskey="&tbdoplus_text.accesskey;"/>
@@ -81,5 +86,32 @@
       </rows>
     </grid>
 
+	<groupbox id="tbdialout-options-customoptions">
+	  <caption label="&tbdocustomurl_boxcaption.label;" />
+	  <label class="tbdocustomoptions" value="&tbdocustomhint_text;" />
+	  <grid flex="1">
+		<columns>
+		  <column flex="1"/>
+		  <column flex="4"/>
+		</columns>
+		
+		<rows>
+		  <row align="center">
+			<label class="tbdocustomoptions" control="plus_text" value="&tbdocustomurl_text.label;:" accesskey="&tbdocustomurl_text.accesskey;"/>
+			<textbox class="tbdocustomoptions" id="customurl_text" preference="customurl_pref" size="35" />
+		  </row>
+		  <row align="center">
+			<label class="tbdocustomoptions" control="plus_text" value="&tbdocustomuser_text.label;:" accesskey="&tbdocustomuser_text.accesskey;"/>
+			<textbox class="tbdocustomoptions" id="customuser_text" preference="customuser_pref" size="15" />
+		  </row>
+		  <row align="center">
+			<label class="tbdocustomoptions" control="plus_text" value="&tbdocustompass_text.label;:" accesskey="&tbdocustompass_text.accesskey;"/>
+			<textbox class="tbdocustomoptions" id="custompass_text" preference="custompass_pref" size="15" type="password" />
+		  </row>
+		</rows>
+	  </grid>
+	</groupbox>
+	
   </prefpane>
+  <script src="options.js"/>
 </prefwindow>

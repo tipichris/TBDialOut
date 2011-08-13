@@ -116,6 +116,9 @@ var tbdialout = {
         var proto = this.prefs.getCharPref( "proto" );
         var prefix = this.prefs.getCharPref( "prefix" );
         var plus = this.prefs.getCharPref( "plus" );
+        var customurl = this.prefs.getCharPref( "customurl" );
+        var customuser = this.prefs.getCharPref( "customuser" );
+        var custompass = this.prefs.getCharPref( "custompass" );
       } catch (err) {
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.description);
@@ -126,6 +129,9 @@ var tbdialout = {
       if( proto === void(0) ) proto = "callto:";
       if( prefix === void(0) ) prefix = "";
       if( plus === void(0) ) plus = "";
+      if( customurl === void(0) ) customurl = "";
+      if( customuser === void(0) ) customuser = "";
+      if( custompass === void(0) ) custompass = "";
 
       var pnumber;
       var leadingplus = false;
@@ -144,7 +150,23 @@ var tbdialout = {
         if (leadingplus) {
           pnumber = plus+pnumber;
         }
-        LaunchUrl(proto+prefix+pnumber);
+        if (proto == 'custom') {
+          var callurl = customurl.replace(/%NUM%/,pnumber);
+          var req = new XMLHttpRequest();
+          req.open('GET', callurl, true, customuser, custompass);
+          req.onreadystatechange = function (aEvt) {
+            if (req.readyState == 4) {
+              if(req.status != 200) {
+                var errorStatus = [req.status, req.statusText];
+                promptService.alert(window, this.strings.getString("warningDefaultTitle"),
+                                  this.strings.getFormattedString("errorBadHTTPResponse", errorStatus));
+              }
+            }
+          };
+          req.send(null);
+        } else {
+          LaunchUrl(proto+prefix+pnumber);
+        }
       }
       else {
         var phoneType = [this.strings.getString(num)];
