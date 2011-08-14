@@ -67,6 +67,7 @@ var tbdialout = {
     // disable the combined button until we know at least one suitable phone number exists
     try { document.getElementById("tbdialout-menu-toolbar-button").disabled = true; } catch (e) {}
 
+    var pnumber;
     if (cards.length == 1) {
       for (idx in numtypes) {
         pnumber = cards[0].getProperty(numtypes[idx], "");
@@ -108,7 +109,8 @@ var tbdialout = {
     }
 
     var cards = GetSelectedAbCards();
-
+    var proto, prefix, plus, customurl, customuser, custompass;
+    
     // dial for the selected card, if exactly one card is selected.
     if (cards.length == 1)
     {
