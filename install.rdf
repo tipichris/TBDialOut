@@ -13,13 +13,14 @@
         <em:locale>de</em:locale>
         <em:name>TBDialOut</em:name>
         <em:description>Telefonieren direkt aus dem Thunderbird Adressbuch</em:description>
+        <em:translator>Rainer Piper</em:translator>
       </Description>
     </em:localized>
 
 
     <em:name>TBDialOut</em:name>
     <em:description>Place phone calls directly from Thunderbird's address book</em:description>
-    <em:version>1.6.0pre1</em:version>
+    <em:version>1.6.0pre2</em:version>
     <em:creator>Chris Hastie</em:creator>
     <em:developer>MSelector</em:developer>
     <em:translator>Rainer Piper</em:translator>

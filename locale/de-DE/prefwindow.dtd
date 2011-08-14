@@ -6,12 +6,12 @@
 <!ENTITY tbdoprefix_text.accesskey "P">
 <!ENTITY tbdoplus_text.label "Ersetze + mit">
 <!ENTITY tbdoplus_text.accesskey "E">
-<!ENTITY tbdocustomurl_text.label "Custom URL">
+<!ENTITY tbdocustomurl_text.label "Benutzerdefinierte URL">
 <!ENTITY tbdocustomurl_text.accesskey "C">
-<!ENTITY tbdocustomuser_text.label "User name">
+<!ENTITY tbdocustomuser_text.label "Benutzername">
 <!ENTITY tbdocustomuser_text.accesskey "s">
-<!ENTITY tbdocustompass_text.label "Password">
+<!ENTITY tbdocustompass_text.label "Passwort">
 <!ENTITY tbdocustompass_text.accesskey "w">
-<!ENTITY tbdocustomhint_text "Enter a custom URL for TBDialOut to contact. Replace the phone number with &#37;NUM&#37;" >
-<!ENTITY tbdocustomurl_menu.label  "Custom URL">
-<!ENTITY tbdocustomurl_boxcaption.label "Custom URL options">
+<!ENTITY tbdocustomhint_text "Geben Sie eine benutzerdefinierte URL fuer die TBDialout Verbindung ein. Ersetzen Sie die Rufnummer mit &#37;NUM&#37;" >
+<!ENTITY tbdocustomurl_menu.label  "Benutzerdefinierte URL">
+<!ENTITY tbdocustomurl_boxcaption.label "Benutzerdefinierte URL Einstellungen">
