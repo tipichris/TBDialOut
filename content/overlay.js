@@ -160,8 +160,10 @@ var tbdialout = {
             if (req.readyState == 4) {
               if(req.status != 200) {
                 var errorStatus = [req.status, req.statusText];
-                promptService.alert(window, this.strings.getString("warningDefaultTitle"),
-                                  this.strings.getFormattedString("errorBadHTTPResponse", errorStatus));
+                // why isn't this.strings already available in this context??
+                var strings = document.getElementById("tbdialout-strings");
+                promptService.alert(window, strings.getString("warningDefaultTitle"),
+                                  strings.getFormattedString("errorBadHTTPResponse", errorStatus));
               }
             }
           };
