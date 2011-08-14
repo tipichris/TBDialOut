@@ -110,7 +110,7 @@ var tbdialout = {
 
     var cards = GetSelectedAbCards();
     var proto, prefix, plus, customurl, customuser, custompass;
-    
+
     // dial for the selected card, if exactly one card is selected.
     if (cards.length == 1)
     {
