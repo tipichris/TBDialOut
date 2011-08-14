@@ -12,6 +12,6 @@
 <!ENTITY tbdocustomuser_text.accesskey "s">
 <!ENTITY tbdocustompass_text.label "Passwort">
 <!ENTITY tbdocustompass_text.accesskey "w">
-<!ENTITY tbdocustomhint_text "Geben Sie eine benutzerdefinierte URL fuer die TBDialout Verbindung ein. Ersetzen Sie die Rufnummer mit &#37;NUM&#37;" >
+<!ENTITY tbdocustomhint_text "Geben Sie eine benutzerdefinierte URL für die TBDialout Verbindung ein. Ersetzen Sie die Rufnummer mit &#37;NUM&#37;" >
 <!ENTITY tbdocustomurl_menu.label  "Benutzerdefinierte URL">
 <!ENTITY tbdocustomurl_boxcaption.label "Benutzerdefinierte URL Einstellungen">
