@@ -150,8 +150,10 @@ var tbdialout = {
         if (leadingplus) {
           pnumber = plus+pnumber;
         }
+        pnumber = prefix+pnumber;
         if (proto == 'custom') {
-          var callurl = customurl.replace(/%NUM%/,pnumber);
+          // prefix and plus may be special characters, so need to escape pnumber in URL
+          var callurl = customurl.replace(/%NUM%/,encodeURIComponent(pnumber));
           var req = new XMLHttpRequest();
           req.open('GET', callurl, true, customuser, custompass);
           req.onreadystatechange = function (aEvt) {
@@ -165,7 +167,7 @@ var tbdialout = {
           };
           req.send(null);
         } else {
-          LaunchUrl(proto+prefix+pnumber);
+          LaunchUrl(proto+pnumber);
         }
       }
       else {
