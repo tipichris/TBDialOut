@@ -115,12 +115,12 @@ var tbdialout = {
     if (cards.length == 1)
     {
       try {
-        var proto = this.prefs.getCharPref( "proto" );
-        var prefix = this.prefs.getCharPref( "prefix" );
-        var plus = this.prefs.getCharPref( "plus" );
-        var customurl = this.prefs.getCharPref( "customurl" );
-        var customuser = this.prefs.getCharPref( "customuser" );
-        var custompass = this.prefs.getCharPref( "custompass" );
+        proto = this.prefs.getCharPref( "proto" );
+        prefix = this.prefs.getCharPref( "prefix" );
+        plus = this.prefs.getCharPref( "plus" );
+        customurl = this.prefs.getCharPref( "customurl" );
+        customuser = this.prefs.getCharPref( "customuser" );
+        custompass = this.prefs.getCharPref( "custompass" );
       } catch (err) {
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.description);
