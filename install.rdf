@@ -20,10 +20,11 @@
 
     <em:name>TBDialOut</em:name>
     <em:description>Place phone calls directly from Thunderbird's address book</em:description>
-    <em:version>1.6.0pre4</em:version>
+    <em:version>1.6.1pre1</em:version>
     <em:creator>Chris Hastie</em:creator>
     <em:developer>MSelector</em:developer>
     <em:translator>Rainer Piper</em:translator>
+    <em:translator>Eduardo de Mier</em:translator>
     <em:homepageURL>http://www.oak-wood.co.uk/tbdialout</em:homepageURL>
     <em:type>2</em:type>
     <!-- <em:updateURL>https://secure.raggedstaff.net/tbdialout/update.rdf</em:updateURL> -->

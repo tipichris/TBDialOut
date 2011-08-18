@@ -1,0 +1,17 @@
+<!ENTITY tbdoprefwindow.title "TBDialOut Configuración">
+<!ENTITY tbdopane1.title "TBDialOut Configuración">
+<!ENTITY tbdoproto_menu.label "Esquema URL">
+<!ENTITY tbdoproto_menu.accesskey "U">
+<!ENTITY tbdoprefix_text.label "Prefijo, por ejemplo 00">
+<!ENTITY tbdoprefix_text.accesskey "P">
+<!ENTITY tbdoplus_text.label "Sustituir + por">
+<!ENTITY tbdoplus_text.accesskey "E">
+<!ENTITY tbdocustomurl_text.label "URL personalizada">
+<!ENTITY tbdocustomurl_text.accesskey "C">
+<!ENTITY tbdocustomuser_text.label "Nombre del usuario">
+<!ENTITY tbdocustomuser_text.accesskey "s">
+<!ENTITY tbdocustompass_text.label "Clave">
+<!ENTITY tbdocustompass_text.accesskey "w">
+<!ENTITY tbdocustomhint_text "Ingresar URL de contacto para TBDialOut. Sustituir el número de tel. por &#37;NUM&#37;">
+<!ENTITY tbdocustomurl_menu.label  "URL personalizada">
+<!ENTITY tbdocustomurl_boxcaption.label "Opciones URL personalizada">
