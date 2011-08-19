@@ -15,6 +15,12 @@
         <em:description>Telefonieren direkt aus dem Thunderbird Adressbuch</em:description>
         <em:translator>Rainer Piper</em:translator>
       </Description>
+      <Description>
+        <em:locale>es</em:locale>
+        <em:name>TBDialOut</em:name>
+        <em:description>Efectuar llamadas directamente desde la lista de contactos de Thunderbird</em:description>
+        <em:translator>Eduardo de Mier</em:translator>
+      </Description>
     </em:localized>
 
 
