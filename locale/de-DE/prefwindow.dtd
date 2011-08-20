@@ -15,3 +15,17 @@
 <!ENTITY tbdocustomhint_text "Geben Sie eine benutzerdefinierte URL für die TBDialout Verbindung ein. Ersetzen Sie die Rufnummer mit &#37;NUM&#37;" >
 <!ENTITY tbdocustomurl_menu.label  "Benutzerdefinierte URL">
 <!ENTITY tbdocustomurl_boxcaption.label "Benutzerdefinierte URL Einstellungen">
+<!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
+<!ENTITY tbdoami_boxcaption.label "Asterisk AMI options">
+<!ENTITY tbdoamihost_text.label "Host">
+<!ENTITY tbdoamihost_text.accesskey "H">
+<!ENTITY tbdoamiport_text.label "Port">
+<!ENTITY tbdoamiport_text.accesskey "o">
+<!ENTITY tbdoamiuser_text.label "User name">
+<!ENTITY tbdoamiuser_text.accesskey "n">
+<!ENTITY tbdoamisecret_text.label "Secret">
+<!ENTITY tbdoamisecret_text.accesskey "t">
+<!ENTITY tbdoamichannel_text.label "Channel">
+<!ENTITY tbdoamichannel_text.accesskey "l">
+<!ENTITY tbdoamicontext_text.label "Context">
+<!ENTITY tbdoamicontext_text.accesskey "x">

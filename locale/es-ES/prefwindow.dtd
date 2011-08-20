@@ -15,3 +15,17 @@
 <!ENTITY tbdocustomhint_text "Ingresar URL de contacto para TBDialOut. Sustituir el número de tel. por &#37;NUM&#37;">
 <!ENTITY tbdocustomurl_menu.label  "URL personalizada">
 <!ENTITY tbdocustomurl_boxcaption.label "Opciones URL personalizada">
+<!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
+<!ENTITY tbdoami_boxcaption.label "Asterisk AMI options">
+<!ENTITY tbdoamihost_text.label "Host">
+<!ENTITY tbdoamihost_text.accesskey "H">
+<!ENTITY tbdoamiport_text.label "Port">
+<!ENTITY tbdoamiport_text.accesskey "o">
+<!ENTITY tbdoamiuser_text.label "User name">
+<!ENTITY tbdoamiuser_text.accesskey "n">
+<!ENTITY tbdoamisecret_text.label "Secret">
+<!ENTITY tbdoamisecret_text.accesskey "t">
+<!ENTITY tbdoamichannel_text.label "Channel">
+<!ENTITY tbdoamichannel_text.accesskey "l">
+<!ENTITY tbdoamicontext_text.label "Context">
+<!ENTITY tbdoamicontext_text.accesskey "x">
