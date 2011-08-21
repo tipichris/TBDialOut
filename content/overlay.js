@@ -261,13 +261,16 @@ var tbdialout = {
 //      try {
 //        var sis = Components.classes["@mozilla.org/scriptableinputstream;1"];
 //        this.inStream = this.socket.openInputStream(0,0,0);
+//        this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
+//           .createInstance(Components.interfaces.nsIScriptableInputStream);
+//		this.sInStream.init(this.inStream);
 //		var charset = "UTF-8";
 //		const replacementChar = Components.interfaces.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER;
 //		this.sInStream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
 //		  .createInstance(Components.interfaces.nsIConverterInputStream);
 //		this.sInStream.init(this.inStream, charset, 1024, replacementChar);
 //      }
-//      catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message) }
+//     catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message) }
       
     },
 
@@ -292,6 +295,9 @@ var tbdialout = {
       + "Events: off\r\n"
       + "\r\n";
       this.send(cmdstring);
+//      this.inStream.asyncWait(function: {});
+//      var response = this.sInStream.read(4096);
+//      tbdialout.logger(1, "Got response:\n" + response);
 //	  var str = {};
 //	  this.sInStream.readString(4096, str);
 //	  tbdialout.logger(1, "Got response:\n" + str.value);
