@@ -258,20 +258,15 @@ var tbdialout = {
         this.outStream = this.socket.openOutputStream(0,0,0);
       }
       catch (e) { tbdialout.logger(1, "Error creating output stream: " + e.message) }
-//      try {
-//        var sis = Components.classes["@mozilla.org/scriptableinputstream;1"];
-//        this.inStream = this.socket.openInputStream(0,0,0);
-//        this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
-//           .createInstance(Components.interfaces.nsIScriptableInputStream);
-//		this.sInStream.init(this.inStream);
-//		var charset = "UTF-8";
-//		const replacementChar = Components.interfaces.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER;
-//		this.sInStream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
-//		  .createInstance(Components.interfaces.nsIConverterInputStream);
-//		this.sInStream.init(this.inStream, charset, 1024, replacementChar);
-//      }
-//     catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message) }
-      
+      try {
+
+        this.inStream = this.socket.openInputStream(0,0,0);
+        this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
+           .createInstance(Components.interfaces.nsIScriptableInputStream);
+		this.sInStream.init(this.inStream);
+      }
+     catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message) }
+
     },
 
     disconnect: function() {
@@ -295,15 +290,34 @@ var tbdialout = {
       + "Events: off\r\n"
       + "\r\n";
       this.send(cmdstring);
-//      this.inStream.asyncWait(function: {});
-//      var response = this.sInStream.read(4096);
-//      tbdialout.logger(1, "Got response:\n" + response);
-//	  var str = {};
-//	  this.sInStream.readString(4096, str);
-//	  tbdialout.logger(1, "Got response:\n" + str.value);
-//	  while (this.sInStream.readString(4096, str) != 0) {
-//		tbdialout.logger(1, "Got response:\n" + str.value);
-//	  }
+      this.wait = true;
+
+      this.thread = Components.classes["@mozilla.org/thread-manager;1"]
+                        .getService(Components.interfaces.nsIThreadManager)
+                        .currentThread;
+
+      this.inStream.asyncWait(this,0,0,this.thread);
+      while (this.wait) this.thread.processNextEvent(true);
+
+    },
+
+    onInputStreamReady: function(e) {
+      tbdialout.logger(4, "onInputStreamReady called");
+      var sis = Components.classes["@mozilla.org/scriptableinputstream;1"]
+           .createInstance(Components.interfaces.nsIScriptableInputStream);
+	  sis.init(e);
+      var response = sis.read(4096);
+      tbdialout.logger(4, "Got response:\n" + response);
+      if (response.indexOf("Response:") > -1) {
+        if (response.indexOf("Response: Success") > -1) {
+          this.loggedin = true;
+        } else {
+          tbdialout.logger(1, "Login to Asterisk AMI failed");
+        }
+        this.wait = false;
+      } else {
+        e.asyncWait(this,0,0,this.thread);
+      }
     },
 
     logoff: function() {
@@ -324,10 +338,13 @@ var tbdialout = {
     },
 
     dial: function(extension, host, port, user, secret, channel, context) {
+      this.loggedin = false;
       this.connect(host, port);
       this.login(user, secret);
-      this.originate(extension, channel, context);
-      this.logoff();
+      if (this.loggedin) {
+        this.originate(extension, channel, context);
+        this.logoff();
+      }
       this.disconnect();
     }
   },
