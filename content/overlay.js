@@ -55,6 +55,11 @@ var tbdialout = {
   },
 
   // utility for logging messages to the error console
+  // levels:
+  // 1: Caught exceptions, major problems
+  // 2: Unexpected responses
+  // 3: Notices, information
+  // 4: Debug, protocol transactions
   logger: function (level, msg) {
     if( this.prefs.getIntPref("loglevel") >= level ) {
       this.console.logStringMessage("[TBDialout] " + msg);
@@ -252,21 +257,27 @@ var tbdialout = {
               .getService(Components.interfaces.nsISocketTransportService)
               .createTransport(null,0,hostname,port,null);
       }
-      catch (e) { tbdialout.logger(1, "Error creating transport service: " + e.message) }
+      catch (e) { tbdialout.logger(1, "Error creating transport service: " + e.message); return false; }
 
       try {
         this.outStream = this.socket.openOutputStream(0,0,0);
       }
-      catch (e) { tbdialout.logger(1, "Error creating output stream: " + e.message) }
+      catch (e) { tbdialout.logger(1, "Error creating output stream: " + e.message); return false; }
       try {
 
         this.inStream = this.socket.openInputStream(0,0,0);
         this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
            .createInstance(Components.interfaces.nsIScriptableInputStream);
-		this.sInStream.init(this.inStream);
+        this.sInStream.init(this.inStream);
       }
-     catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message) }
-
+     catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message); return false; }
+     // get the initial banner from Asterisk
+     var banner = this.fetch(1, "\r\n");
+     if (banner.indexOf("Asterisk Call Manager") == -1) {
+       tbdialout.logger(2, "Unexpected response from remote server"); 
+       return false;
+     }
+     return true;
     },
 
     disconnect: function() {
@@ -279,8 +290,56 @@ var tbdialout = {
     send: function(data) {
       try {
         this.outStream.write(data, data.length);
+        tbdialout.logger(4, "TBDialout > AMI:\n" + data);
       }
       catch (e) { tbdialout.logger(1, "Error writing data to socket: " + e.message) }
+
+      return this.fetch();
+
+    },
+
+    onWaitTimeout: function (obj) {
+      obj.wait = false;
+    },
+
+    fetch: function(nest, eom) {
+      var response = "";
+      var eom = eom || "\r\n\r\n";
+      var nest = nest || 1;
+      // sanity check - if we're nested more than 5 times, bail out
+      if (nest > 5) {
+        tbdialout.logger(3, "AsteriskAMI.fetch() reached nest level: " + nest);
+        tbdialout.logger(4, "AMI > TBDialout:\n" + response);
+        return response + eom;
+      }
+
+      // don't wait forever
+      var timeoutID = window.setTimeout(this.onWaitTimeout, 5000, this);
+
+      // wait for onInputStreamReady or timeout
+      this.wait = true;
+      this.inStream.asyncWait(this,0,0,this.thread);
+      while (this.wait) this.thread.processNextEvent(true);
+
+      window.clearTimeout(timeoutID);
+
+      try {
+        while (true) {
+          var chunk = this.sInStream.read(4096);
+          if (chunk.length == 0)
+            break;
+          response = response + chunk;
+        }
+      } catch (e) { tbdialout.logger(1, "Error reading data from socket: " + e.message) }
+
+      // if we didn't get a blank line, go round again
+      while (response.indexOf(eom) == -1) {
+        tbdialout.logger(4, "No blank line in response:\n" + response);
+        response = response + this.fetch(nest + 1);
+      }
+
+      if (nest == 1) {tbdialout.logger(4, "AMI > TBDialout:\n" + response);}
+      return response;
     },
 
     login: function(username, secret) {
@@ -289,30 +348,30 @@ var tbdialout = {
       + "Secret: " + secret  + "\r\n"
       + "Events: off\r\n"
       + "\r\n";
-      this.send(cmdstring);
-      this.wait = true;
-
-      this.thread = Components.classes["@mozilla.org/thread-manager;1"]
-                        .getService(Components.interfaces.nsIThreadManager)
-                        .currentThread;
-
-      this.inStream.asyncWait(this,0,0,this.thread);
-      while (this.wait) this.thread.processNextEvent(true);
-
+      var response = this.send(cmdstring);
+      if (response.indexOf("Response: Success") > -1) {
+        this.loggedin = true;
+      } else {
+        tbdialout.logger(1, "Login to Asterisk AMI failed. Got response:\n" + response);
+      }
     },
 
     onInputStreamReady: function(e) {
+       this.wait = false;
+    },
+
+    FOOonInputStreamReady: function(e) {
       tbdialout.logger(4, "onInputStreamReady called");
       var sis = Components.classes["@mozilla.org/scriptableinputstream;1"]
            .createInstance(Components.interfaces.nsIScriptableInputStream);
-	  sis.init(e);
+      sis.init(e);
       var response = sis.read(4096);
       tbdialout.logger(4, "Got response:\n" + response);
       if (response.indexOf("Response:") > -1) {
         if (response.indexOf("Response: Success") > -1) {
           this.loggedin = true;
         } else {
-          tbdialout.logger(1, "Login to Asterisk AMI failed");
+          tbdialout.logger(1, "Login to Asterisk AMI failed. Got response:\n" + response);
         }
         this.wait = false;
       } else {
@@ -332,14 +391,17 @@ var tbdialout = {
       + "Context: " + context + "\r\n"
       + "Priority: 1\r\n"
       + "Channel: " + channel + "\r\n"
-      + "Async: true\r\n"
-      + "Timeout: 5000\r\n\r\n";
+      + "Timeout: 15000\r\n\r\n";
       this.send(cmdstring);
     },
 
     dial: function(extension, host, port, user, secret, channel, context) {
+      this.thread = Components.classes["@mozilla.org/thread-manager;1"]
+                        .getService(Components.interfaces.nsIThreadManager)
+                        .currentThread;
       this.loggedin = false;
-      this.connect(host, port);
+
+      this.connect(host, port) &&
       this.login(user, secret);
       if (this.loggedin) {
         this.originate(extension, channel, context);
