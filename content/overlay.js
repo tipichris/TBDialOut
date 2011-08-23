@@ -43,8 +43,7 @@ var tbdialout = {
     this.initialized = true;
     this.strings = document.getElementById("tbdialout-strings");
     this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
-    this.amiprefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.ami.");
-    this.console = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService)
+    this.console = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
     // listen for changes of selected cards
     document.getElementById("abResultsTree").addEventListener("select", this.onSelectNewRow, true);
 
@@ -136,12 +135,12 @@ var tbdialout = {
         customurl = this.prefs.getCharPref( "customurl" );
         customuser = this.prefs.getCharPref( "customuser" );
         custompass = this.prefs.getCharPref( "custompass" );
-        amihost = this.prefs.getCharPref( "ami.host" );
-        amiport = this.prefs.getIntPref( "ami.port" );
-        amiuser = this.prefs.getCharPref( "ami.user" );
-        amisecret = this.prefs.getCharPref( "ami.secret" );
-        amichannel = this.prefs.getCharPref( "ami.channel" );
-        amicontext = this.prefs.getCharPref( "ami.context" );
+ //       amihost = this.prefs.getCharPref( "ami.host" );
+ //       amiport = this.prefs.getIntPref( "ami.port" );
+ //       amiuser = this.prefs.getCharPref( "ami.user" );
+ //       amisecret = this.prefs.getCharPref( "ami.secret" );
+ //       amichannel = this.prefs.getCharPref( "ami.channel" );
+ //       amicontext = this.prefs.getCharPref( "ami.context" );
       } catch (err) {
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.message);
@@ -193,7 +192,7 @@ var tbdialout = {
           };
           req.send(null);
         } else if (proto == 'asteriskami') {
-          tbdialout.AsteriskAMI.dial(pnumber, amihost, amiport, amiuser, amisecret, amichannel, amicontext);
+          tbdialout.AsteriskAMI.dial(pnumber);
         } else {
           LaunchUrl(proto+pnumber);
         }
@@ -328,14 +327,14 @@ var tbdialout = {
           var chunk = this.sInStream.read(4096);
           if (chunk.length == 0)
             break;
-          response = response + chunk;
+          response += chunk;
         }
       } catch (e) { tbdialout.logger(1, "Error reading data from socket: " + e.message) }
 
       // if we didn't get a blank line, go round again
       while (response.indexOf(eom) == -1) {
         tbdialout.logger(4, "No blank line in response:\n" + response);
-        response = response + this.fetch(nest + 1);
+        response += this.fetch(nest + 1);
       }
 
       if (nest == 1) {tbdialout.logger(4, "AMI > TBDialout:\n" + response);}
@@ -384,27 +383,47 @@ var tbdialout = {
       this.send(cmdstring);
     },
 
-    originate: function(extension, channel, context) {
-
+    originate: function(extension, channel, context, callerid, timeout) {
       var cmdstring = "Action: Originate\r\n"
       + "Exten: " + extension + "\r\n"
       + "Context: " + context + "\r\n"
       + "Priority: 1\r\n"
       + "Channel: " + channel + "\r\n"
-      + "Timeout: 15000\r\n\r\n";
+      + "Timeout: " + timeout + "\r\n";
+      if (callerid.length > 0) { 
+        cmdstring += "Callerid: " + callerid + "\r\n";
+      }
+      cmdstring += "\r\n";
       this.send(cmdstring);
     },
 
-    dial: function(extension, host, port, user, secret, channel, context) {
+    dial: function(extension) {
+      this.amiprefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.ami.");
+      try {
+		var host = this.amiprefs.getCharPref( "host" );
+		var port = this.amiprefs.getIntPref( "port" );
+		var user = this.amiprefs.getCharPref( "user" );
+		var secret = this.amiprefs.getCharPref( "secret" );
+		var channel = this.amiprefs.getCharPref( "channel" );
+		var context = this.amiprefs.getCharPref( "context" );
+		var callerid = this.amiprefs.getCharPref( "callerid" );
+		var timeout = this.amiprefs.getIntPref( "timeout" );
+	  } 
+	  catch (err) {
+        this.logger(1, "Error retrieving AMI preferences: " + err.message);
+        return;
+      }
+
       this.thread = Components.classes["@mozilla.org/thread-manager;1"]
                         .getService(Components.interfaces.nsIThreadManager)
                         .currentThread;
+
       this.loggedin = false;
 
       this.connect(host, port) &&
       this.login(user, secret);
       if (this.loggedin) {
-        this.originate(extension, channel, context);
+        this.originate(extension, channel, context, callerid, timeout);
         this.logoff();
       }
       this.disconnect();

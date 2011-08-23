@@ -12,3 +12,5 @@ pref( "extensions.tbdialout.ami.host", "" );
 pref( "extensions.tbdialout.ami.port", 5038 );
 pref( "extensions.tbdialout.ami.user", "" );
 pref( "extensions.tbdialout.ami.secret", "" );
+pref( "extensions.tbdialout.ami.callerid", "" );
+pref( "extensions.tbdialout.ami.timeout", 15000 );
