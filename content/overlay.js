@@ -400,16 +400,16 @@ var tbdialout = {
     dial: function(extension) {
       this.amiprefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.ami.");
       try {
-		var host = this.amiprefs.getCharPref( "host" );
-		var port = this.amiprefs.getIntPref( "port" );
-		var user = this.amiprefs.getCharPref( "user" );
-		var secret = this.amiprefs.getCharPref( "secret" );
-		var channel = this.amiprefs.getCharPref( "channel" );
-		var context = this.amiprefs.getCharPref( "context" );
-		var callerid = this.amiprefs.getCharPref( "callerid" );
-		var timeout = this.amiprefs.getIntPref( "timeout" );
-	  } 
-	  catch (err) {
+        var host = this.amiprefs.getCharPref( "host" );
+        var port = this.amiprefs.getIntPref( "port" );
+        var user = this.amiprefs.getCharPref( "user" );
+        var secret = this.amiprefs.getCharPref( "secret" );
+        var channel = this.amiprefs.getCharPref( "channel" );
+        var context = this.amiprefs.getCharPref( "context" );
+        var callerid = this.amiprefs.getCharPref( "callerid" );
+        var timeout = this.amiprefs.getIntPref( "timeout" );
+      } 
+      catch (err) {
         this.logger(1, "Error retrieving AMI preferences: " + err.message);
         return;
       }
