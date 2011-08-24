@@ -26,7 +26,7 @@
 
     <em:name>TBDialOut</em:name>
     <em:description>Place phone calls directly from Thunderbird's address book</em:description>
-    <em:version>1.6.1pre1</em:version>
+    <em:version>1.6.1pre2</em:version>
     <em:creator>Chris Hastie</em:creator>
     <em:developer>MSelector</em:developer>
     <em:translator>Rainer Piper</em:translator>

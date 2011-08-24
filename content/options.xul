@@ -71,7 +71,6 @@
             </menupopup>
           </menulist>
         </row>
-        
 
         <row align="center">
           <label control="plus_text" value="&tbdoplus_text.label;:" accesskey="&tbdoplus_text.accesskey;"/>
@@ -86,32 +85,32 @@
       </rows>
     </grid>
 
-	<groupbox id="tbdialout-options-customoptions">
-	  <caption label="&tbdocustomurl_boxcaption.label;" />
-	  <label class="tbdocustomoptions" value="&tbdocustomhint_text;" />
-	  <grid flex="1">
-		<columns>
-		  <column flex="1"/>
-		  <column flex="4"/>
-		</columns>
-		
-		<rows>
-		  <row align="center">
-			<label class="tbdocustomoptions" control="plus_text" value="&tbdocustomurl_text.label;:" accesskey="&tbdocustomurl_text.accesskey;"/>
-			<textbox class="tbdocustomoptions" id="customurl_text" preference="customurl_pref" size="35" />
-		  </row>
-		  <row align="center">
-			<label class="tbdocustomoptions" control="plus_text" value="&tbdocustomuser_text.label;:" accesskey="&tbdocustomuser_text.accesskey;"/>
-			<textbox class="tbdocustomoptions" id="customuser_text" preference="customuser_pref" size="15" />
-		  </row>
-		  <row align="center">
-			<label class="tbdocustomoptions" control="plus_text" value="&tbdocustompass_text.label;:" accesskey="&tbdocustompass_text.accesskey;"/>
-			<textbox class="tbdocustomoptions" id="custompass_text" preference="custompass_pref" size="15" type="password" />
-		  </row>
-		</rows>
-	  </grid>
-	</groupbox>
-	
+    <groupbox id="tbdialout-options-customoptions">
+      <caption label="&tbdocustomurl_boxcaption.label;" />
+      <label class="tbdocustomoptions" value="&tbdocustomhint_text;" />
+      <grid flex="1">
+        <columns>
+          <column flex="1"/>
+          <column flex="4"/>
+        </columns>
+
+        <rows>
+          <row align="center">
+            <label class="tbdocustomoptions" control="customurl_text" value="&tbdocustomurl_text.label;:" accesskey="&tbdocustomurl_text.accesskey;"/>
+            <textbox class="tbdocustomoptions" id="customurl_text" preference="customurl_pref" size="35" />
+          </row>
+          <row align="center">
+            <label class="tbdocustomoptions" control="customuser_text" value="&tbdocustomuser_text.label;:" accesskey="&tbdocustomuser_text.accesskey;"/>
+            <textbox class="tbdocustomoptions" id="customuser_text" preference="customuser_pref" size="15" />
+          </row>
+          <row align="center">
+            <label class="tbdocustomoptions" control="custompass_text" value="&tbdocustompass_text.label;:" accesskey="&tbdocustompass_text.accesskey;"/>
+            <textbox class="tbdocustomoptions" id="custompass_text" preference="custompass_pref" size="15" type="password" />
+          </row>
+        </rows>
+      </grid>
+    </groupbox>
+
   </prefpane>
   <script src="options.js"/>
 </prefwindow>
