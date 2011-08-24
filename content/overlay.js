@@ -59,6 +59,7 @@ var tbdialout = {
   // 2: Unexpected responses
   // 3: Notices, information
   // 4: Debug, protocol transactions
+  // 5: Even more debug
   logger: function (level, msg) {
     if( this.prefs.getIntPref("loglevel") >= level ) {
       this.console.logStringMessage("[TBDialout] " + msg);
@@ -286,6 +287,7 @@ var tbdialout = {
       this.socket.close(null);
     },
 
+    // implements a crude synchroneous socket, waiting for the response
     send: function(data) {
       try {
         this.outStream.write(data, data.length);
@@ -293,26 +295,32 @@ var tbdialout = {
       }
       catch (e) { tbdialout.logger(1, "Error writing data to socket: " + e.message) }
 
+      // get the response and return it
       return this.fetch();
 
     },
 
-    onWaitTimeout: function (obj) {
-      obj.wait = false;
-    },
-
+    // get response from socket in a pseudo synchroneous way so that we're sure
+    // it was OK before we move on to the next command
     fetch: function(nest, eom) {
       var response = "";
+
+      // eom is the string representing the end of the response
       var eom = eom || "\r\n\r\n";
+
+      // nest indicates how deeply the function is nested - start at 1, increase
+      // at each nesting
       var nest = nest || 1;
+
       // sanity check - if we're nested more than 5 times, bail out
+      // by faking it and adding eom
       if (nest > 5) {
         tbdialout.logger(3, "AsteriskAMI.fetch() reached nest level: " + nest);
         tbdialout.logger(4, "AMI > TBDialout:\n" + response);
         return response + eom;
       }
 
-      // don't wait forever
+      // don't wait forever. Break the loop after 5s
       var timeoutID = window.setTimeout(this.onWaitTimeout, 5000, this);
 
       // wait for onInputStreamReady or timeout
@@ -331,10 +339,10 @@ var tbdialout = {
         }
       } catch (e) { tbdialout.logger(1, "Error reading data from socket: " + e.message) }
 
-      // if we didn't get a blank line, go round again
+      // if we didn't get our eom, go round again
       while (response.indexOf(eom) == -1) {
-        tbdialout.logger(4, "No blank line in response:\n" + response);
-        response += this.fetch(nest + 1);
+        tbdialout.logger(5, "No blank line in response:\n" + response);
+        response += this.fetch(nest + 1, eom);
       }
 
       if (nest == 1) {tbdialout.logger(4, "AMI > TBDialout:\n" + response);}
@@ -355,27 +363,16 @@ var tbdialout = {
       }
     },
 
+    // Let's our waiting thread know to stop waiting
     onInputStreamReady: function(e) {
        this.wait = false;
     },
 
-    FOOonInputStreamReady: function(e) {
-      tbdialout.logger(4, "onInputStreamReady called");
-      var sis = Components.classes["@mozilla.org/scriptableinputstream;1"]
-           .createInstance(Components.interfaces.nsIScriptableInputStream);
-      sis.init(e);
-      var response = sis.read(4096);
-      tbdialout.logger(4, "Got response:\n" + response);
-      if (response.indexOf("Response:") > -1) {
-        if (response.indexOf("Response: Success") > -1) {
-          this.loggedin = true;
-        } else {
-          tbdialout.logger(1, "Login to Asterisk AMI failed. Got response:\n" + response);
-        }
-        this.wait = false;
-      } else {
-        e.asyncWait(this,0,0,this.thread);
-      }
+    // obj should be this. Used because setTimeout executes in a different context
+    // so this references the wrong object. 
+    // Let's our waiting thread know to stop waiting
+    onWaitTimeout: function (obj) {
+      obj.wait = false;
     },
 
     logoff: function() {
@@ -394,7 +391,12 @@ var tbdialout = {
         cmdstring += "Callerid: " + callerid + "\r\n";
       }
       cmdstring += "\r\n";
-      this.send(cmdstring);
+      var response = this.send(cmdstring);
+      if (response.indexOf("Response: Success") > -1) {
+        tbdialout.logger(3, "Call to " + extension + " set up on channel " + channel);
+      } else {
+        tbdialout.logger(2, "Failed to originate call to " + extension + ":\n" + response);
+      }
     },
 
     dial: function(extension) {
@@ -414,6 +416,7 @@ var tbdialout = {
         return;
       }
 
+      // we need the thread object to do some waiting in this.fetch()
       this.thread = Components.classes["@mozilla.org/thread-manager;1"]
                         .getService(Components.interfaces.nsIThreadManager)
                         .currentThread;
