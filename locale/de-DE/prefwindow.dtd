@@ -25,7 +25,7 @@
 <!ENTITY tbdoamiuser_text.accesskey "n">
 <!ENTITY tbdoamisecret_text.label "Secret">
 <!ENTITY tbdoamisecret_text.accesskey "t">
-<!ENTITY tbdoamichannel_text.label "Channel">
+<!ENTITY tbdoamichannel_text.label "Originating channel">
 <!ENTITY tbdoamichannel_text.accesskey "l">
 <!ENTITY tbdoamicontext_text.label "Context">
 <!ENTITY tbdoamicontext_text.accesskey "x">

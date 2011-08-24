@@ -301,7 +301,7 @@ var tbdialout = {
     },
 
     // get response from socket in a pseudo synchroneous way so that we're sure
-    // it was OK before we move on to the next command
+    // a command was OK before we move on to the next command
     fetch: function(nest, eom) {
       var response = "";
 
@@ -320,8 +320,10 @@ var tbdialout = {
         return response + eom;
       }
 
-      // don't wait forever. Break the loop after 5s
-      var timeoutID = window.setTimeout(this.onWaitTimeout, 5000, this);
+      // don't wait forever- break the loop after a while. We use this.timeout
+      // because if the originating channel isn't answered there will be no response
+      // to the originate command until this.timeout
+      var timeoutID = window.setTimeout(this.onWaitTimeout, this.timeout, this);
 
       // wait for onInputStreamReady or timeout
       this.wait = true;
@@ -365,13 +367,15 @@ var tbdialout = {
 
     // Let's our waiting thread know to stop waiting
     onInputStreamReady: function(e) {
+       tbdialout.logger(5, "AsteriskAMI.onInputStreamReady called");
        this.wait = false;
     },
 
     // obj should be this. Used because setTimeout executes in a different context
     // so this references the wrong object. 
-    // Let's our waiting thread know to stop waiting
+    // Lets our waiting thread know to stop waiting
     onWaitTimeout: function (obj) {
+      tbdialout.logger(5, "Timed out waiting for asyncWait to signal (timeout set to " + obj.timeout + ")");
       obj.wait = false;
     },
 
@@ -380,13 +384,13 @@ var tbdialout = {
       this.send(cmdstring);
     },
 
-    originate: function(extension, channel, context, callerid, timeout) {
+    originate: function(extension, channel, context, callerid) {
       var cmdstring = "Action: Originate\r\n"
       + "Exten: " + extension + "\r\n"
       + "Context: " + context + "\r\n"
       + "Priority: 1\r\n"
       + "Channel: " + channel + "\r\n"
-      + "Timeout: " + timeout + "\r\n";
+      + "Timeout: " + this.timeout + "\r\n";
       if (callerid.length > 0) { 
         cmdstring += "Callerid: " + callerid + "\r\n";
       }
@@ -409,7 +413,7 @@ var tbdialout = {
         var channel = this.amiprefs.getCharPref( "channel" );
         var context = this.amiprefs.getCharPref( "context" );
         var callerid = this.amiprefs.getCharPref( "callerid" );
-        var timeout = this.amiprefs.getIntPref( "timeout" );
+        this.timeout = this.amiprefs.getIntPref( "timeout" );
       } 
       catch (err) {
         this.logger(1, "Error retrieving AMI preferences: " + err.message);
@@ -426,7 +430,7 @@ var tbdialout = {
       this.connect(host, port) &&
       this.login(user, secret);
       if (this.loggedin) {
-        this.originate(extension, channel, context, callerid, timeout);
+        this.originate(extension, channel, context, callerid);
         this.logoff();
       }
       this.disconnect();
