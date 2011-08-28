@@ -4,6 +4,7 @@ locale	tbdialout	en-GB	locale/en-GB/
 locale	tbdialout	de-DE	locale/de-DE/
 locale	tbdialout	es-ES	locale/es-ES/
 locale	tbdialout	zh-CN	locale/zh-CN/
+locale	tbdialout	nl	locale/nl/
 skin	tbdialout	classic/1.0	skin/
 overlay	chrome://messenger/content/addressbook/addressbook.xul	chrome://tbdialout/content/thunderbirdOverlay.xul
 style	chrome://global/content/customizeToolbar.xul	chrome://tbdialout/skin/overlay.css

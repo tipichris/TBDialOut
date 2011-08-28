@@ -1,3 +1,4 @@
+<!-- do not translate extension name: TBDialOut -->
 <!ENTITY tbdoprefwindow.title "TBDialOut preferences">
 <!ENTITY tbdopane1.title "TBDialOut preferences">
 <!ENTITY tbdoproto_menu.label "URL Scheme to use">
@@ -12,9 +13,11 @@
 <!ENTITY tbdocustomuser_text.accesskey "s">
 <!ENTITY tbdocustompass_text.label "Password">
 <!ENTITY tbdocustompass_text.accesskey "w">
+<!-- do not translate &#37;NUM&#37; -->
 <!ENTITY tbdocustomhint_text "Enter a custom URL for TBDialOut to contact. Replace the phone number with &#37;NUM&#37;" >
 <!ENTITY tbdocustomurl_menu.label  "Custom URL">
 <!ENTITY tbdocustomurl_boxcaption.label "Custom URL options">
+<!-- options relating to the Asterisk Manager Interface -->
 <!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
 <!ENTITY tbdoami_boxcaption.label "Asterisk AMI options">
 <!ENTITY tbdoamihost_text.label "Host">
