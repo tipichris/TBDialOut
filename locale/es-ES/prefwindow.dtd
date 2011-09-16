@@ -1,3 +1,4 @@
+<!-- do not translate extension name: TBDialOut -->
 <!ENTITY tbdoprefwindow.title "TBDialOut Configuración">
 <!ENTITY tbdopane1.title "TBDialOut Configuración">
 <!ENTITY tbdoproto_menu.label "Esquema URL">
@@ -12,20 +13,22 @@
 <!ENTITY tbdocustomuser_text.accesskey "s">
 <!ENTITY tbdocustompass_text.label "Clave">
 <!ENTITY tbdocustompass_text.accesskey "w">
+<!-- do not translate &#37;NUM&#37; -->
 <!ENTITY tbdocustomhint_text "Ingresar URL de contacto para TBDialOut. Sustituir el número de tel. por &#37;NUM&#37;">
-<!ENTITY tbdocustomurl_menu.label  "URL personalizada">
+<!ENTITY tbdocustomurl_menu.label "URL personalizada">
 <!ENTITY tbdocustomurl_boxcaption.label "Opciones URL personalizada">
-<!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
-<!ENTITY tbdoami_boxcaption.label "Asterisk AMI options">
+<!-- options relating to the Asterisk Manager Interface -->
+<!ENTITY tbdoasteriskami_menu.label "AMI de Asterisk">
+<!ENTITY tbdoami_boxcaption.label "Configuración AMI de Asterisk">
 <!ENTITY tbdoamihost_text.label "Host">
 <!ENTITY tbdoamihost_text.accesskey "H">
-<!ENTITY tbdoamiport_text.label "Port">
+<!ENTITY tbdoamiport_text.label "Puerto">
 <!ENTITY tbdoamiport_text.accesskey "o">
-<!ENTITY tbdoamiuser_text.label "User name">
+<!ENTITY tbdoamiuser_text.label "Nombre del usuario">
 <!ENTITY tbdoamiuser_text.accesskey "n">
-<!ENTITY tbdoamisecret_text.label "Secret">
+<!ENTITY tbdoamisecret_text.label "Secreto">
 <!ENTITY tbdoamisecret_text.accesskey "t">
-<!ENTITY tbdoamichannel_text.label "Originating channel">
+<!ENTITY tbdoamichannel_text.label "Canal de origen">
 <!ENTITY tbdoamichannel_text.accesskey "l">
-<!ENTITY tbdoamicontext_text.label "Context">
+<!ENTITY tbdoamicontext_text.label "Contexto">
 <!ENTITY tbdoamicontext_text.accesskey "x">

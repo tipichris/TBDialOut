@@ -1,3 +1,4 @@
+<!-- do not translate extension name: TBDialOut -->
 <!ENTITY tbdoprefwindow.title "TBDialOut 首选项">
 <!ENTITY tbdopane1.title "TBDialOut 首选项">
 <!ENTITY tbdoproto_menu.label "要使用的 URL 模式">
@@ -12,9 +13,11 @@
 <!ENTITY tbdocustomuser_text.accesskey "S">
 <!ENTITY tbdocustompass_text.label "密码">
 <!ENTITY tbdocustompass_text.accesskey "W">
+<!-- do not translate &#37;NUM&#37; -->
 <!ENTITY tbdocustomhint_text "为 TBDialOut 输入自定义 URL 来联系。用 &#37;NUM&#37; 替换电话号码">
 <!ENTITY tbdocustomurl_menu.label "自定义 URL">
 <!ENTITY tbdocustomurl_boxcaption.label "自定义 URL 选项">
+<!-- options relating to the Asterisk Manager Interface -->
 <!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
 <!ENTITY tbdoami_boxcaption.label "Asterisk AMI 选项">
 <!ENTITY tbdoamihost_text.label "主机">

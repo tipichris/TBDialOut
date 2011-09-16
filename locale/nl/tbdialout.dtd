@@ -1,14 +1,14 @@
-<!ENTITY tbdialoutHome.label "Call home phone">
-<!ENTITY tbdialoutToolbarHome.label "Dial home">
-<!ENTITY tbdialoutToolbarHome.tooltip "Dial this contact's home number">
-<!ENTITY tbdialoutWork.label "Call work phone">
-<!ENTITY tbdialoutToolbarWork.label "Dial work">
-<!ENTITY tbdialoutToolbarWork.tooltip "Dial this contact's work phone">
-<!ENTITY tbdialoutCell.label "Call cell phone">
-<!ENTITY tbdialoutToolbarCell.label "Dial cell">
-<!ENTITY tbdialoutToolbarCell.tooltip "Dial this contact's cell phone">
-<!ENTITY tbdialoutToolbarMenu.label "Dial">
-<!ENTITY tbdialoutToolbarMenu.tooltip "Place a call to this contact">
-<!ENTITY tbdialoutButtonMenuHome.label "Home">
-<!ENTITY tbdialoutButtonMenuWork.label "Work">
-<!ENTITY tbdialoutButtonMenuCell.label "Cell">
+<!ENTITY tbdialoutHome.label "Thuisnummer bellen">
+<!ENTITY tbdialoutToolbarHome.label "Thuisnummer bellen">
+<!ENTITY tbdialoutToolbarHome.tooltip "Thuisnummer van deze contactpersoon bellen">
+<!ENTITY tbdialoutWork.label "Werknummer bellen">
+<!ENTITY tbdialoutToolbarWork.label "Werk bellen">
+<!ENTITY tbdialoutToolbarWork.tooltip "Werknummer van deze contactpersoon bellen">
+<!ENTITY tbdialoutCell.label "Mobiel nummer bellen">
+<!ENTITY tbdialoutToolbarCell.label "Mobiel bellen">
+<!ENTITY tbdialoutToolbarCell.tooltip "Mobiel nummer van deze contactpersoon bellen">
+<!ENTITY tbdialoutToolbarMenu.label "Bellen">
+<!ENTITY tbdialoutToolbarMenu.tooltip "Deze contactpersoon bellen">
+<!ENTITY tbdialoutButtonMenuHome.label "Thuis">
+<!ENTITY tbdialoutButtonMenuWork.label "Werk">
+<!ENTITY tbdialoutButtonMenuCell.label "Mobiel">
