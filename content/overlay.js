@@ -320,13 +320,12 @@ var tbdialout = {
       var statements=response.split("\r\n\r\n");
       for (x in statements) {
         if (aidre.test(statements[x])) {
-          tbdialout.logger(5, "Relevent response:\n" + statements[x]);
+          tbdialout.logger(3, "Relevent response:\n" + statements[x]);
           return statements[x];
         }
       }
       tbdialout.logger(1, "Error. Failed to find response block with ActionID " + aid);
       return "Error. Failed to find response block with ActionID " + aid;
-//      return response;
     },
 
     // get response from socket in a pseudo synchroneous way so that we're sure
