@@ -288,12 +288,14 @@ var tbdialout = {
     },
 
     // implements a crude synchroneous socket, waiting for the response
+    // ignoreaid: if true don't set an ActionID and don't check for it in
+    // response. astmanproxy doesn't always send it, eg following logoff
     send: function(data, ignoreaid) {
       var useaid = ignoreaid || false;
       if (!ignoreaid) {
-		// add an ActionID header to the beginning of the data
-		var aid="tbd-" + new Date().getTime() + "-" + Math.floor(Math.random()*10001);
-		data = "ActionID: " + aid + "\r\n" + data;
+        // add an ActionID header to the beginning of the data
+        var aid="tbd-" + new Date().getTime() + "-" + Math.floor(Math.random()*10001);
+        data = "ActionID: " + aid + "\r\n" + data;
       }
       try {
         this.outStream.write(data, data.length);
