@@ -288,16 +288,43 @@ var tbdialout = {
     },
 
     // implements a crude synchroneous socket, waiting for the response
-    send: function(data) {
+    send: function(data, ignoreaid) {
+      var useaid = ignoreaid || false;
+      if (!ignoreaid) {
+		// add an ActionID header to the beginning of the data
+		var aid="tbd-" + new Date().getTime() + "-" + Math.floor(Math.random()*10001);
+		data = "ActionID: " + aid + "\r\n" + data;
+      }
       try {
         this.outStream.write(data, data.length);
         tbdialout.logger(4, "TBDialout > AMI:\n" + data);
       }
       catch (e) { tbdialout.logger(1, "Error writing data to socket: " + e.message) }
 
-      // get the response and return it
-      return this.fetch();
+      // Fetch responses until we find one with a matching ActionID, 
+      // then return it.
 
+      if (ignoreaid) { 
+        return this.fetch();
+      }
+      var aidre = new RegExp("^actionid:\\s*" + aid + "$", "im");
+      var response = "";
+      do {
+        tbdialout.logger(4, "Waiting for response with ActionID: " + aid);
+        response = this.fetch();
+      }
+      while (!aidre.test(response));
+
+      var statements=response.split("\r\n\r\n");
+      for (x in statements) {
+        if (aidre.test(statements[x])) {
+          tbdialout.logger(5, "Relevent response:\n" + statements[x]);
+          return statements[x];
+        }
+      }
+      tbdialout.logger(1, "Error. Failed to find response block with ActionID " + aid);
+      return "Error. Failed to find response block with ActionID " + aid;
+//      return response;
     },
 
     // get response from socket in a pseudo synchroneous way so that we're sure
@@ -337,7 +364,7 @@ var tbdialout = {
           var chunk = this.sInStream.read(4096);
           if (chunk.length == 0)
             break;
-          response += chunk;
+            response += chunk;
         }
       } catch (e) { tbdialout.logger(1, "Error reading data from socket: " + e.message) }
 
@@ -348,6 +375,7 @@ var tbdialout = {
       }
 
       if (nest == 1) {tbdialout.logger(4, "AMI > TBDialout:\n" + response);}
+
       return response;
     },
 
@@ -358,7 +386,8 @@ var tbdialout = {
       + "Events: off\r\n"
       + "\r\n";
       var response = this.send(cmdstring);
-      if (response.indexOf("Response: Success") > -1) {
+      var okre = /response:\s*success/im;
+      if (okre.test(response)) {
         this.loggedin = true;
       } else {
         tbdialout.logger(1, "Login to Asterisk AMI failed. Got response:\n" + response);
@@ -381,7 +410,8 @@ var tbdialout = {
 
     logoff: function() {
       var cmdstring = "Action: Logoff\r\n\r\n";
-      this.send(cmdstring);
+      // don't wait for ActionID when logging off - astmanproxy doesn't return one :(
+      this.send(cmdstring, true);
     },
 
     originate: function(extension, channel, context, callerid) {
@@ -396,7 +426,8 @@ var tbdialout = {
       }
       cmdstring += "\r\n";
       var response = this.send(cmdstring);
-      if (response.indexOf("Response: Success") > -1) {
+      var okre = /response:\s*success/im;
+      if (okre.test(response)) {
         tbdialout.logger(3, "Call to " + extension + " set up on channel " + channel);
       } else {
         tbdialout.logger(2, "Failed to originate call to " + extension + ":\n" + response);
