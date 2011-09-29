@@ -49,6 +49,12 @@
       <preference id="customurl_pref" name="extensions.tbdialout.customurl" type="string"/>
       <preference id="customuser_pref" name="extensions.tbdialout.customuser" type="string"/>
       <preference id="custompass_pref" name="extensions.tbdialout.custompass" type="string"/>
+      <preference id="amichannel_pref" name="extensions.tbdialout.ami.channel" type="string"/>
+      <preference id="amicontext_pref" name="extensions.tbdialout.ami.context" type="string"/>
+      <preference id="amihost_pref" name="extensions.tbdialout.ami.host" type="string"/>
+      <preference id="amiport_pref" name="extensions.tbdialout.ami.port" type="int"/>
+      <preference id="amiuser_pref" name="extensions.tbdialout.ami.user" type="string"/>
+      <preference id="amisecret_pref" name="extensions.tbdialout.ami.secret" type="string"/>
     </preferences>
 
     <grid flex="1">
@@ -68,6 +74,7 @@
                 <menuitem label="sip:" value="sip:"/>
                 <menuitem label="skype:" value="skype:"/>
                 <menuitem label="&tbdocustomurl_menu.label;" value="custom" />
+                <menuitem label="&tbdoasteriskami_menu.label;" value="asteriskami" />
             </menupopup>
           </menulist>
         </row>
@@ -107,6 +114,45 @@
             <label class="tbdocustomoptions" control="custompass_text" value="&tbdocustompass_text.label;:" accesskey="&tbdocustompass_text.accesskey;"/>
             <textbox class="tbdocustomoptions" id="custompass_text" preference="custompass_pref" size="15" type="password" />
           </row>
+        </rows>
+      </grid>
+    </groupbox>
+
+    <groupbox id="tbdialout-options-amioptions">
+      <caption label="&tbdoami_boxcaption.label;" />
+
+      <grid flex="1">
+        <columns>
+          <column flex="1"/>
+          <column flex="4"/>
+        </columns>
+
+        <rows>
+          <row align="center">
+            <label class="tbdoamioptions" control="amihost_text" value="&tbdoamihost_text.label;:" accesskey="&tbdoamihost_text.accesskey;"/>
+            <textbox class="tbdoamioptions" id="amihost_text" preference="amihost_pref" size="25" />
+          </row>
+          <row align="center">
+            <label class="tbdoamioptions" control="amiport_text" value="&tbdoamiport_text.label;:" accesskey="&tbdoamiport_text.accesskey;"/>
+            <textbox class="tbdoamioptions" id="amiport_text" preference="amiport_pref" size="5" />
+          </row>
+          <row align="center">
+            <label class="tbdoamioptions" control="amiuser_text" value="&tbdoamiuser_text.label;:" accesskey="&tbdoamiuser_text.accesskey;"/>
+            <textbox class="tbdoamioptions" id="amiuser_text" preference="amiuser_pref" size="15" />
+          </row>
+          <row align="center">
+            <label class="tbdoamioptions" control="amisecret_text" value="&tbdoamisecret_text.label;:" accesskey="&tbdoamisecret_text.accesskey;"/>
+            <textbox class="tbdoamioptions" id="amisecret_text" preference="amisecret_pref" size="15" type="password" />
+          </row>
+          <row align="center">
+            <label class="tbdoamioptions" control="amichannel_text" value="&tbdoamichannel_text.label;:" accesskey="&tbdoamichannel_text.accesskey;"/>
+            <textbox class="tbdoamioptions" id="amichannel_text" preference="amichannel_pref" size="15" />
+          </row>
+          <row align="center">
+            <label class="tbdoamioptions" control="amicontext_text" value="&tbdoamicontext_text.label;:" accesskey="&tbdoamicontext_text.accesskey;"/>
+            <textbox class="tbdoamioptions" id="amicontext_text" preference="amicontext_pref" size="15" />
+          </row>
+
         </rows>
       </grid>
     </groupbox>

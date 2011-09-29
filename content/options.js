@@ -45,6 +45,21 @@ function setCustomOptViz() {
       elements[idx].disabled = false;
     } else {
       elements[idx].disabled = true;
+  var custom_elements = document.getElementsByClassName("tbdocustomoptions");
+  var ami_elements = document.getElementsByClassName("tbdoamioptions");
+  var idx;
+  for (idx in custom_elements) {
+    if (document.getElementById("proto_menu").value == 'custom') {
+      custom_elements[idx].disabled = false;
+    } else {
+      custom_elements[idx].disabled = true;
+    }
+  }
+  for (idx in ami_elements) {
+    if (document.getElementById("proto_menu").value == 'asteriskami') {
+      ami_elements[idx].disabled = false;
+    } else {
+      ami_elements[idx].disabled = true;
     }
   }
 //  if (document.getElementById("proto_menu").value == 'custom') {

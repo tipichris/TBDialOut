@@ -1,0 +1,34 @@
+<!-- do not translate extension name: TBDialOut -->
+<!ENTITY tbdoprefwindow.title "TBDialOut-voorkeuren">
+<!ENTITY tbdopane1.title "TBDialOut-voorkeuren">
+<!ENTITY tbdoproto_menu.label "Te gebruiken URL-schema">
+<!ENTITY tbdoproto_menu.accesskey "U">
+<!ENTITY tbdoprefix_text.label "Gebelde nummers vooraf laten gaan door">
+<!ENTITY tbdoprefix_text.accesskey "V">
+<!ENTITY tbdoplus_text.label "Voorafgaande + vervangen door">
+<!ENTITY tbdoplus_text.accesskey "d">
+<!ENTITY tbdocustomurl_text.label "Aangepaste URL">
+<!ENTITY tbdocustomurl_text.accesskey "A">
+<!ENTITY tbdocustomuser_text.label "Gebruikersnaam">
+<!ENTITY tbdocustomuser_text.accesskey "G">
+<!ENTITY tbdocustompass_text.label "Wachtwoord">
+<!ENTITY tbdocustompass_text.accesskey "W">
+<!-- do not translate &#37;NUM&#37; -->
+<!ENTITY tbdocustomhint_text "Voer een aangepaste URL in waarmee TBDialOut contact kan opnemen. Vervang het telefoonnummer door &#37;NUM&#37;">
+<!ENTITY tbdocustomurl_menu.label "Aangepaste URL">
+<!ENTITY tbdocustomurl_boxcaption.label "Opties aangepaste URL">
+<!-- options relating to the Asterisk Manager Interface -->
+<!ENTITY tbdoasteriskami_menu.label "Asterisk-AMI">
+<!ENTITY tbdoami_boxcaption.label "Opties Asterisk-AMI">
+<!ENTITY tbdoamihost_text.label "Host">
+<!ENTITY tbdoamihost_text.accesskey "H">
+<!ENTITY tbdoamiport_text.label "Poort">
+<!ENTITY tbdoamiport_text.accesskey "o">
+<!ENTITY tbdoamiuser_text.label "Gebruikersnaam">
+<!ENTITY tbdoamiuser_text.accesskey "n">
+<!ENTITY tbdoamisecret_text.label "Geheim">
+<!ENTITY tbdoamisecret_text.accesskey "i">
+<!ENTITY tbdoamichannel_text.label "Bronkanaal">
+<!ENTITY tbdoamichannel_text.accesskey "k">
+<!ENTITY tbdoamicontext_text.label "Context">
+<!ENTITY tbdoamicontext_text.accesskey "x">

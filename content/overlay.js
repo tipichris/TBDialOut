@@ -43,12 +43,26 @@ var tbdialout = {
     this.initialized = true;
     this.strings = document.getElementById("tbdialout-strings");
     this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
+    this.console = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
     // listen for changes of selected cards
     document.getElementById("abResultsTree").addEventListener("select", this.onSelectNewRow, true);
 
     var tbbuttonadded = this.prefs.getBoolPref("tbbuttonadded");
     if (!tbbuttonadded) {
       window.setTimeout(this.AddToolbarButton, 200);
+    }
+  },
+
+  // utility for logging messages to the error console
+  // levels:
+  // 1: Caught exceptions, major problems
+  // 2: Unexpected responses
+  // 3: Notices, information
+  // 4: Debug, protocol transactions
+  // 5: Even more debug
+  logger: function (level, msg) {
+    if( this.prefs.getIntPref("loglevel") >= level ) {
+      this.console.logStringMessage("[TBDialout] " + msg);
     }
   },
 
@@ -110,6 +124,7 @@ var tbdialout = {
 
     var cards = GetSelectedAbCards();
     var proto, prefix, plus, customurl, customuser, custompass;
+    var amihost, amiport, amiuser, amisecret, amichannel, amicontext;
 
     // dial for the selected card, if exactly one card is selected.
     if (cards.length == 1)
@@ -124,6 +139,16 @@ var tbdialout = {
       } catch (err) {
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.description);
+ //       amihost = this.prefs.getCharPref( "ami.host" );
+ //       amiport = this.prefs.getIntPref( "ami.port" );
+ //       amiuser = this.prefs.getCharPref( "ami.user" );
+ //       amisecret = this.prefs.getCharPref( "ami.secret" );
+ //       amichannel = this.prefs.getCharPref( "ami.channel" );
+ //       amicontext = this.prefs.getCharPref( "ami.context" );
+      } catch (err) {
+        promptService.alert(window, this.strings.getString("warningDefaultTitle"),
+                               this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.message);
+        this.logger(1, "Error retrieving preferences: " + err.message);
         return;
       }
 
@@ -170,6 +195,8 @@ var tbdialout = {
             }
           };
           req.send(null);
+        } else if (proto == 'asteriskami') {
+          tbdialout.AsteriskAMI.dial(pnumber);
         } else {
           LaunchUrl(proto+pnumber);
         }
@@ -222,6 +249,227 @@ var tbdialout = {
     prefs.setBoolPref("tbbuttonadded", true);
     }
     catch (e) {}
+  },
+
+  AsteriskAMI: {
+    connect: function(hostname, port) {
+      try {
+        // at first, we need a nsISocketTransportService ....
+        this.socket =
+            Components.classes["@mozilla.org/network/socket-transport-service;1"]
+              .getService(Components.interfaces.nsISocketTransportService)
+              .createTransport(null,0,hostname,port,null);
+      }
+      catch (e) { tbdialout.logger(1, "Error creating transport service: " + e.message); return false; }
+
+      try {
+        this.outStream = this.socket.openOutputStream(0,0,0);
+      }
+      catch (e) { tbdialout.logger(1, "Error creating output stream: " + e.message); return false; }
+      try {
+
+        this.inStream = this.socket.openInputStream(0,0,0);
+        this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
+           .createInstance(Components.interfaces.nsIScriptableInputStream);
+        this.sInStream.init(this.inStream);
+      }
+     catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message); return false; }
+     // get the initial banner from Asterisk
+     var banner = this.fetch(1, "\r\n");
+     if (banner.indexOf("Asterisk Call Manager") == -1) {
+       tbdialout.logger(2, "Unexpected response from remote server"); 
+       return false;
+     }
+     return true;
+    },
+
+    disconnect: function() {
+      this.sInStream.close();
+      this.inStream.close();
+      this.outStream.close();
+      this.socket.close(null);
+    },
+
+    // implements a crude synchroneous socket, waiting for the response
+    // ignoreaid: if true don't set an ActionID and don't check for it in
+    // response. astmanproxy doesn't always send it, eg following logoff
+    send: function(data, ignoreaid) {
+      var useaid = ignoreaid || false;
+      if (!ignoreaid) {
+        // add an ActionID header to the beginning of the data
+        var aid="tbd-" + new Date().getTime() + "-" + Math.floor(Math.random()*10001);
+        data = "ActionID: " + aid + "\r\n" + data;
+      }
+      try {
+        this.outStream.write(data, data.length);
+        tbdialout.logger(4, "TBDialout > AMI:\n" + data);
+      }
+      catch (e) { tbdialout.logger(1, "Error writing data to socket: " + e.message) }
+
+      // Fetch responses until we find one with a matching ActionID, 
+      // then return it.
+
+      if (ignoreaid) { 
+        return this.fetch();
+      }
+      var aidre = new RegExp("^actionid:\\s*" + aid + "$", "im");
+      var response = "";
+      do {
+        tbdialout.logger(4, "Waiting for response with ActionID: " + aid);
+        response = this.fetch();
+      }
+      while (!aidre.test(response));
+
+      var statements=response.split("\r\n\r\n");
+      for (x in statements) {
+        if (aidre.test(statements[x])) {
+          tbdialout.logger(3, "Relevent response:\n" + statements[x]);
+          return statements[x];
+        }
+      }
+      tbdialout.logger(1, "Error. Failed to find response block with ActionID " + aid);
+      return "Error. Failed to find response block with ActionID " + aid;
+    },
+
+    // get response from socket in a pseudo synchroneous way so that we're sure
+    // a command was OK before we move on to the next command
+    fetch: function(nest, eom) {
+      var response = "";
+
+      // eom is the string representing the end of the response
+      var eom = eom || "\r\n\r\n";
+
+      // nest indicates how deeply the function is nested - start at 1, increase
+      // at each nesting
+      var nest = nest || 1;
+
+      // sanity check - if we're nested more than 5 times, bail out
+      // by faking it and adding eom
+      if (nest > 5) {
+        tbdialout.logger(3, "AsteriskAMI.fetch() reached nest level: " + nest);
+        tbdialout.logger(4, "AMI > TBDialout:\n" + response);
+        return response + eom;
+      }
+
+      // don't wait forever- break the loop after a while. We use this.timeout
+      // because if the originating channel isn't answered there will be no response
+      // to the originate command until this.timeout
+      var timeoutID = window.setTimeout(this.onWaitTimeout, this.timeout, this);
+
+      // wait for onInputStreamReady or timeout
+      this.wait = true;
+      this.inStream.asyncWait(this,0,0,this.thread);
+      while (this.wait) this.thread.processNextEvent(true);
+
+      window.clearTimeout(timeoutID);
+
+      try {
+        while (true) {
+          var chunk = this.sInStream.read(4096);
+          if (chunk.length == 0)
+            break;
+            response += chunk;
+        }
+      } catch (e) { tbdialout.logger(1, "Error reading data from socket: " + e.message) }
+
+      // if we didn't get our eom, go round again
+      while (response.indexOf(eom) == -1) {
+        tbdialout.logger(5, "No blank line in response:\n" + response);
+        response += this.fetch(nest + 1, eom);
+      }
+
+      if (nest == 1) {tbdialout.logger(4, "AMI > TBDialout:\n" + response);}
+
+      return response;
+    },
+
+    login: function(username, secret) {
+      var cmdstring = "Action: Login\r\n"
+      + "Username: " + username  + "\r\n"
+      + "Secret: " + secret  + "\r\n"
+      + "Events: off\r\n"
+      + "\r\n";
+      var response = this.send(cmdstring);
+      var okre = /response:\s*success/im;
+      if (okre.test(response)) {
+        this.loggedin = true;
+      } else {
+        tbdialout.logger(1, "Login to Asterisk AMI failed. Got response:\n" + response);
+      }
+    },
+
+    // Let's our waiting thread know to stop waiting
+    onInputStreamReady: function(e) {
+       tbdialout.logger(5, "AsteriskAMI.onInputStreamReady called");
+       this.wait = false;
+    },
+
+    // obj should be this. Used because setTimeout executes in a different context
+    // so this references the wrong object. 
+    // Lets our waiting thread know to stop waiting
+    onWaitTimeout: function (obj) {
+      tbdialout.logger(5, "Timed out waiting for asyncWait to signal (timeout set to " + obj.timeout + ")");
+      obj.wait = false;
+    },
+
+    logoff: function() {
+      var cmdstring = "Action: Logoff\r\n\r\n";
+      // don't wait for ActionID when logging off - astmanproxy doesn't return one :(
+      this.send(cmdstring, true);
+    },
+
+    originate: function(extension, channel, context, callerid) {
+      var cmdstring = "Action: Originate\r\n"
+      + "Exten: " + extension + "\r\n"
+      + "Context: " + context + "\r\n"
+      + "Priority: 1\r\n"
+      + "Channel: " + channel + "\r\n"
+      + "Timeout: " + this.timeout + "\r\n";
+      if (callerid.length > 0) { 
+        cmdstring += "Callerid: " + callerid + "\r\n";
+      }
+      cmdstring += "\r\n";
+      var response = this.send(cmdstring);
+      var okre = /response:\s*success/im;
+      if (okre.test(response)) {
+        tbdialout.logger(3, "Call to " + extension + " set up on channel " + channel);
+      } else {
+        tbdialout.logger(2, "Failed to originate call to " + extension + ":\n" + response);
+      }
+    },
+
+    dial: function(extension) {
+      this.amiprefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.ami.");
+      try {
+        var host = this.amiprefs.getCharPref( "host" );
+        var port = this.amiprefs.getIntPref( "port" );
+        var user = this.amiprefs.getCharPref( "user" );
+        var secret = this.amiprefs.getCharPref( "secret" );
+        var channel = this.amiprefs.getCharPref( "channel" );
+        var context = this.amiprefs.getCharPref( "context" );
+        var callerid = this.amiprefs.getCharPref( "callerid" );
+        this.timeout = this.amiprefs.getIntPref( "timeout" );
+      } 
+      catch (err) {
+        this.logger(1, "Error retrieving AMI preferences: " + err.message);
+        return;
+      }
+
+      // we need the thread object to do some waiting in this.fetch()
+      this.thread = Components.classes["@mozilla.org/thread-manager;1"]
+                        .getService(Components.interfaces.nsIThreadManager)
+                        .currentThread;
+
+      this.loggedin = false;
+
+      this.connect(host, port) &&
+      this.login(user, secret);
+      if (this.loggedin) {
+        this.originate(extension, channel, context, callerid);
+        this.logoff();
+      }
+      this.disconnect();
+    }
   },
 
 };

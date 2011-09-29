@@ -21,16 +21,30 @@
         <em:description>Efectuar llamadas directamente desde la lista de contactos de Thunderbird</em:description>
         <em:translator>Eduardo de Mier</em:translator>
       </Description>
+      <Description>
+        <em:locale>zh-CN</em:locale>
+        <em:name>TBDialOut</em:name>
+        <em:description>直接从 Thunderbird 的通讯录拨打电话。</em:description>
+        <em:translator>yfdyh000 (yfdyh000@gmail.com)</em:translator>
+      </Description>
+      <Description>
+        <em:locale>nl</em:locale>
+        <em:name>TBDialOut</em:name>
+        <em:description>Voer rechtstreeks vanuit het adresboek in Thunderbird telefoongesprekken</em:description>
+        <em:translator>markh van BabelZilla.org</em:translator>
+      </Description>
     </em:localized>
 
 
     <em:name>TBDialOut</em:name>
     <em:description>Place phone calls directly from Thunderbird's address book</em:description>
-    <em:version>1.6.1</em:version>
+    <em:version>1.7.0pre3</em:version>
     <em:creator>Chris Hastie</em:creator>
     <em:developer>MSelector</em:developer>
     <em:translator>Rainer Piper</em:translator>
     <em:translator>Eduardo de Mier</em:translator>
+    <em:translator>yfdyh000 (yfdyh000@gmail.com)</em:translator>
+    <em:translator>markh van BabelZilla.org</em:translator>
     <em:homepageURL>http://www.oak-wood.co.uk/tbdialout</em:homepageURL>
     <em:type>2</em:type>
     <!-- <em:updateURL>https://secure.raggedstaff.net/tbdialout/update.rdf</em:updateURL> -->
@@ -40,7 +54,7 @@
       <Description>
         <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- thunderbird -->
         <em:minVersion>3.0</em:minVersion>
-        <em:maxVersion>6.*</em:maxVersion>
+        <em:maxVersion>7.*</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>
