@@ -136,9 +136,6 @@ var tbdialout = {
         customurl = this.prefs.getCharPref( "customurl" );
         customuser = this.prefs.getCharPref( "customuser" );
         custompass = this.prefs.getCharPref( "custompass" );
-      } catch (err) {
-        promptService.alert(window, this.strings.getString("warningDefaultTitle"),
-                               this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.description);
  //       amihost = this.prefs.getCharPref( "ami.host" );
  //       amiport = this.prefs.getIntPref( "ami.port" );
  //       amiuser = this.prefs.getCharPref( "ami.user" );

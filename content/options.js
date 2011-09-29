@@ -39,12 +39,6 @@
   */
 
 function setCustomOptViz() {
-  var elements = document.getElementsByClassName("tbdocustomoptions");
-  for (idx in elements) {
-    if (document.getElementById("proto_menu").value == 'custom') {
-      elements[idx].disabled = false;
-    } else {
-      elements[idx].disabled = true;
   var custom_elements = document.getElementsByClassName("tbdocustomoptions");
   var ami_elements = document.getElementsByClassName("tbdoamioptions");
   var idx;
