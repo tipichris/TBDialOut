@@ -267,7 +267,7 @@ var tbdialout = {
      catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message); return false; }
      this.connected = true;
      // get the initial banner from Asterisk
-     var banner = this.fetch(1, "\r\n");
+     var banner = this.fetch("\r\n");
      if (banner.indexOf("Asterisk Call Manager") == -1) {
        tbdialout.logger(2, "Unexpected response from remote server"); 
        return false;
@@ -335,7 +335,7 @@ var tbdialout = {
 
     // get response from socket in a pseudo synchroneous way so that we're sure
     // a command was OK before we move on to the next command
-    fetch: function(nest, eom) {
+    fetch: function(eom, nested) {
       var response = "";
 
       // eom is the string representing the end of the response
@@ -343,15 +343,7 @@ var tbdialout = {
 
       // nest indicates how deeply the function is nested - start at 1, increase
       // at each nesting
-      var nest = nest || 1;
-
-      // sanity check - if we're nested more than 10 times, bail out
-      // by faking it and adding eom
-      if (nest > 10) {
-        tbdialout.logger(3, "AsteriskAMI.fetch() reached nest level: " + nest);
-        //tbdialout.logger(4, "AMI > TBDialout:\n" + response);
-        return response + eom;
-      }
+      var nested = nested || false;
 
       // don't wait forever- break the loop after a while. We use this.timeout
       // because if the originating channel isn't answered there will be no response
@@ -387,10 +379,10 @@ var tbdialout = {
       // if we didn't get our eom, go round again
       while (this.connected && response.indexOf(eom) == -1) {
         tbdialout.logger(5, "No blank line in response:\n" + response);
-        response += this.fetch(nest + 1, eom);
+        response += this.fetch(eom, true);
       }
 
-      if (nest == 1) {tbdialout.logger(4, "AMI > TBDialout:\n" + response);}
+      if (!nested) {tbdialout.logger(4, "AMI > TBDialout:\n" + response);}
 
       return response;
     },
