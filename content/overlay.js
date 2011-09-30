@@ -347,7 +347,7 @@ var tbdialout = {
 
       // don't wait forever- break the loop after a while. We use this.timeout
       // because if the originating channel isn't answered there will be no response
-      // to the originate command until this.timeout
+      // to the originate command until this.timeout, so wait just a bit longer
       var timeoutID = window.setTimeout(this.onWaitTimeout, 2000 + this.timeout, this);
 
       // wait for onInputStreamReady or timeout
@@ -418,7 +418,7 @@ var tbdialout = {
 
     // obj should be this. Used because setTimeout executes in a different context
     // so this references the wrong object. 
-    // Lets our waiting thread know to stop waiting
+    // Bring things to a halt by disconnecting from AMI
     onDialTimeout: function (obj) {
       tbdialout.logger(5, "Timed out waiting for dial to complete");
       obj.disconnect();
@@ -476,7 +476,7 @@ var tbdialout = {
       this.connected = false;
 
       // as a sanity check, timeout and disconnect to prevent getting stuck in a loop 
-      // waiting for a response that is never going to come.
+      // waiting for a response that is never going to come. Set it 10s more than this.timeout
       var dialTimeoutID = window.setTimeout(this.onDialTimeout, 10000 + this.timeout, this);
 
       this.connect(host, port) &&
