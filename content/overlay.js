@@ -265,6 +265,7 @@ var tbdialout = {
         this.sInStream.init(this.inStream);
       }
      catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message); return false; }
+     this.connected = true;
      // get the initial banner from Asterisk
      var banner = this.fetch(1, "\r\n");
      if (banner.indexOf("Asterisk Call Manager") == -1) {
@@ -279,12 +280,14 @@ var tbdialout = {
       this.inStream.close();
       this.outStream.close();
       this.socket.close(null);
+      this.connected = false;
     },
 
     // implements a crude synchroneous socket, waiting for the response
     // ignoreaid: if true don't set an ActionID and don't check for it in
     // response. astmanproxy doesn't always send it, eg following logoff
     send: function(data, ignoreaid) {
+      if (!this.connected) return "Error: not connected";
       var useaid = ignoreaid || false;
       if (!ignoreaid) {
         // add an ActionID header to the beginning of the data
@@ -295,7 +298,15 @@ var tbdialout = {
         this.outStream.write(data, data.length);
         tbdialout.logger(4, "TBDialout > AMI:\n" + data);
       }
-      catch (e) { tbdialout.logger(1, "Error writing data to socket: " + e.message) }
+      catch (e) {
+        if (e.name == 'NS_BASE_STREAM_CLOSED') {
+          this.connected = false;
+          this.loggedin = false;
+          tbdialout.logger(3, "Cannot write to socket. Connection closed.");
+        } else {
+          tbdialout.logger(1, "Error writing data to socket: " + e.message);
+        }
+      }
 
       // Fetch responses until we find one with a matching ActionID, 
       // then return it.
@@ -309,7 +320,7 @@ var tbdialout = {
         tbdialout.logger(4, "Waiting for response with ActionID: " + aid);
         response = this.fetch();
       }
-      while (!aidre.test(response));
+      while (this.connected && !aidre.test(response));
 
       var statements=response.split("\r\n\r\n");
       for (x in statements) {
@@ -319,7 +330,7 @@ var tbdialout = {
         }
       }
       tbdialout.logger(1, "Error. Failed to find response block with ActionID " + aid);
-      return "Error. Failed to find response block with ActionID " + aid;
+      return "Error";
     },
 
     // get response from socket in a pseudo synchroneous way so that we're sure
@@ -334,37 +345,47 @@ var tbdialout = {
       // at each nesting
       var nest = nest || 1;
 
-      // sanity check - if we're nested more than 5 times, bail out
+      // sanity check - if we're nested more than 10 times, bail out
       // by faking it and adding eom
-      if (nest > 5) {
+      if (nest > 10) {
         tbdialout.logger(3, "AsteriskAMI.fetch() reached nest level: " + nest);
-        tbdialout.logger(4, "AMI > TBDialout:\n" + response);
+        //tbdialout.logger(4, "AMI > TBDialout:\n" + response);
         return response + eom;
       }
 
       // don't wait forever- break the loop after a while. We use this.timeout
       // because if the originating channel isn't answered there will be no response
       // to the originate command until this.timeout
-      var timeoutID = window.setTimeout(this.onWaitTimeout, this.timeout, this);
+      var timeoutID = window.setTimeout(this.onWaitTimeout, 2000 + this.timeout, this);
 
       // wait for onInputStreamReady or timeout
-      this.wait = true;
-      this.inStream.asyncWait(this,0,0,this.thread);
-      while (this.wait) this.thread.processNextEvent(true);
+      if (this.connected) {
+        this.wait = true;
+        this.inStream.asyncWait(this,0,0,this.thread);
+        while (this.wait && this.connected) this.thread.processNextEvent(true);
+      }
 
       window.clearTimeout(timeoutID);
 
       try {
-        while (true) {
+        while (this.connected) {
           var chunk = this.sInStream.read(4096);
           if (chunk.length == 0)
             break;
-            response += chunk;
+          response += chunk;
         }
-      } catch (e) { tbdialout.logger(1, "Error reading data from socket: " + e.message) }
+      } catch (e) { 
+        if (e.name == 'NS_BASE_STREAM_CLOSED') {
+          this.connected = false;
+          this.loggedin = false;
+          tbdialout.logger(3, "Cannot read from socket. Connection closed.");
+        } else {
+          tbdialout.logger(1, "Error reading data from socket: " + e.message);
+        }
+      }
 
       // if we didn't get our eom, go round again
-      while (response.indexOf(eom) == -1) {
+      while (this.connected && response.indexOf(eom) == -1) {
         tbdialout.logger(5, "No blank line in response:\n" + response);
         response += this.fetch(nest + 1, eom);
       }
@@ -401,6 +422,14 @@ var tbdialout = {
     onWaitTimeout: function (obj) {
       tbdialout.logger(5, "Timed out waiting for asyncWait to signal (timeout set to " + obj.timeout + ")");
       obj.wait = false;
+    },
+
+    // obj should be this. Used because setTimeout executes in a different context
+    // so this references the wrong object. 
+    // Lets our waiting thread know to stop waiting
+    onDialTimeout: function (obj) {
+      tbdialout.logger(5, "Timed out waiting for dial to complete");
+      obj.disconnect();
     },
 
     logoff: function() {
@@ -452,14 +481,22 @@ var tbdialout = {
                         .currentThread;
 
       this.loggedin = false;
+      this.connected = false;
+
+      // as a sanity check, timeout and disconnect to prevent getting stuck in a loop 
+      // waiting for a response that is never going to come.
+      var dialTimeoutID = window.setTimeout(this.onDialTimeout, 10000 + this.timeout, this);
 
       this.connect(host, port) &&
       this.login(user, secret);
-      if (this.loggedin) {
+      if (this.connected && this.loggedin) {
         this.originate(extension, channel, context, callerid);
         this.logoff();
       }
-      this.disconnect();
+      if (this.connected)
+        this.disconnect();
+
+      window.clearTimeout(dialTimeoutID);
     }
   },
 
