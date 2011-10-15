@@ -56,9 +56,26 @@ function setCustomOptViz() {
       ami_elements[idx].disabled = true;
     }
   }
-//  if (document.getElementById("proto_menu").value == 'custom') {
-//    document.getElementById("tbdialout-options-customoptions").collapsed = false;
-//  } else {
-//    document.getElementById("tbdialout-options-customoptions").collapsed = true;
-//  }
+  setCustomAuthViz();
+}
+
+function setCustomAuthViz () {
+  if (document.getElementById("proto_menu").value == 'custom') {
+    var custom_auth_elements = new Array();
+    custom_auth_elements.push(document.getElementById("customuser_text"));
+    custom_auth_elements.push(document.getElementById("custompass_text"));
+    var loadhidden = document.getElementById("custominbackground_cb").checked;
+    var idx;
+    for (idx in custom_auth_elements) {
+      if (loadhidden) {
+        custom_auth_elements[idx].disabled = false;
+      } else {
+        custom_auth_elements[idx].disabled = true;
+      }
+    }
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+              .getService(Components.interfaces.nsIPrefService)
+              .getBranch("extensions.tbdialout.");
+    prefs.setBoolPref("custominbackground", loadhidden);
+  }
 }

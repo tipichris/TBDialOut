@@ -17,8 +17,8 @@
 <!ENTITY tbdocustomhint_text "为 TBDialOut 输入自定义 URL 来联系。用 &#37;NUM&#37; 替换电话号码">
 <!ENTITY tbdocustomurl_menu.label "自定义 URL">
 <!ENTITY tbdocustomurl_boxcaption.label "自定义 URL 选项">
-<!ENTITY tbdocustomexternalapp_cb.label "Use external application">
-<!ENTITY tbdocustomexternalapp_cb.accesskey "e">
+<!ENTITY tbdocustominbackground_cb.label "Open in background (http/https only)">
+<!ENTITY tbdocustominbackground_cb.accesskey "b">
 <!-- options relating to the Asterisk Manager Interface -->
 <!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
 <!ENTITY tbdoami_boxcaption.label "Asterisk AMI 选项">

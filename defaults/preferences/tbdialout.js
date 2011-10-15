@@ -5,7 +5,7 @@ pref( "extensions.tbdialout.tbbuttonadded", false );
 pref( "extensions.tbdialout.customurl", "" );
 pref( "extensions.tbdialout.customuser", "" );
 pref( "extensions.tbdialout.custompass", "" );
-pref( "extensions.tbdialout.customexternalapp", false );
+pref( "extensions.tbdialout.custominbackground", true );
 pref( "extensions.tbdialout.loglevel", 1);
 pref( "extensions.tbdialout.ami.channel", "" );
 pref( "extensions.tbdialout.ami.context", "default" );

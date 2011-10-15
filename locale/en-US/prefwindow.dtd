@@ -17,8 +17,8 @@
 <!ENTITY tbdocustomhint_text "Enter a custom URL for TBDialOut to contact. Replace the phone number with &#37;NUM&#37;" >
 <!ENTITY tbdocustomurl_menu.label  "Custom URL">
 <!ENTITY tbdocustomurl_boxcaption.label "Custom URL options">
-<!ENTITY tbdocustomexternalapp_cb.label "Use external application">
-<!ENTITY tbdocustomexternalapp_cb.accesskey "e">
+<!ENTITY tbdocustominbackground_cb.label "Open in background (http/https only)">
+<!ENTITY tbdocustominbackground_cb.accesskey "b">
 <!-- options relating to the Asterisk Manager Interface -->
 <!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
 <!ENTITY tbdoami_boxcaption.label "Asterisk AMI options">

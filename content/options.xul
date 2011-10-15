@@ -49,7 +49,7 @@
       <preference id="customurl_pref" name="extensions.tbdialout.customurl" type="string"/>
       <preference id="customuser_pref" name="extensions.tbdialout.customuser" type="string"/>
       <preference id="custompass_pref" name="extensions.tbdialout.custompass" type="string"/>
-      <preference id="customexternalapp_pref" name="extensions.tbdialout.customexternalapp" type="bool" />
+      <preference id="custominbackground_pref" name="extensions.tbdialout.custominbackground" type="bool" />
       <preference id="amichannel_pref" name="extensions.tbdialout.ami.channel" type="string"/>
       <preference id="amicontext_pref" name="extensions.tbdialout.ami.context" type="string"/>
       <preference id="amihost_pref" name="extensions.tbdialout.ami.host" type="string"/>
@@ -57,7 +57,7 @@
       <preference id="amiuser_pref" name="extensions.tbdialout.ami.user" type="string"/>
       <preference id="amisecret_pref" name="extensions.tbdialout.ami.secret" type="string"/>
     </preferences>
-
+    <commandset><command id="custominbackground_change" oncommand="setCustomAuthViz()"/></commandset>
     <grid flex="1">
 
       <columns>
@@ -117,7 +117,7 @@
           </row>
           <row align="center">
             <!-- <label class="tbdocustomoptions" control="customexternalapp_cb" value="&tbdocustomexternalapp_cb.label;:" accesskey="&tbdocustomexternalapp_cb.accesskey;"/> -->
-            <checkbox class="tbdocustomoptions" id="customexternalapp_cb" preference="customexternalapp_pref" label="&tbdocustomexternalapp_cb.label;" accesskey="&tbdocustomexternalapp_cb.accesskey;"/>
+            <checkbox class="tbdocustomoptions" id="custominbackground_cb" preference="custominbackground_pref" label="&tbdocustominbackground_cb.label;" accesskey="&tbdocustominbackground_cb.accesskey;" command="custominbackground_change" />
           </row>
         </rows>
       </grid>
