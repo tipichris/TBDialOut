@@ -1,18 +1,18 @@
 <!-- do not translate extension name: TBDialOut -->
-<!ENTITY tbdoprefwindow.title "Options TBDialOut">
-<!ENTITY tbdopane1.title "Options TBDialOut">
+<!ENTITY tbdoprefwindow.title "Préférences de TBDialOut">
+<!ENTITY tbdopane1.title "Préférences de TBDialOut">
 <!ENTITY tbdoproto_menu.label "Schéma d'URL">
 <!ENTITY tbdoproto_menu.accesskey "U">
-<!ENTITY tbdoprefix_text.label "Signaler les numéros avec ce préfixe">
-<!ENTITY tbdoprefix_text.accesskey "P">
+<!ENTITY tbdoprefix_text.label "Signaler les numéros en utilisant ce préfixe">
+<!ENTITY tbdoprefix_text.accesskey "p">
 <!ENTITY tbdoplus_text.label "Remplacer &quot;+&quot; avec">
 <!ENTITY tbdoplus_text.accesskey "R">
-<!ENTITY tbdocustomurl_text.label "URI personnalisé">
-<!ENTITY tbdocustomurl_text.accesskey "C">
+<!ENTITY tbdocustomurl_text.label "URL personnalisé">
+<!ENTITY tbdocustomurl_text.accesskey "e">
 <!ENTITY tbdocustomuser_text.label "Nom d'utilisateur">
 <!ENTITY tbdocustomuser_text.accesskey "s">
 <!ENTITY tbdocustompass_text.label "Mot de passe">
-<!ENTITY tbdocustompass_text.accesskey "w">
+<!ENTITY tbdocustompass_text.accesskey "M">
 <!-- do not translate &#37;NUM&#37; -->
 <!ENTITY tbdocustomhint_text "Entrez l'URL personnalisé que TBDialOut doit contacter. Remplacer le numéro de téléphone avec &#37;NUM&#37;">
 <!ENTITY tbdocustomurl_menu.label "URL personnalisé">
