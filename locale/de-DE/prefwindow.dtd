@@ -17,6 +17,8 @@
 <!ENTITY tbdocustomhint_text "Geben Sie eine benutzerdefinierte URL für die TBDialout Verbindung ein. Ersetzen Sie die Rufnummer mit &#37;NUM&#37;">
 <!ENTITY tbdocustomurl_menu.label "Benutzerdefinierte URL">
 <!ENTITY tbdocustomurl_boxcaption.label "Benutzerdefinierte URL Einstellungen">
+<!ENTITY tbdocustomexternalapp_cb.label "Use external application">
+<!ENTITY tbdocustomexternalapp_cb.accesskey "e">
 <!-- options relating to the Asterisk Manager Interface -->
 <!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
 <!ENTITY tbdoami_boxcaption.label "Asterisk AMI Einstellungen">

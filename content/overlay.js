@@ -136,6 +136,7 @@ var tbdialout = {
         customurl = this.prefs.getCharPref( "customurl" );
         customuser = this.prefs.getCharPref( "customuser" );
         custompass = this.prefs.getCharPref( "custompass" );
+        useexternal = this.prefs.getBoolPref( "customexternalapp" );
       } catch (err) {
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.message);
@@ -172,20 +173,46 @@ var tbdialout = {
         if (proto == 'custom') {
           // prefix and plus may be special characters, so need to escape pnumber in URL
           var callurl = customurl.replace(/%NUM%/,encodeURIComponent(pnumber));
-          var req = new XMLHttpRequest();
-          req.open('GET', callurl, true, customuser, custompass);
-          req.onreadystatechange = function (aEvt) {
-            if (req.readyState == 4) {
-              if(req.status != 200) {
-                var errorStatus = [req.status, req.statusText];
-                // why isn't this.strings already available in this context??
-                var strings = document.getElementById("tbdialout-strings");
-                promptService.alert(window, strings.getString("warningDefaultTitle"),
-                                  strings.getFormattedString("errorBadHTTPResponse", errorStatus));
+          if (useexternal) {
+            if (callurl.search(/^http(s)?:/i) > -1) {
+              var tabmail = document.getElementById("tabmail");  
+              if (!tabmail) {  
+                // Try opening new tabs in an existing 3pane window  
+                var mail3PaneWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                                                .getService(Components.interfaces.nsIWindowMediator)
+                                                .getMostRecentWindow("mail:3pane");
+                if (mail3PaneWindow) {  
+                  tabmail = mail3PaneWindow.document.getElementById("tabmail");
+                  mail3PaneWindow.focus();  
+                }
               }
+
+              if (tabmail)
+                tabmail.openTab("contentTab", {contentPage: callurl});
+              else
+                window.openDialog("chrome://messenger/content/", "_blank",
+                                  "chrome,dialog=no,all", null,  
+                                  { tabType: "contentTab",  
+                                    tabParams: {contentPage: callurl} });
+            } else {
+              LaunchUrl(callurl);
             }
-          };
-          req.send(null);
+          } else {
+            var req = new XMLHttpRequest();
+            req.open('GET', callurl, true, customuser, custompass);
+            req.onreadystatechange = function (aEvt) {
+              if (req.readyState == 4) {
+                if(req.status != 200) {
+                  var errorStatus = [req.status, req.statusText];
+                  // why isn't this.strings already available in this context??
+                  var strings = document.getElementById("tbdialout-strings");
+                  promptService.alert(window, strings.getString("warningDefaultTitle"),
+                                    strings.getFormattedString("errorBadHTTPResponse", errorStatus));
+                }
+              }
+            };
+            req.send(null);
+          }
         } else if (proto == 'asteriskami') {
           tbdialout.AsteriskAMI.dial(pnumber);
         } else {

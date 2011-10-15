@@ -17,6 +17,8 @@
 <!ENTITY tbdocustomhint_text "Voer een aangepaste URL in waarmee TBDialOut contact kan opnemen. Vervang het telefoonnummer door &#37;NUM&#37;">
 <!ENTITY tbdocustomurl_menu.label "Aangepaste URL">
 <!ENTITY tbdocustomurl_boxcaption.label "Opties aangepaste URL">
+<!ENTITY tbdocustomexternalapp_cb.label "Use external application">
+<!ENTITY tbdocustomexternalapp_cb.accesskey "e">
 <!-- options relating to the Asterisk Manager Interface -->
 <!ENTITY tbdoasteriskami_menu.label "Asterisk-AMI">
 <!ENTITY tbdoami_boxcaption.label "Opties Asterisk-AMI">
