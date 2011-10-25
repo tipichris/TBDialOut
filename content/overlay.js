@@ -289,6 +289,161 @@ var tbdialout = {
 
   AsteriskAMI: {
     connect: function(hostname, port) {
+      tbdialout.logger(5, "Connecting to " + hostname + ":" + port);
+      try {
+        // at first, we need a nsISocketTransportService ....
+        this.socket =
+            Components.classes["@mozilla.org/network/socket-transport-service;1"]
+              .getService(Components.interfaces.nsISocketTransportService)
+              .createTransport(null,0,hostname,port,null);
+      }
+      catch (e) { tbdialout.logger(1, "Error creating transport service: " + e.message); return false; }
+
+      try {
+        this.outStream = this.socket.openOutputStream(0,0,0);
+      }
+      catch (e) { tbdialout.logger(1, "Error creating output stream: " + e.message); return false; }
+      try {
+
+        this.inStream = this.socket.openInputStream(0,0,0);
+//        this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
+//           .createInstance(Components.interfaces.nsIScriptableInputStream);
+//        this.sInStream.init(this.inStream);
+      }
+      catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message); return false; }
+      this.connected = true;
+
+	  this.pump = Components.classes["@mozilla.org/network/input-stream-pump;1"]
+			  .createInstance(Components.interfaces.nsIInputStreamPump); 
+
+	  this.pump.init(this.inStream, -1, -1, 0, 0, false);
+
+      this.pump.asyncRead(this, this); 
+      
+      return true;
+     },
+
+    disconnect: function() {
+      tbdialout.logger(5, "Disconnecting");
+      //this.sInStream.close();
+      this.inStream.close();
+      this.outStream.close();
+      this.socket.close(null);
+      this.connected = false;
+    },
+
+	onDataAvailable: function (request, context, inputStream, offset, count) {
+        this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
+           .createInstance(Components.interfaces.nsIScriptableInputStream);
+        this.sInStream.init(this.inStream);
+		var str = this.sInStream.read(count);
+        tbdialout.logger(5, "Got data: " + str);
+        this.parseData(str);
+	},
+	
+	onStartRequest: function() {},
+	onStopRequest: function() {},
+
+    parseData: function(data) {
+      tbdialout.logger(5, "Parse: " + data);
+	  var observerService = Components.classes["@mozilla.org/observer-service;1"].
+		  getService(Components.interfaces.nsIObserverService);
+	  observerService.notifyObservers(null, "tbdialout-ami-foo", data);
+    },
+
+    dial: function(extension) {
+      this.amiprefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.ami.");
+      try {
+        var host = this.amiprefs.getCharPref( "host" );
+        var port = this.amiprefs.getIntPref( "port" );
+        var user = this.amiprefs.getCharPref( "user" );
+        var secret = this.amiprefs.getCharPref( "secret" );
+        var channel = this.amiprefs.getCharPref( "channel" );
+        var context = this.amiprefs.getCharPref( "context" );
+        var callerid = this.amiprefs.getCharPref( "callerid" );
+        this.timeout = this.amiprefs.getIntPref( "timeout" );
+      } 
+      catch (err) {
+        this.logger(1, "Error retrieving AMI preferences: " + err.message);
+        return;
+      }
+
+	  var observerService = Components.classes["@mozilla.org/observer-service;1"].
+		  getService(Components.interfaces.nsIObserverService);
+	  observerService.addObserver(this.dialObserver, "tbdialout-ami-foo", false);
+
+      this.loggedin = false;
+      this.connected = false;
+
+      this.connect(host, port) &&
+      this.login(user, secret);
+ //     if (this.connected && this.loggedin) {
+ //       this.originate(extension, channel, context, callerid);
+ //       this.logoff();
+ //     }
+      window.setTimeout(
+        function () {
+          if (this.connected)
+            this.disconnect();
+          tbdialout.logger(5, "Dial ran to end...");
+        }, 
+        10000);
+    },
+
+	dialObserver: {  
+	  observe : function(aSubject, aTopic, aData) {  
+		if (aTopic == "tbdialout-ami-foo") {  
+		  tbdialout.logger(5, "Observer got: " + aData); 
+		}
+	  }
+	},
+	
+    send: function(data, ignoreaid) {
+      if (!this.connected) return "Error: not connected";
+      var useaid = ignoreaid || false;
+      if (!ignoreaid) {
+        // add an ActionID header to the beginning of the data
+        var aid="tbd-" + new Date().getTime() + "-" + Math.floor(Math.random()*10001);
+        data = "ActionID: " + aid + "\r\n" + data;
+      }
+      try {
+        this.outStream.write(data, data.length);
+        tbdialout.logger(4, "TBDialout > AMI:\n" + data);
+      }
+      catch (e) {
+        if (e.name == 'NS_BASE_STREAM_CLOSED') {
+          this.connected = false;
+          this.loggedin = false;
+          tbdialout.logger(3, "Cannot write to socket. Connection closed.");
+        } else {
+          tbdialout.logger(1, "Error writing data to socket: " + e.message);
+        }
+      }
+      return "OK";
+
+    },
+
+    login: function(username, secret) {
+      tbdialout.logger(5, "Logging in");
+      var cmdstring = "Action: Login\r\n"
+      + "Username: " + username  + "\r\n"
+      + "Secret: " + secret  + "\r\n"
+      + "Events: off\r\n"
+      + "\r\n";
+      var response = this.send(cmdstring);
+      tbdialout.logger(5, "Got response " + response);
+//      var okre = /response:\s*success/im;
+//      if (okre.test(response)) {
+//        this.loggedin = true;
+//      } else {
+//        tbdialout.logger(1, "Login to Asterisk AMI failed. Got response:\n" + response);
+//      }
+    },
+
+  },
+  
+  AsteriskAMIOld: {
+    connect: function(hostname, port) {
       try {
         // at first, we need a nsISocketTransportService ....
         this.socket =
