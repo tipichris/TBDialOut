@@ -374,8 +374,7 @@ var tbdialout = {
       // eom is the string representing the end of the response
       var eom = eom || "\r\n\r\n";
 
-      // nest indicates how deeply the function is nested - start at 1, increase
-      // at each nesting
+      // nested indicates if the function is nested
       var nested = nested || false;
 
       // don't wait forever- break the loop after a while. We use this.timeout
