@@ -49,7 +49,7 @@ var tbdialout = {
 
     var tbbuttonadded = this.prefs.getBoolPref("tbbuttonadded");
     if (!tbbuttonadded) {
-      window.setTimeout(this.AddToolbarButton, 200);
+      window.setTimeout(function() {tbdialout.AddToolbarButton();}, 200);
     }
   },
 
@@ -62,7 +62,19 @@ var tbdialout = {
   // 5: Even more debug
   logger: function (level, msg) {
     if( this.prefs.getIntPref("loglevel") >= level ) {
-      this.console.logStringMessage("[TBDialout] " + msg);
+      function formattime(s) {
+        function pad(n, d) {
+          d = d;
+          n = n + '';
+          while (n.length < d) n = '0' + n;
+          return n;
+        };
+        return pad(s.getHours(),2)+':'
+          +pad(s.getMinutes(),2)+':'
+          +pad(s.getSeconds(),2)+'.'
+          +pad(s.getMilliseconds(),3)
+      }
+      this.console.logStringMessage("[TBDialout] " + formattime(new Date()) + ": " + msg);
     }
   },
 
@@ -380,7 +392,15 @@ var tbdialout = {
       // don't wait forever- break the loop after a while. We use this.timeout
       // because if the originating channel isn't answered there will be no response
       // to the originate command until this.timeout, so wait just a bit longer
-      var timeoutID = window.setTimeout(this.onWaitTimeout, 2000 + this.timeout, this);
+      // obj should be this. Used because setTimeout executes in a different context
+      // so this references the wrong object.
+      var timeoutID = window.setTimeout(
+        function(obj) {
+          tbdialout.logger(5, "Timed out waiting for asyncWait to signal (timeout set to " + obj.timeout + ")");
+          obj.wait = false;
+        },
+        this.timeout + 1000,
+        this);
 
       // wait for onInputStreamReady or timeout
       if (this.connected) {
@@ -440,21 +460,6 @@ var tbdialout = {
        this.wait = false;
     },
 
-    // obj should be this. Used because setTimeout executes in a different context
-    // so this references the wrong object. 
-    // Lets our waiting thread know to stop waiting
-    onWaitTimeout: function (obj) {
-      tbdialout.logger(5, "Timed out waiting for asyncWait to signal (timeout set to " + obj.timeout + ")");
-      obj.wait = false;
-    },
-
-    // obj should be this. Used because setTimeout executes in a different context
-    // so this references the wrong object. 
-    // Bring things to a halt by disconnecting from AMI
-    onDialTimeout: function (obj) {
-      tbdialout.logger(5, "Timed out waiting for dial to complete");
-      obj.disconnect();
-    },
 
     logoff: function() {
       var cmdstring = "Action: Logoff\r\n\r\n";
@@ -509,7 +514,15 @@ var tbdialout = {
 
       // as a sanity check, timeout and disconnect to prevent getting stuck in a loop 
       // waiting for a response that is never going to come. Set it 10s more than this.timeout
-      var dialTimeoutID = window.setTimeout(this.onDialTimeout, 10000 + this.timeout, this);
+      // obj should be this. Used because setTimeout executes in a different context
+      // so this references the wrong object. 
+      var dialTimeoutID = window.setTimeout(
+        function (obj) {
+          tbdialout.logger(5, "Timed out waiting for dial to complete");
+          obj.disconnect();
+        },
+        10000 + this.timeout,
+        this);
 
       this.connect(host, port) &&
       this.login(user, secret);
