@@ -228,7 +228,7 @@ var tbdialout = {
                                                  clickHandler: "specialTabs.siteClickHandler(event, click_re);"} });
             }
           } else {
-            // for none http(s) URIs well just use LaunchUrl
+            // for none http(s) URIs we'll just use LaunchUrl
             LaunchUrl(callurl);
           }
         } else if (proto == 'asteriskami') {
@@ -287,10 +287,11 @@ var tbdialout = {
     catch (e) {}
   },
 
+  // #### Class for dealing with connections to Asterisk Manager Interface (AMI) ####
   AsteriskAMI: {
 
     // ## CONNECTION HANDLING ##
-    
+
     // set up connection to AMI and connect it to a pump for async reading
     connect: function(hostname, port) {
       tbdialout.logger(5, "Connecting to " + hostname + ":" + port);
