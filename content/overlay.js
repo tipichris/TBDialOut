@@ -390,12 +390,21 @@ var tbdialout = {
       // We may have multiple responses. Split them and look for the
       // one we want - it has our last action ID in (this.lastAID).
       ourResponse = "";
-      if (this.lastAID.length > 0) {
+      if (this.lastAID.length > 0 || this.state == "LOGOFFSENT") {
         var aidre = new RegExp("^actionid:\\s*" + this.lastAID + "$", "im");
+        // ugly work around the fact that Astmanproxy doesn't send Action IDs
+        // in response to logoff
+        if (this.state == "LOGOFFSENT") {
+          var goodbyere = new RegExp(/(^goodbye:)/im);
+        }
         var statements=response.split("\r\n\r\n");
         for (x in statements) {
           if (aidre.test(statements[x])) {
             ourResponse = statements[x];
+            break;
+          } else if (this.state == "LOGOFFSENT" && goodbyere.test(statements[x]) ) {
+            ourResponse = statements[x];
+            break;
           }
         }
       } else {
@@ -404,10 +413,14 @@ var tbdialout = {
 
       tbdialout.logger(5, "Relevant response:\n" + ourResponse);
 
+      // if we don't have the response we're looking for, return and wait
+      if (ourResponse.length < 1) return;
+
       // check if this was a good response (usually contains Response: Success)
       var okre = /^response:\s*success$/im;
       if (this.state == "LOGOFFSENT") {
-        okre = /^response:\s*goodbye$/im;  // Response to logoff is different
+        // Response to logoff is different, and different again from astmanproxy :(
+        okre = /(^response:\s*goodbye$)||^goodbye:/im;  
       }
       if (okre.test(ourResponse)) {
         tbdialout.logger(5, "Response looks good");
@@ -544,8 +557,7 @@ var tbdialout = {
 
     logoff: function() {
       var cmdstring = "Action: Logoff\r\n\r\n";
-      // don't look for ActionID when logging off - astmanproxy doesn't return one :(
-      if(this.send(cmdstring, true)) this.state="LOGOFFSENT";
+      if(this.send(cmdstring)) this.state="LOGOFFSENT";
     },
   },
 
