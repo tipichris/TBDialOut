@@ -288,7 +288,10 @@ var tbdialout = {
   },
 
   AsteriskAMI: {
-    // set up connection to AMI
+
+    // ## CONNECTION HANDLING ##
+    
+    // set up connection to AMI and connect it to a pump for async reading
     connect: function(hostname, port) {
       tbdialout.logger(5, "Connecting to " + hostname + ":" + port);
       try {
@@ -345,10 +348,11 @@ var tbdialout = {
         this.parseResponse(str);
     },
 
+    // we have to define these in order to pass 'this' to pump.asyncRead()
     onStartRequest: function() {},
     onStopRequest: function() {},
 
-    // process the response
+    // process the response. This does most of the work of controlling the session
     parseResponse: function(response) {
 
       tbdialout.logger(5, "in parseResponse - current state is " + this.state);
@@ -387,16 +391,19 @@ var tbdialout = {
 
       tbdialout.logger(5, "Full response:\n" + response);
 
-      // We may have multiple responses. Split them and look for the
-      // one we want - it has our last action ID in (this.lastAID).
+      // We may have multiple responses, especially if using astmanproxy. 
+      // Split them and look for the one we want
+      // - it has our last action ID in (this.lastAID).
       ourResponse = "";
       if (this.lastAID.length > 0 || this.state == "LOGOFFSENT") {
         var aidre = new RegExp("^actionid:\\s*" + this.lastAID + "$", "im");
+
         // ugly work around the fact that Astmanproxy doesn't send Action IDs
         // in response to logoff
         if (this.state == "LOGOFFSENT") {
           var goodbyere = new RegExp(/(^goodbye:)/im);
         }
+
         var statements=response.split("\r\n\r\n");
         for (x in statements) {
           if (aidre.test(statements[x])) {
@@ -408,6 +415,7 @@ var tbdialout = {
           }
         }
       } else {
+        // this should no longer happen - we always try to send an ActionID now
         ourResponse = response;
       }
 
@@ -433,8 +441,8 @@ var tbdialout = {
 
       // If we're here we have a good response.
       // Take next action, depending on what state we're currently in.
-      switch (this.state) {    // We've sent Action: login
-        case "AUTHSENT":
+      switch (this.state) {
+        case "AUTHSENT":    // We've sent Action: login
           this.state = "AUTHRESPONSE";
           tbdialout.logger(5, "State changed to " + this.state);
           this.originate(this.extension, this.channel, this.context, this.callerid);
@@ -459,6 +467,10 @@ var tbdialout = {
       return;
     },
 
+    // ## ENTRY POINT ##
+
+    // dial is the entry point, called from the main tbdialout.onMenuItemCommandDial()
+    // most of the work is actually done in parseResponse
     dial: function(extension) {
       this.amiprefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.ami.");
       try {
@@ -488,13 +500,17 @@ var tbdialout = {
       // CMDSENT, CMDRESPONSE, LOGOFFSENT, LOGOFFRESPONSE
       this.state = "DISCONNECTED";
 
+      // set up the connection. This sets up a pump, read asynchroneously
+      // with the data passed to parseResponse, which does the rest of the work
       this.connect(host, port);
 
       // If we haven't completed after a while, tear down
       // the connection. It can take up to this.timeout to get
-      // a response to originate (if no one picks up the phone)
+      // a response to this.originate() (if no one picks up the phone)
       // so allow a bit more than this for the other commands
-      // to run
+      // to run.
+      // this is passed as an argument to the anonymous function
+      // as it will be run in the global context.
       this.dialTimeOut = window.setTimeout(
         function (obj) {
           obj.disconnect();
@@ -504,6 +520,10 @@ var tbdialout = {
         this);
     },
 
+    // ## COMMANDS ##
+
+    // send a command to the AMI. Adds an ActionID and
+    // records this in this.lastAID
     send: function(data, ignoreaid) {
       if (!this.connected) return;
       var useaid = ignoreaid || false;
@@ -531,6 +551,7 @@ var tbdialout = {
       return true;
     },
 
+    // login to AMI
     login: function(username, secret) {
       tbdialout.logger(5, "Logging in");
       var cmdstring = "Action: Login\r\n"
@@ -541,6 +562,7 @@ var tbdialout = {
       if (this.send(cmdstring)) this.state = "AUTHSENT";
     },
 
+    // Set the call up - send the Originate action to AMI
     originate: function(extension, channel, context, callerid) {
       var cmdstring = "Action: Originate\r\n"
       + "Exten: " + extension + "\r\n"
@@ -555,6 +577,7 @@ var tbdialout = {
       if(this.send(cmdstring)) this.state = "CMDSENT";
     },
 
+    // logoff from AMI
     logoff: function() {
       var cmdstring = "Action: Logoff\r\n\r\n";
       if(this.send(cmdstring)) this.state="LOGOFFSENT";
