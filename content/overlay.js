@@ -290,6 +290,14 @@ var tbdialout = {
   // #### Class for dealing with connections to Asterisk Manager Interface (AMI) ####
   AsteriskAMI: {
 
+    // Current state. One of:
+    // DISCONNECTED            We are not connected, or haven't yet got the AMI banner
+    // INIT                    Connection confirmed by AMI banner but not yet logged in
+    // AUTHSENT, AUTHRESPONSE  Login request sent / OK login response received
+    // CMDSENT, CMDRESPONSE    Originate command sent / OK response received
+    // LOGOFFSENT, LOGOFFRESPONSE  Logoff request sent / confirmed
+    state: "DISCONNECTED",
+
     // ## CONNECTION HANDLING ##
 
     // set up connection to AMI and connect it to a pump for async reading
@@ -339,7 +347,8 @@ var tbdialout = {
       window.clearTimeout(this.dialTimeOut);
     },
 
-    // called when data is available on the pump
+    // called when data is available on the pump. Gets the data and passes
+    // it to parseResponse()
     onDataAvailable: function (request, context, inputStream, offset, count) {
         this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
            .createInstance(Components.interfaces.nsIScriptableInputStream);
@@ -353,7 +362,12 @@ var tbdialout = {
     onStartRequest: function() {},
     onStopRequest: function() {},
 
-    // process the response. This does most of the work of controlling the session
+    // process the response. This does most of the work of controlling the session,
+    // parsing responses from the server and then calling appropriate actions.
+    // It takes a simple view of the protocol, moving through a sequence of 
+    // connect > login > send originate > logoff > disconnect. It abandons and 
+    // disconnects if anything other than the expected positive response is 
+    // received at any stage.
     parseResponse: function(response) {
 
       tbdialout.logger(5, "in parseResponse - current state is " + this.state);
@@ -405,7 +419,7 @@ var tbdialout = {
           var goodbyere = new RegExp(/(^goodbye:)/im);
         }
 
-        var statements=response.split("\r\n\r\n");
+        var statements=response.split(eom);
         for (x in statements) {
           if (aidre.test(statements[x])) {
             ourResponse = statements[x];
@@ -473,6 +487,19 @@ var tbdialout = {
     // dial is the entry point, called from the main tbdialout.onMenuItemCommandDial()
     // most of the work is actually done in parseResponse
     dial: function(extension) {
+
+      // If the state is not "DISCONNECTED" we're already processing a request.
+      // Warn the user and abandon - processing two requests at a time might do
+      // strange things.
+      if (this.state != "DISCONNECTED") {
+        tbdialout.logger(2, "AsteriskAMI is currently busy. Abandoning request (state: " + this.state + ")");
+        var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+            .getService(Components.interfaces.nsIPromptService);
+        promptService.alert(window, tbdialout.strings.getString("warningDefaultTitle"),
+                               tbdialout.strings.getFormattedString("warnAmiBusy", [this.extension]) );
+        return;
+      }
+
       this.amiprefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.ami.");
       try {
         var host = this.amiprefs.getCharPref( "host" );
@@ -495,11 +522,6 @@ var tbdialout = {
       this.lastAID = "";
 
       this.extension = extension;
-
-      // Current state. One of:
-      // DISCONNECTED, INIT, AUTHSENT, AUTHRESPONSE,
-      // CMDSENT, CMDRESPONSE, LOGOFFSENT, LOGOFFRESPONSE
-      this.state = "DISCONNECTED";
 
       // set up the connection. This sets up a pump, read asynchroneously
       // with the data passed to parseResponse, which does the rest of the work
