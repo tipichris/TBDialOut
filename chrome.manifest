@@ -1,11 +1,12 @@
 content	tbdialout	content/
 locale	tbdialout	en-US	locale/en-US/
 locale	tbdialout	en-GB	locale/en-GB/
-locale	tbdialout	de-DE	locale/de-DE/
+locale	tbdialout	de	locale/de/
 locale	tbdialout	es-ES	locale/es-ES/
 locale	tbdialout	zh-CN	locale/zh-CN/
 locale	tbdialout	nl	locale/nl/
 locale	tbdialout	fr	locale/fr/
+locale	tbdialout	sv-SE	locale/sv-SE/
 skin	tbdialout	classic/1.0	skin/
 overlay	chrome://messenger/content/addressbook/addressbook.xul	chrome://tbdialout/content/thunderbirdOverlay.xul
 style	chrome://global/content/customizeToolbar.xul	chrome://tbdialout/skin/overlay.css
