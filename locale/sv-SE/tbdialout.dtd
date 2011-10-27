@@ -1,0 +1,14 @@
+<!ENTITY tbdialoutHome.label "Ring hemtelefonen">
+<!ENTITY tbdialoutToolbarHome.label "Ring hemmet">
+<!ENTITY tbdialoutToolbarHome.tooltip "Ring till denna kontakts hemtelefonnummer">
+<!ENTITY tbdialoutWork.label "Ring arbetstelefonen">
+<!ENTITY tbdialoutToolbarWork.label "Ring arbetet">
+<!ENTITY tbdialoutToolbarWork.tooltip "Ring till denna kontakts arbetstelefonnummer">
+<!ENTITY tbdialoutCell.label "Ring mobiltelefonen">
+<!ENTITY tbdialoutToolbarCell.label "Ring mobilen">
+<!ENTITY tbdialoutToolbarCell.tooltip "Ring till denna kontakts mobiltelefonnummer">
+<!ENTITY tbdialoutToolbarMenu.label "Ring">
+<!ENTITY tbdialoutToolbarMenu.tooltip "Ring ett samtal till denna kontakt">
+<!ENTITY tbdialoutButtonMenuHome.label "Hem">
+<!ENTITY tbdialoutButtonMenuWork.label "Arbete">
+<!ENTITY tbdialoutButtonMenuCell.label "Mobil">

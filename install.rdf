@@ -39,6 +39,12 @@
         <em:description>Permet de placer des appels à partir du carnet d'adresses de Thunderbird</em:description>
         <em:translator>Olivier H. Beauchesne http://olihb.com</em:translator>
       </Description>
+      <Description>
+        <em:locale>sv</em:locale>
+        <em:name>TBDialOut</em:name>
+        <em:description>Ring telefonsamtal direkt från Thunderbirds adressbok</em:description>
+        <em:translator>Mikael Hiort af Ornäs</em:translator>
+      </Description>
     </em:localized>
 
 
@@ -53,6 +59,7 @@
     <em:translator>yfdyh000 (yfdyh000@gmail.com)</em:translator>
     <em:translator>markh van BabelZilla.org</em:translator>
     <em:translator>Olivier H. Beauchesne http://olihb.com</em:translator>
+    <em:translator>Mikael Hiort af Ornäs</em:translator>
     <em:homepageURL>http://www.oak-wood.co.uk/tbdialout</em:homepageURL>
     <em:type>2</em:type>
     <!-- <em:updateURL>https://secure.raggedstaff.net/tbdialout/update.rdf</em:updateURL> -->
