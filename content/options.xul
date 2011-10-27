@@ -49,14 +49,16 @@
       <preference id="customurl_pref" name="extensions.tbdialout.customurl" type="string"/>
       <preference id="customuser_pref" name="extensions.tbdialout.customuser" type="string"/>
       <preference id="custompass_pref" name="extensions.tbdialout.custompass" type="string"/>
+      <preference id="custominbackground_pref" name="extensions.tbdialout.custominbackground" type="bool" />
       <preference id="amichannel_pref" name="extensions.tbdialout.ami.channel" type="string"/>
       <preference id="amicontext_pref" name="extensions.tbdialout.ami.context" type="string"/>
       <preference id="amihost_pref" name="extensions.tbdialout.ami.host" type="string"/>
       <preference id="amiport_pref" name="extensions.tbdialout.ami.port" type="int"/>
       <preference id="amiuser_pref" name="extensions.tbdialout.ami.user" type="string"/>
       <preference id="amisecret_pref" name="extensions.tbdialout.ami.secret" type="string"/>
+      <preference id="amicallerid_pref" name="extensions.tbdialout.ami.callerid" type="string"/>
     </preferences>
-
+    <commandset><command id="custominbackground_change" oncommand="setCustomAuthViz()"/></commandset>
     <grid flex="1">
 
       <columns>
@@ -114,6 +116,10 @@
             <label class="tbdocustomoptions" control="custompass_text" value="&tbdocustompass_text.label;:" accesskey="&tbdocustompass_text.accesskey;"/>
             <textbox class="tbdocustomoptions" id="custompass_text" preference="custompass_pref" size="15" type="password" />
           </row>
+          <row align="center">
+            <!-- <label class="tbdocustomoptions" control="customexternalapp_cb" value="&tbdocustomexternalapp_cb.label;:" accesskey="&tbdocustomexternalapp_cb.accesskey;"/> -->
+            <checkbox class="tbdocustomoptions" id="custominbackground_cb" preference="custominbackground_pref" label="&tbdocustominbackground_cb.label;" accesskey="&tbdocustominbackground_cb.accesskey;" command="custominbackground_change" />
+          </row>
         </rows>
       </grid>
     </groupbox>
@@ -152,11 +158,14 @@
             <label class="tbdoamioptions" control="amicontext_text" value="&tbdoamicontext_text.label;:" accesskey="&tbdoamicontext_text.accesskey;"/>
             <textbox class="tbdoamioptions" id="amicontext_text" preference="amicontext_pref" size="15" />
           </row>
-
+          <row align="center">
+            <label class="tbdoamioptions" control="amicallerid_text" value="&tbdoamicallerid_text.label;:" accesskey="&tbdoamicallerid_text.accesskey;"/>
+            <textbox class="tbdoamioptions" id="amicallerid_text" preference="amicallerid_pref" size="15" />
+          </row>
         </rows>
       </grid>
     </groupbox>
-
+  <label class="text-link" href="http://www.oak-wood.co.uk/tbdialout" value="&tbdconfighelp_text.label;" />
   </prefpane>
   <script src="options.js"/>
 </prefwindow>

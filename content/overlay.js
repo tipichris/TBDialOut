@@ -5,7 +5,7 @@
   * 1.1 (the "License"); you may not use this file except in compliance with
   * the License. You may obtain a copy of the License at
   * http://www.mozilla.org/MPL/
-  * 
+  *
   * Software distributed under the License is distributed on an "AS IS" basis,
   * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
   * for the specific language governing rights and limitations under the
@@ -34,8 +34,8 @@
   * and other provisions required by the GPL or the LGPL. If you do not delete
   * the provisions above, a recipient may use your version of this file under
   * the terms of any one of the MPL, the GPL or the LGPL.
-  * 
-  * ***** END LICENSE BLOCK ***** 
+  *
+  * ***** END LICENSE BLOCK *****
   */
 var tbdialout = {
   onLoad: function() {
@@ -49,7 +49,7 @@ var tbdialout = {
 
     var tbbuttonadded = this.prefs.getBoolPref("tbbuttonadded");
     if (!tbbuttonadded) {
-      window.setTimeout(this.AddToolbarButton, 200);
+      window.setTimeout(function() {tbdialout.AddToolbarButton();}, 200);
     }
   },
 
@@ -62,7 +62,19 @@ var tbdialout = {
   // 5: Even more debug
   logger: function (level, msg) {
     if( this.prefs.getIntPref("loglevel") >= level ) {
-      this.console.logStringMessage("[TBDialout] " + msg);
+      function formattime(s) {
+        function pad(n, d) {
+          d = d;
+          n = n + '';
+          while (n.length < d) n = '0' + n;
+          return n;
+        };
+        return pad(s.getHours(),2)+':'
+          +pad(s.getMinutes(),2)+':'
+          +pad(s.getSeconds(),2)+'.'
+          +pad(s.getMilliseconds(),3)
+      }
+      this.console.logStringMessage("[TBDialout] " + formattime(new Date()) + ": " + msg);
     }
   },
 
@@ -136,6 +148,7 @@ var tbdialout = {
         customurl = this.prefs.getCharPref( "customurl" );
         customuser = this.prefs.getCharPref( "customuser" );
         custompass = this.prefs.getCharPref( "custompass" );
+        custominbackground = this.prefs.getBoolPref( "custominbackground" );
       } catch (err) {
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.message);
@@ -172,20 +185,52 @@ var tbdialout = {
         if (proto == 'custom') {
           // prefix and plus may be special characters, so need to escape pnumber in URL
           var callurl = customurl.replace(/%NUM%/,encodeURIComponent(pnumber));
-          var req = new XMLHttpRequest();
-          req.open('GET', callurl, true, customuser, custompass);
-          req.onreadystatechange = function (aEvt) {
-            if (req.readyState == 4) {
-              if(req.status != 200) {
-                var errorStatus = [req.status, req.statusText];
-                // why isn't this.strings already available in this context??
-                var strings = document.getElementById("tbdialout-strings");
-                promptService.alert(window, strings.getString("warningDefaultTitle"),
-                                  strings.getFormattedString("errorBadHTTPResponse", errorStatus));
+          if (callurl.search(/^http(s)?:/i) > -1) {
+            if (custominbackground) {
+              // do a background XMLHttpRequest
+              var req = new XMLHttpRequest();
+              req.open('GET', callurl, true, customuser, custompass);
+              req.onreadystatechange = function (aEvt) {
+                if (req.readyState == 4) {
+                  if(req.status != 200) {
+                    var errorStatus = [req.status, req.statusText];
+                    // why isn't this.strings already available in this context??
+                    var strings = document.getElementById("tbdialout-strings");
+                    promptService.alert(window, strings.getString("warningDefaultTitle"),
+                                      strings.getFormattedString("errorBadHTTPResponse", errorStatus));
+                  }
+                }
+              };
+              req.send(null);
+            } else {
+              // try to open the page in a new tab with Thunderbird
+              var tabmail = document.getElementById("tabmail");
+              if (!tabmail) {
+                // Try opening new tabs in an existing 3pane window
+                var mail3PaneWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                                                .getService(Components.interfaces.nsIWindowMediator)
+                                                .getMostRecentWindow("mail:3pane");
+                if (mail3PaneWindow) {
+                  tabmail = mail3PaneWindow.document.getElementById("tabmail");
+                  mail3PaneWindow.focus();
+                }
               }
+              // by very liberal about what the user can click to in the tab
+              var click_re = new RegExp("^http");
+              if (tabmail)
+                tabmail.openTab("contentTab", {contentPage: callurl,
+                                               clickHandler: "specialTabs.siteClickHandler(event, click_re);"});
+              else
+                window.openDialog("chrome://messenger/content/", "_blank",
+                                  "chrome,dialog=no,all", null,
+                                  { tabType: "contentTab",
+                                    tabParams: {contentPage: callurl,
+                                                 clickHandler: "specialTabs.siteClickHandler(event, click_re);"} });
             }
-          };
-          req.send(null);
+          } else {
+            // for none http(s) URIs we'll just use LaunchUrl
+            LaunchUrl(callurl);
+          }
         } else if (proto == 'asteriskami') {
           tbdialout.AsteriskAMI.dial(pnumber);
         } else {
@@ -242,8 +287,14 @@ var tbdialout = {
     catch (e) {}
   },
 
+  // #### Class for dealing with connections to Asterisk Manager Interface (AMI) ####
   AsteriskAMI: {
+
+    // ## CONNECTION HANDLING ##
+
+    // set up connection to AMI and connect it to a pump for async reading
     connect: function(hostname, port) {
+      tbdialout.logger(5, "Connecting to " + hostname + ":" + port);
       try {
         // at first, we need a nsISocketTransportService ....
         this.socket =
@@ -254,45 +305,235 @@ var tbdialout = {
       catch (e) { tbdialout.logger(1, "Error creating transport service: " + e.message); return false; }
 
       try {
+        this.inStream = this.socket.openInputStream(0,0,0);
+      }
+      catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message); return false; }
+
+      try {
         this.outStream = this.socket.openOutputStream(0,0,0);
       }
       catch (e) { tbdialout.logger(1, "Error creating output stream: " + e.message); return false; }
-      try {
 
-        this.inStream = this.socket.openInputStream(0,0,0);
+      this.pump = Components.classes["@mozilla.org/network/input-stream-pump;1"]
+              .createInstance(Components.interfaces.nsIInputStreamPump);
+
+      this.pump.init(this.inStream, -1, -1, 0, 0, false);
+
+      this.pump.asyncRead(this, this);
+
+     },
+
+    // disconnect and clean up
+    disconnect: function() {
+      tbdialout.logger(5, "Disconnecting");
+
+      try {
+        this.inStream.close();
+        this.outStream.close();
+        this.socket.close(null);
+      } catch (e) {}
+      this.connected = false;
+      this.loggedin = false;
+      this.state = "DISCONNECTED";
+      tbdialout.logger(5, "Clearing timeout");
+      window.clearTimeout(this.dialTimeOut);
+    },
+
+    // called when data is available on the pump
+    onDataAvailable: function (request, context, inputStream, offset, count) {
         this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
            .createInstance(Components.interfaces.nsIScriptableInputStream);
         this.sInStream.init(this.inStream);
+        var str = this.sInStream.read(count);
+        tbdialout.logger(4, "AMI > TBDialout:\n" + str);
+        this.parseResponse(str);
+    },
+
+    // we have to define these in order to pass 'this' to pump.asyncRead()
+    onStartRequest: function() {},
+    onStopRequest: function() {},
+
+    // process the response. This does most of the work of controlling the session
+    parseResponse: function(response) {
+
+      tbdialout.logger(5, "in parseResponse - current state is " + this.state);
+
+      // AMI responses are delimited by a blank line (eom = End of Message)
+      var eom = "\r\n\r\n"
+
+      // We haven't confirmed connection yet
+      if (this.state == "DISCONNECTED") {
+        // we got the AMI connection banner. Move on to logging in.
+        if (response.indexOf("Asterisk Call Manager") > -1) {
+          this.connected = true;
+          this.state="INIT";
+          tbdialout.logger(5, "State changed to " + this.state);
+          this.login(this.user, this.secret);
+          return;
+        } else {  // unexpected response
+          tbdialout.logger(2, "Unexpected response from server. Disconnecting:\n" + response);
+          this.disconnect();
+          return;
+        }
       }
-     catch (e) { tbdialout.logger(1, "Error creating input stream: " + e.message); return false; }
-     this.connected = true;
-     // get the initial banner from Asterisk
-     var banner = this.fetch("\r\n");
-     if (banner.indexOf("Asterisk Call Manager") == -1) {
-       tbdialout.logger(2, "Unexpected response from remote server"); 
-       return false;
-     }
-     return true;
+
+      // not a full response - stick it in the buffer and wait for more
+      else if (response.indexOf(eom) == -1) {
+        this.buffer += response;
+        return;
+      }
+
+      // we have a complete response. Reset the buffer and
+      // move on to processing it
+      else {
+        response = this.buffer + response;
+        this.buffer = "";
+      }
+
+      tbdialout.logger(5, "Full response:\n" + response);
+
+      // We may have multiple responses, especially if using astmanproxy. 
+      // Split them and look for the one we want
+      // - it has our last action ID in (this.lastAID).
+      ourResponse = "";
+      if (this.lastAID.length > 0 || this.state == "LOGOFFSENT") {
+        var aidre = new RegExp("^actionid:\\s*" + this.lastAID + "$", "im");
+
+        // ugly work around the fact that Astmanproxy doesn't send Action IDs
+        // in response to logoff
+        if (this.state == "LOGOFFSENT") {
+          var goodbyere = new RegExp(/(^goodbye:)/im);
+        }
+
+        var statements=response.split("\r\n\r\n");
+        for (x in statements) {
+          if (aidre.test(statements[x])) {
+            ourResponse = statements[x];
+            break;
+          } else if (this.state == "LOGOFFSENT" && goodbyere.test(statements[x]) ) {
+            ourResponse = statements[x];
+            break;
+          }
+        }
+      } else {
+        // this should no longer happen - we always try to send an ActionID now
+        ourResponse = response;
+      }
+
+      tbdialout.logger(5, "Relevant response:\n" + ourResponse);
+
+      // if we don't have the response we're looking for, return and wait
+      if (ourResponse.length < 1) return;
+
+      // check if this was a good response (usually contains Response: Success)
+      var okre = /^response:\s*success$/im;
+      if (this.state == "LOGOFFSENT") {
+        // Response to logoff is different, and different again from astmanproxy :(
+        okre = /(^response:\s*goodbye$)||^goodbye:/im;  
+      }
+      if (okre.test(ourResponse)) {
+        tbdialout.logger(5, "Response looks good");
+      } else {
+        tbdialout.logger(2, "Got bad response in state " + this.state + ":\n" + ourResponse);
+        // clean up and and give up
+        this.disconnect();
+        return;
+      }
+
+      // If we're here we have a good response.
+      // Take next action, depending on what state we're currently in.
+      switch (this.state) {
+        case "AUTHSENT":    // We've sent Action: login
+          this.state = "AUTHRESPONSE";
+          tbdialout.logger(5, "State changed to " + this.state);
+          this.originate(this.extension, this.channel, this.context, this.callerid);
+          break;
+
+        case "CMDSENT":    // We've sent Action: originate
+          this.state = "CMDRESPONSE";
+          tbdialout.logger(5, "State changed to " + this.state);
+          this.logoff();
+          break;
+
+        case "LOGOFFSENT":    // We've sent Action: logoff
+          this.state = "LOGOFFRESPONSE";
+          tbdialout.logger(5, "State changed to " + this.state);
+          this.disconnect();
+          break;
+
+        default:      // Some other state. Probably shouldn't be here
+          tbdialout.logger(2, "Unexpected state: " + this.state);
+      }
+
+      return;
     },
 
-    disconnect: function() {
-      this.sInStream.close();
-      this.inStream.close();
-      this.outStream.close();
-      this.socket.close(null);
+    // ## ENTRY POINT ##
+
+    // dial is the entry point, called from the main tbdialout.onMenuItemCommandDial()
+    // most of the work is actually done in parseResponse
+    dial: function(extension) {
+      this.amiprefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.ami.");
+      try {
+        var host = this.amiprefs.getCharPref( "host" );
+        var port = this.amiprefs.getIntPref( "port" );
+        this.user = this.amiprefs.getCharPref( "user" );
+        this.secret = this.amiprefs.getCharPref( "secret" );
+        this.channel = this.amiprefs.getCharPref( "channel" );
+        this.context = this.amiprefs.getCharPref( "context" );
+        this.callerid = this.amiprefs.getCharPref( "callerid" );
+        this.timeout = this.amiprefs.getIntPref( "timeout" );
+      }
+      catch (err) {
+        this.logger(1, "Error retrieving AMI preferences: " + err.message);
+        return;
+      }
+
+      this.loggedin = false;
       this.connected = false;
+      this.buffer = "";
+      this.lastAID = "";
+
+      this.extension = extension;
+
+      // Current state. One of:
+      // DISCONNECTED, INIT, AUTHSENT, AUTHRESPONSE,
+      // CMDSENT, CMDRESPONSE, LOGOFFSENT, LOGOFFRESPONSE
+      this.state = "DISCONNECTED";
+
+      // set up the connection. This sets up a pump, read asynchroneously
+      // with the data passed to parseResponse, which does the rest of the work
+      this.connect(host, port);
+
+      // If we haven't completed after a while, tear down
+      // the connection. It can take up to this.timeout to get
+      // a response to this.originate() (if no one picks up the phone)
+      // so allow a bit more than this for the other commands
+      // to run.
+      // this is passed as an argument to the anonymous function
+      // as it will be run in the global context.
+      this.dialTimeOut = window.setTimeout(
+        function (obj) {
+          obj.disconnect();
+          tbdialout.logger(5, "Dial timed out");
+        },
+        10000 + this.timeout,
+        this);
     },
 
-    // implements a crude synchroneous socket, waiting for the response
-    // ignoreaid: if true don't set an ActionID and don't check for it in
-    // response. astmanproxy doesn't always send it, eg following logoff
+    // ## COMMANDS ##
+
+    // send a command to the AMI. Adds an ActionID and
+    // records this in this.lastAID
     send: function(data, ignoreaid) {
-      if (!this.connected) return "Error: not connected";
+      if (!this.connected) return;
       var useaid = ignoreaid || false;
+      this.lastAID = "";
       if (!ignoreaid) {
         // add an ActionID header to the beginning of the data
         var aid="tbd-" + new Date().getTime() + "-" + Math.floor(Math.random()*10001);
         data = "ActionID: " + aid + "\r\n" + data;
+        this.lastAID = aid;
       }
       try {
         this.outStream.write(data, data.length);
@@ -300,136 +541,29 @@ var tbdialout = {
       }
       catch (e) {
         if (e.name == 'NS_BASE_STREAM_CLOSED') {
-          this.connected = false;
-          this.loggedin = false;
           tbdialout.logger(3, "Cannot write to socket. Connection closed.");
         } else {
           tbdialout.logger(1, "Error writing data to socket: " + e.message);
         }
+        //clean up
+        this.disconnect();
+        return false;
       }
-
-      // Fetch responses until we find one with a matching ActionID, 
-      // then return it.
-
-      if (ignoreaid) { 
-        return this.fetch();
-      }
-      var aidre = new RegExp("^actionid:\\s*" + aid + "$", "im");
-      var response = "";
-      do {
-        tbdialout.logger(4, "Waiting for response with ActionID: " + aid);
-        response = this.fetch();
-      }
-      while (this.connected && !aidre.test(response));
-
-      var statements=response.split("\r\n\r\n");
-      for (x in statements) {
-        if (aidre.test(statements[x])) {
-          tbdialout.logger(3, "Relevent response:\n" + statements[x]);
-          return statements[x];
-        }
-      }
-      tbdialout.logger(1, "Error. Failed to find response block with ActionID " + aid);
-      return "Error";
+      return true;
     },
 
-    // get response from socket in a pseudo synchroneous way so that we're sure
-    // a command was OK before we move on to the next command
-    fetch: function(eom, nested) {
-      var response = "";
-
-      // eom is the string representing the end of the response
-      var eom = eom || "\r\n\r\n";
-
-      // nest indicates how deeply the function is nested - start at 1, increase
-      // at each nesting
-      var nested = nested || false;
-
-      // don't wait forever- break the loop after a while. We use this.timeout
-      // because if the originating channel isn't answered there will be no response
-      // to the originate command until this.timeout, so wait just a bit longer
-      var timeoutID = window.setTimeout(this.onWaitTimeout, 2000 + this.timeout, this);
-
-      // wait for onInputStreamReady or timeout
-      if (this.connected) {
-        this.wait = true;
-        this.inStream.asyncWait(this,0,0,this.thread);
-        while (this.wait && this.connected) this.thread.processNextEvent(true);
-      }
-
-      window.clearTimeout(timeoutID);
-
-      try {
-        while (this.connected) {
-          var chunk = this.sInStream.read(4096);
-          if (chunk.length == 0)
-            break;
-          response += chunk;
-        }
-      } catch (e) { 
-        if (e.name == 'NS_BASE_STREAM_CLOSED') {
-          this.connected = false;
-          this.loggedin = false;
-          tbdialout.logger(3, "Cannot read from socket. Connection closed.");
-        } else {
-          tbdialout.logger(1, "Error reading data from socket: " + e.message);
-        }
-      }
-
-      // if we didn't get our eom, go round again
-      while (this.connected && response.indexOf(eom) == -1) {
-        tbdialout.logger(5, "No blank line in response:\n" + response);
-        response += this.fetch(eom, true);
-      }
-
-      if (!nested) {tbdialout.logger(4, "AMI > TBDialout:\n" + response);}
-
-      return response;
-    },
-
+    // login to AMI
     login: function(username, secret) {
+      tbdialout.logger(5, "Logging in");
       var cmdstring = "Action: Login\r\n"
       + "Username: " + username  + "\r\n"
       + "Secret: " + secret  + "\r\n"
       + "Events: off\r\n"
       + "\r\n";
-      var response = this.send(cmdstring);
-      var okre = /response:\s*success/im;
-      if (okre.test(response)) {
-        this.loggedin = true;
-      } else {
-        tbdialout.logger(1, "Login to Asterisk AMI failed. Got response:\n" + response);
-      }
+      if (this.send(cmdstring)) this.state = "AUTHSENT";
     },
 
-    // Let's our waiting thread know to stop waiting
-    onInputStreamReady: function(e) {
-       tbdialout.logger(5, "AsteriskAMI.onInputStreamReady called");
-       this.wait = false;
-    },
-
-    // obj should be this. Used because setTimeout executes in a different context
-    // so this references the wrong object. 
-    // Lets our waiting thread know to stop waiting
-    onWaitTimeout: function (obj) {
-      tbdialout.logger(5, "Timed out waiting for asyncWait to signal (timeout set to " + obj.timeout + ")");
-      obj.wait = false;
-    },
-
-    // obj should be this. Used because setTimeout executes in a different context
-    // so this references the wrong object. 
-    // Bring things to a halt by disconnecting from AMI
-    onDialTimeout: function (obj) {
-      tbdialout.logger(5, "Timed out waiting for dial to complete");
-      obj.disconnect();
-    },
-
-    logoff: function() {
-      var cmdstring = "Action: Logoff\r\n\r\n";
-      // don't wait for ActionID when logging off - astmanproxy doesn't return one :(
-      this.send(cmdstring, true);
-    },
-
+    // Set the call up - send the Originate action to AMI
     originate: function(extension, channel, context, callerid) {
       var cmdstring = "Action: Originate\r\n"
       + "Exten: " + extension + "\r\n"
@@ -437,59 +571,18 @@ var tbdialout = {
       + "Priority: 1\r\n"
       + "Channel: " + channel + "\r\n"
       + "Timeout: " + this.timeout + "\r\n";
-      if (callerid.length > 0) { 
+      if (callerid.length > 0) {
         cmdstring += "Callerid: " + callerid + "\r\n";
       }
       cmdstring += "\r\n";
-      var response = this.send(cmdstring);
-      var okre = /response:\s*success/im;
-      if (okre.test(response)) {
-        tbdialout.logger(3, "Call to " + extension + " set up on channel " + channel);
-      } else {
-        tbdialout.logger(2, "Failed to originate call to " + extension + ":\n" + response);
-      }
+      if(this.send(cmdstring)) this.state = "CMDSENT";
     },
 
-    dial: function(extension) {
-      this.amiprefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.ami.");
-      try {
-        var host = this.amiprefs.getCharPref( "host" );
-        var port = this.amiprefs.getIntPref( "port" );
-        var user = this.amiprefs.getCharPref( "user" );
-        var secret = this.amiprefs.getCharPref( "secret" );
-        var channel = this.amiprefs.getCharPref( "channel" );
-        var context = this.amiprefs.getCharPref( "context" );
-        var callerid = this.amiprefs.getCharPref( "callerid" );
-        this.timeout = this.amiprefs.getIntPref( "timeout" );
-      } 
-      catch (err) {
-        this.logger(1, "Error retrieving AMI preferences: " + err.message);
-        return;
-      }
-
-      // we need the thread object to do some waiting in this.fetch()
-      this.thread = Components.classes["@mozilla.org/thread-manager;1"]
-                        .getService(Components.interfaces.nsIThreadManager)
-                        .currentThread;
-
-      this.loggedin = false;
-      this.connected = false;
-
-      // as a sanity check, timeout and disconnect to prevent getting stuck in a loop 
-      // waiting for a response that is never going to come. Set it 10s more than this.timeout
-      var dialTimeoutID = window.setTimeout(this.onDialTimeout, 10000 + this.timeout, this);
-
-      this.connect(host, port) &&
-      this.login(user, secret);
-      if (this.connected && this.loggedin) {
-        this.originate(extension, channel, context, callerid);
-        this.logoff();
-      }
-      if (this.connected)
-        this.disconnect();
-
-      window.clearTimeout(dialTimeoutID);
-    }
+    // logoff from AMI
+    logoff: function() {
+      var cmdstring = "Action: Logoff\r\n\r\n";
+      if(this.send(cmdstring)) this.state="LOGOFFSENT";
+    },
   },
 
 };
