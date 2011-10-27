@@ -17,6 +17,8 @@
 <!ENTITY tbdocustomhint_text "Ange en egen URL som TBDialOut skall kontakta. Ersätt telefonnumret med &#37;NUM&#37;">
 <!ENTITY tbdocustomurl_menu.label "Egen URL">
 <!ENTITY tbdocustomurl_boxcaption.label "Konfigurera egen URL">
+<!ENTITY tbdocustominbackground_cb.label "Öppna i bakgrunden (endast http/https)">
+<!ENTITY tbdocustominbackground_cb.accesskey "b">
 <!-- options relating to the Asterisk Manager Interface -->
 <!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
 <!ENTITY tbdoami_boxcaption.label "Konfigurera Asterisk AMI">
@@ -32,3 +34,6 @@
 <!ENTITY tbdoamichannel_text.accesskey "l">
 <!ENTITY tbdoamicontext_text.label "Kontext">
 <!ENTITY tbdoamicontext_text.accesskey "x">
+<!ENTITY tbdoamicallerid_text.label "Uppringarens ID">
+<!ENTITY tbdoamicallerid_text.accesskey "I">
+<!ENTITY tbdconfighelp_text.label "Hjälp">
