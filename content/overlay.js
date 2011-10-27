@@ -216,16 +216,19 @@ var tbdialout = {
                 }
               }
               // by very liberal about what the user can click to in the tab
-              var click_re = new RegExp("^http");
+              // they may need to click on to complete the call, and we don't know what
+              // the URI is.
+              var click_re = "^http";
+              var clickhandler = "specialTabs.siteClickHandler(event, new RegExp(\"" + click_re + "\"));";
               if (tabmail)
                 tabmail.openTab("contentTab", {contentPage: callurl,
-                                               clickHandler: "specialTabs.siteClickHandler(event, click_re);"});
+                                               clickHandler: clickhandler});
               else
                 window.openDialog("chrome://messenger/content/", "_blank",
                                   "chrome,dialog=no,all", null,
                                   { tabType: "contentTab",
                                     tabParams: {contentPage: callurl,
-                                                 clickHandler: "specialTabs.siteClickHandler(event, click_re);"} });
+                                                 clickHandler: clickhandler} });
             }
           } else {
             // for none http(s) URIs we'll just use LaunchUrl

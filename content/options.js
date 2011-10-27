@@ -38,44 +38,74 @@
   * ***** END LICENSE BLOCK ***** 
   */
 
-function setCustomOptViz() {
-  var custom_elements = document.getElementsByClassName("tbdocustomoptions");
-  var ami_elements = document.getElementsByClassName("tbdoamioptions");
-  var idx;
-  for (idx in custom_elements) {
-    if (document.getElementById("proto_menu").value == 'custom') {
-      custom_elements[idx].disabled = false;
-    } else {
-      custom_elements[idx].disabled = true;
-    }
-  }
-  for (idx in ami_elements) {
-    if (document.getElementById("proto_menu").value == 'asteriskami') {
-      ami_elements[idx].disabled = false;
-    } else {
-      ami_elements[idx].disabled = true;
-    }
-  }
-  setCustomAuthViz();
-}
-
-function setCustomAuthViz () {
-  if (document.getElementById("proto_menu").value == 'custom') {
-    var custom_auth_elements = new Array();
-    custom_auth_elements.push(document.getElementById("customuser_text"));
-    custom_auth_elements.push(document.getElementById("custompass_text"));
-    var loadhidden = document.getElementById("custominbackground_cb").checked;
+var tbdialoutprefs = {
+  setCustomOptViz: function () {
+    var custom_elements = document.getElementsByClassName("tbdocustomoptions");
+    var ami_elements = document.getElementsByClassName("tbdoamioptions");
     var idx;
-    for (idx in custom_auth_elements) {
-      if (loadhidden) {
-        custom_auth_elements[idx].disabled = false;
+    for (idx in custom_elements) {
+      if (document.getElementById("proto_menu").value == 'custom') {
+        custom_elements[idx].disabled = false;
       } else {
-        custom_auth_elements[idx].disabled = true;
+        custom_elements[idx].disabled = true;
       }
     }
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-              .getService(Components.interfaces.nsIPrefService)
-              .getBranch("extensions.tbdialout.");
-    prefs.setBoolPref("custominbackground", loadhidden);
+    for (idx in ami_elements) {
+      if (document.getElementById("proto_menu").value == 'asteriskami') {
+        ami_elements[idx].disabled = false;
+      } else {
+        ami_elements[idx].disabled = true;
+      }
+    }
+    this.setCustomAuthViz();
+  },
+
+  setCustomAuthViz: function () {
+    if (document.getElementById("proto_menu").value == 'custom') {
+      var custom_auth_elements = new Array();
+      custom_auth_elements.push(document.getElementById("customuser_text"));
+      custom_auth_elements.push(document.getElementById("custompass_text"));
+      var loadhidden = document.getElementById("custominbackground_cb").checked;
+      var idx;
+      for (idx in custom_auth_elements) {
+        if (loadhidden) {
+          custom_auth_elements[idx].disabled = false;
+        } else {
+          custom_auth_elements[idx].disabled = true;
+        }
+      }
+      var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                .getService(Components.interfaces.nsIPrefService)
+                .getBranch("extensions.tbdialout.");
+      prefs.setBoolPref("custominbackground", loadhidden);
+    }
+  },
+
+  openHelp: function () {
+    var helpurl = "http://www.oak-wood.co.uk/tbdialout/#configure";
+    // try to open the page in a new tab with Thunderbird
+    var tabmail = document.getElementById("tabmail");
+    if (!tabmail) {
+      // Try opening new tabs in an existing 3pane window
+      var mail3PaneWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                                      .getService(Components.interfaces.nsIWindowMediator)
+                                      .getMostRecentWindow("mail:3pane");
+      if (mail3PaneWindow) {
+        tabmail = mail3PaneWindow.document.getElementById("tabmail");
+        mail3PaneWindow.focus();
+      }
+    }
+    // allow user to click within the site
+    var click_re = "^http://www.oak-wood.co.uk/";
+    var clickhandler = "specialTabs.siteClickHandler(event, new RegExp(\"" + click_re + "\"));";
+    if (tabmail)
+      tabmail.openTab("contentTab", {contentPage: helpurl,
+                                      clickHandler: clickhandler});
+    else
+      window.openDialog("chrome://messenger/content/", "_blank",
+                        "chrome,dialog=no,all", null,
+                        { tabType: "contentTab",
+                          tabParams: {contentPage: helpurl,
+                                        clickHandler: clickhandler} });
   }
 }

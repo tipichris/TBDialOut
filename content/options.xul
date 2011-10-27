@@ -40,7 +40,7 @@
 
 <!DOCTYPE prefwindow SYSTEM "chrome://tbdialout/locale/prefwindow.dtd">
 <prefwindow id="tbdialoutPreferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="&tbdoprefwindow.title;" buttons="accept,cancel">
-  <prefpane id="tbdialoutPrefPane1" label="&tbdopane1.title;" onpaneload="setCustomOptViz()">
+  <prefpane id="tbdialoutPrefPane1" label="&tbdopane1.title;" onpaneload="tbdialoutprefs.setCustomOptViz()">
 
     <preferences>
       <preference id="proto_pref" name="extensions.tbdialout.proto" type="string"/>
@@ -58,7 +58,7 @@
       <preference id="amisecret_pref" name="extensions.tbdialout.ami.secret" type="string"/>
       <preference id="amicallerid_pref" name="extensions.tbdialout.ami.callerid" type="string"/>
     </preferences>
-    <commandset><command id="custominbackground_change" oncommand="setCustomAuthViz()"/></commandset>
+    <commandset><command id="custominbackground_change" oncommand="tbdialoutprefs.setCustomAuthViz()"/></commandset>
     <grid flex="1">
 
       <columns>
@@ -69,7 +69,7 @@
       <rows>
         <row align="center">
           <label control="proto_menu" value="&tbdoproto_menu.label;:" accesskey="&tbdoproto_menu.accesskey;"/>
-          <menulist id="proto_menu" preference="proto_pref" oncommand="setCustomOptViz()">
+          <menulist id="proto_menu" preference="proto_pref" oncommand="tbdialoutprefs.setCustomOptViz()">
             <menupopup>
                 <menuitem label="callto:" value="callto:"/>
                 <menuitem label="tel:" value="tel:"/>
@@ -165,7 +165,7 @@
         </rows>
       </grid>
     </groupbox>
-  <label class="text-link" href="http://www.oak-wood.co.uk/tbdialout" value="&tbdconfighelp_text.label;" />
+  <label class="text-link" onclick="tbdialoutprefs.openHelp();" value="&tbdconfighelp_text.label;" />
   </prefpane>
   <script src="options.js"/>
 </prefwindow>
