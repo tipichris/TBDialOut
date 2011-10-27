@@ -131,6 +131,7 @@ var tbdialout = {
     if ((OKArgs.join(",")+",").indexOf(num + ",") == -1) {
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getString("errorBadArgsMsg") );
+        tbdialout.logger(2, "onMenuItemCommandDial called with invalid argument " + num);
         return;
     }
 
@@ -167,6 +168,7 @@ var tbdialout = {
       var pnumber;
       var leadingplus = false;
       pnumber = cards[0].getProperty(num, "");
+      tbdialout.logger(5, "Starting to dial for number " + pnumber);
 
       // check for a leading +
       if (pnumber.charAt(0) == '+') {
@@ -182,12 +184,15 @@ var tbdialout = {
           pnumber = plus+pnumber;
         }
         pnumber = prefix+pnumber;
+        tbdialout.logger (5, "Will attempt to dial " + pnumber);
         if (proto == 'custom') {
           // prefix and plus may be special characters, so need to escape pnumber in URL
           var callurl = customurl.replace(/%NUM%/,encodeURIComponent(pnumber));
+          tbdialout.logger(5, "Going to access URL " + callurl);
           if (callurl.search(/^http(s)?:/i) > -1) {
             if (custominbackground) {
               // do a background XMLHttpRequest
+              tbdialout.logger(5, "Starting background call to " + callurl);
               var req = new XMLHttpRequest();
               req.open('GET', callurl, true, customuser, custompass);
               req.onreadystatechange = function (aEvt) {
@@ -198,12 +203,14 @@ var tbdialout = {
                     var strings = document.getElementById("tbdialout-strings");
                     promptService.alert(window, strings.getString("warningDefaultTitle"),
                                       strings.getFormattedString("errorBadHTTPResponse", errorStatus));
+                    tbdialout.logger(2, "Unexpected response from HTTP server: " + req.status + ": " + req.statusText);
                   }
                 }
               };
               req.send(null);
             } else {
               // try to open the page in a new tab with Thunderbird
+              tbdialout.logger(5, "Opening URL in new tab: " + callurl);
               var tabmail = document.getElementById("tabmail");
               if (!tabmail) {
                 // Try opening new tabs in an existing 3pane window
@@ -232,11 +239,13 @@ var tbdialout = {
             }
           } else {
             // for none http(s) URIs we'll just use LaunchUrl
+            tbdialout.logger(5, "Launching URL with LaunchURL: " + callurl);
             LaunchUrl(callurl);
           }
         } else if (proto == 'asteriskami') {
           tbdialout.AsteriskAMI.dial(pnumber);
         } else {
+          tbdialout.logger(5, "Launching URL with LaunchURL: " + proto + pnumber);
           LaunchUrl(proto+pnumber);
         }
       }
@@ -244,11 +253,14 @@ var tbdialout = {
         var phoneType = [this.strings.getString(num)];
         promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getFormattedString("noValidNumberMsg", phoneType));
+        tbdialout.logger(2, "No valid " + phoneType + " found for contact");
       }
     }
     else {
       promptService.alert(window, this.strings.getString("warningDefaultTitle"),
                                this.strings.getString("selectExactlyOneMsg"));
+
+      tbdialout.logger(2, "onMenuItemCommandDial called whilst too many cards selected");
     }
   },
 
@@ -286,6 +298,7 @@ var tbdialout = {
         catch (e) {}
       }
     prefs.setBoolPref("tbbuttonadded", true);
+    this.onSelectNewRow();
     }
     catch (e) {}
   },
