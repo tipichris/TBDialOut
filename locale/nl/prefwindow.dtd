@@ -17,8 +17,8 @@
 <!ENTITY tbdocustomhint_text "Voer een aangepaste URL in waarmee TBDialOut contact kan opnemen. Vervang het telefoonnummer door &#37;NUM&#37;">
 <!ENTITY tbdocustomurl_menu.label "Aangepaste URL">
 <!ENTITY tbdocustomurl_boxcaption.label "Opties aangepaste URL">
-<!ENTITY tbdocustominbackground_cb.label "Open in background (http/https only)">
-<!ENTITY tbdocustominbackground_cb.accesskey "b">
+<!ENTITY tbdocustominbackground_cb.label "Openen in de achtergrond (alleen http/https)">
+<!ENTITY tbdocustominbackground_cb.accesskey "a">
 <!-- options relating to the Asterisk Manager Interface -->
 <!ENTITY tbdoasteriskami_menu.label "Asterisk-AMI">
 <!ENTITY tbdoami_boxcaption.label "Opties Asterisk-AMI">
@@ -34,6 +34,6 @@
 <!ENTITY tbdoamichannel_text.accesskey "k">
 <!ENTITY tbdoamicontext_text.label "Context">
 <!ENTITY tbdoamicontext_text.accesskey "x">
-<!ENTITY tbdoamicallerid_text.label "Caller ID">
+<!ENTITY tbdoamicallerid_text.label "Beller-ID">
 <!ENTITY tbdoamicallerid_text.accesskey "I">
 <!ENTITY tbdconfighelp_text.label "Help">
