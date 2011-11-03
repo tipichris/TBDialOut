@@ -17,8 +17,8 @@
 <!ENTITY tbdocustomhint_text "Ingresar URL de contacto para TBDialOut. Sustituir el número de tel. por &#37;NUM&#37;">
 <!ENTITY tbdocustomurl_menu.label "URL personalizada">
 <!ENTITY tbdocustomurl_boxcaption.label "Opciones URL personalizada">
-<!ENTITY tbdocustominbackground_cb.label "Open in background (http/https only)">
-<!ENTITY tbdocustominbackground_cb.accesskey "b">
+<!ENTITY tbdocustominbackground_cb.label "Abrir de fondo (solo http/https)">
+<!ENTITY tbdocustominbackground_cb.accesskey "f">
 <!-- options relating to the Asterisk Manager Interface -->
 <!ENTITY tbdoasteriskami_menu.label "AMI de Asterisk">
 <!ENTITY tbdoami_boxcaption.label "Configuración AMI de Asterisk">
@@ -36,4 +36,4 @@
 <!ENTITY tbdoamicontext_text.accesskey "x">
 <!ENTITY tbdoamicallerid_text.label "Caller ID">
 <!ENTITY tbdoamicallerid_text.accesskey "I">
-<!ENTITY tbdconfighelp_text.label "Help">
+<!ENTITY tbdconfighelp_text.label "Ayuda">
