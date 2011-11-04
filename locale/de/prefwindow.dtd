@@ -34,6 +34,6 @@
 <!ENTITY tbdoamichannel_text.accesskey "T">
 <!ENTITY tbdoamicontext_text.label "Context">
 <!ENTITY tbdoamicontext_text.accesskey "x">
-<!ENTITY tbdoamicallerid_text.label "Caller ID">
-<!ENTITY tbdoamicallerid_text.accesskey "I">
-<!ENTITY tbdconfighelp_text.label "Help">
+<!ENTITY tbdoamicallerid_text.label "Rufnummer">
+<!ENTITY tbdoamicallerid_text.accesskey "R">
+<!ENTITY tbdconfighelp_text.label "Hilfe">
