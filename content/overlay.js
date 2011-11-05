@@ -307,7 +307,8 @@ var tbdialout = {
   AsteriskAMI: {
 
     // Current state. One of:
-    // DISCONNECTED            We are not connected, or haven't yet got the AMI banner
+    // DISCONNECTED            We are not connected, 
+    // CONNECTING              We haven't yet got the AMI banner to confirm connection
     // INIT                    Connection confirmed by AMI banner but not yet logged in
     // AUTHSENT, AUTHRESPONSE  Login request sent / OK login response received
     // CMDSENT, CMDRESPONSE    Originate command sent / OK response received
@@ -318,6 +319,7 @@ var tbdialout = {
 
     // set up connection to AMI and connect it to a pump for async reading
     connect: function(hostname, port) {
+      this.state = "CONNECTING";
       tbdialout.logger(5, "Connecting to " + hostname + ":" + port);
       try {
         // at first, we need a nsISocketTransportService ....
@@ -392,7 +394,7 @@ var tbdialout = {
       var eom = "\r\n\r\n"
 
       // We haven't confirmed connection yet
-      if (this.state == "DISCONNECTED") {
+      if (this.state == "CONNECTING") {
         // we got the AMI connection banner. Move on to logging in.
         if (response.indexOf("Asterisk Call Manager") > -1) {
           this.connected = true;
@@ -466,7 +468,7 @@ var tbdialout = {
       } else {
         tbdialout.logger(2, "Got bad response in state " + this.state + ":\n" + ourResponse);
         // clean up and and give up
-        this.disconnect();
+        this.bailout();
         return;
       }
 
@@ -476,6 +478,7 @@ var tbdialout = {
         case "AUTHSENT":    // We've sent Action: login
           this.state = "AUTHRESPONSE";
           tbdialout.logger(5, "State changed to " + this.state);
+          this.loggedin = true;
           this.originate(this.extension, this.channel, this.context, this.callerid);
           break;
 
@@ -508,7 +511,7 @@ var tbdialout = {
       // Warn the user and abandon - processing two requests at a time might do
       // strange things.
       if (this.state != "DISCONNECTED") {
-        tbdialout.logger(2, "AsteriskAMI is currently busy. Abandoning request (state: " + this.state + ")");
+        tbdialout.logger(3, "AsteriskAMI is currently busy. Abandoning request (state: " + this.state + ")");
         var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
             .getService(Components.interfaces.nsIPromptService);
         promptService.alert(window, tbdialout.strings.getString("warningDefaultTitle"),
@@ -540,20 +543,20 @@ var tbdialout = {
       this.extension = extension;
 
       // set up the connection. This sets up a pump, read asynchroneously
-      // with the data passed to parseResponse, which does the rest of the work
+      // with the data passed to parseResponse(), which does the rest of the work
       this.connect(host, port);
 
-      // If we haven't completed after a while, tear down
-      // the connection. It can take up to this.timeout to get
+      // If we haven't completed after a while, give up.
+      // It can take up to this.timeout to get
       // a response to this.originate() (if no one picks up the phone)
       // so allow a bit more than this for the other commands
       // to run.
-      // this is passed as an argument to the anonymous function
+      // 'this' is passed as an argument to the anonymous function
       // as it will be run in the global context.
       this.dialTimeOut = window.setTimeout(
         function (obj) {
-          obj.disconnect();
-          tbdialout.logger(5, "Dial timed out");
+          tbdialout.logger(5, "AsteriskAmi.dial timed out in state " + obj.state);
+          obj.bailout();
         },
         10000 + this.timeout,
         this);
@@ -619,7 +622,19 @@ var tbdialout = {
     // logoff from AMI
     logoff: function() {
       var cmdstring = "Action: Logoff\r\n\r\n";
-      if(this.send(cmdstring)) this.state="LOGOFFSENT";
+      if(this.send(cmdstring)) {
+        this.state="LOGOFFSENT";
+        this.loggedin = false;
+      }
+    },
+
+    // ## Other ##
+
+    // Called when we time out or get a bad response. Politely
+    // giveup - send logoff if we are logged in, then disconnect.
+    bailout: function() {
+      if (this.loggedin) this.logoff();
+      this.disconnect();
     },
   },
 
