@@ -1,0 +1,14 @@
+<!ENTITY tbdialoutHome.label "Позвонить на домашний">
+<!ENTITY tbdialoutToolbarHome.label "На домашний">
+<!ENTITY tbdialoutToolbarHome.tooltip "Позвонить этому контакту на домашний">
+<!ENTITY tbdialoutWork.label "Позвонить на рабочий">
+<!ENTITY tbdialoutToolbarWork.label "Позвонить на домашний">
+<!ENTITY tbdialoutToolbarWork.tooltip "Позвонить этому контакту на рабочий">
+<!ENTITY tbdialoutCell.label "Позвонить на мобильный">
+<!ENTITY tbdialoutToolbarCell.label "На мобильный">
+<!ENTITY tbdialoutToolbarCell.tooltip "Позвонить этому контакту на мобильный">
+<!ENTITY tbdialoutToolbarMenu.label "Позвонить">
+<!ENTITY tbdialoutToolbarMenu.tooltip "Позвонить этому контакту">
+<!ENTITY tbdialoutButtonMenuHome.label "Домашний">
+<!ENTITY tbdialoutButtonMenuWork.label "Рабочий">
+<!ENTITY tbdialoutButtonMenuCell.label "Мобильный">

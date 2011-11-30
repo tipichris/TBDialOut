@@ -1,0 +1,14 @@
+<!ENTITY tbdialoutHome.label "Chiama il numero di casa">
+<!ENTITY tbdialoutToolbarHome.label "Chiama a casa">
+<!ENTITY tbdialoutToolbarHome.tooltip "Chiama il numero di casa del contatto selezionato">
+<!ENTITY tbdialoutWork.label "Chiama il numero del lavoro">
+<!ENTITY tbdialoutToolbarWork.label "Chiama al lavoro">
+<!ENTITY tbdialoutToolbarWork.tooltip "Chiama il numero del lavoro del contatto selezionato">
+<!ENTITY tbdialoutCell.label "Chiama il nero del cellulare">
+<!ENTITY tbdialoutToolbarCell.label "Chiama al cellulare">
+<!ENTITY tbdialoutToolbarCell.tooltip "Chiama il numero del cellulare del contatto selezionato">
+<!ENTITY tbdialoutToolbarMenu.label "Chiama">
+<!ENTITY tbdialoutToolbarMenu.tooltip "Chiama il contatto selezionato">
+<!ENTITY tbdialoutButtonMenuHome.label "Numero di casa">
+<!ENTITY tbdialoutButtonMenuWork.label "Numero del lavoro">
+<!ENTITY tbdialoutButtonMenuCell.label "Numero del cellulare">

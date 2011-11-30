@@ -45,13 +45,25 @@
         <em:description>Ring telefonsamtal direkt från Thunderbirds adressbok</em:description>
         <em:translator>Mikael Hiort af Ornäs</em:translator>
       </Description>
+      <Description>
+        <em:locale>it</em:locale>
+        <em:name>TBDialOut</em:name>
+        <em:description>Permette di effettuare chiamate direttamente dalla rubrica di Thunderbird</em:description>
+        <em:translator>Luana Di Muzio - BabelZilla</em:translator>
+      </Description>
+      <Description>
+        <em:locale>ru</em:locale>
+        <em:name>TBDialOut</em:name>
+        <em:description>Звонки напрямую из Thunderbird</em:description>
+        <em:translator>Evgeny Sementsov</em:translator>
+      </Description>
     </em:localized>
 
 
     <em:name>TBDialOut</em:name>
     <em:description>Place phone calls directly from Thunderbird's address book</em:description>
 
-    <em:version>1.7.1</em:version>
+    <em:version>1.7.1.1rc1</em:version>
     <em:creator>Chris Hastie</em:creator>
     <em:developer>MSelector</em:developer>
     <em:translator>Rainer Piper</em:translator>
@@ -60,6 +72,8 @@
     <em:translator>markh van BabelZilla.org</em:translator>
     <em:translator>Olivier H. Beauchesne http://olihb.com</em:translator>
     <em:translator>Mikael Hiort af Ornäs</em:translator>
+    <em:translator>Luana Di Muzio - BabelZilla</em:translator>
+    <em:translator>Evgeny Sementsov</em:translator>
     <em:homepageURL>http://www.oak-wood.co.uk/tbdialout</em:homepageURL>
     <em:type>2</em:type>
     <!-- <em:updateURL>https://secure.raggedstaff.net/tbdialout/update.rdf</em:updateURL> -->

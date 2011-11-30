@@ -1,0 +1,39 @@
+<!-- do not translate extension name: TBDialOut -->
+<!ENTITY tbdoprefwindow.title "Impostazioni di TBDialOut">
+<!ENTITY tbdopane1.title "Impostazioni di TBDialOut">
+<!ENTITY tbdoproto_menu.label "Schema URL da utilizzare">
+<!ENTITY tbdoproto_menu.accesskey "L">
+<!ENTITY tbdoprefix_text.label "Prefisso per i numeri da chiamare">
+<!ENTITY tbdoprefix_text.accesskey "h">
+<!ENTITY tbdoplus_text.label "Sostituisci il segno + con">
+<!ENTITY tbdoplus_text.accesskey "t">
+<!ENTITY tbdocustomurl_text.label "URL personalizzato">
+<!ENTITY tbdocustomurl_text.accesskey "R">
+<!ENTITY tbdocustomuser_text.label "Nome utente">
+<!ENTITY tbdocustomuser_text.accesskey "u">
+<!ENTITY tbdocustompass_text.label "Password">
+<!ENTITY tbdocustompass_text.accesskey "w">
+<!-- do not translate &#37;NUM&#37; -->
+<!ENTITY tbdocustomhint_text "Immettere l&apos;URL personalizzato che TBDialOut deve contattare. Sostituire il numero di telefono con &#37;NUM&#37;">
+<!ENTITY tbdocustomurl_menu.label "URL personalizzato">
+<!ENTITY tbdocustomurl_boxcaption.label "Opzioni di URL personalizzato">
+<!ENTITY tbdocustominbackground_cb.label "Apri in secondo piano (http/https unicamente)">
+<!ENTITY tbdocustominbackground_cb.accesskey "A">
+<!-- options relating to the Asterisk Manager Interface -->
+<!ENTITY tbdoasteriskami_menu.label "Interfaccia di Asterisk">
+<!ENTITY tbdoami_boxcaption.label "Opzioni dell&apos;interfaccia di Asterisk">
+<!ENTITY tbdoamihost_text.label "Server">
+<!ENTITY tbdoamihost_text.accesskey "S">
+<!ENTITY tbdoamiport_text.label "Porta">
+<!ENTITY tbdoamiport_text.accesskey "P">
+<!ENTITY tbdoamiuser_text.label "Nome utente">
+<!ENTITY tbdoamiuser_text.accesskey "N">
+<!ENTITY tbdoamisecret_text.label "Segreto">
+<!ENTITY tbdoamisecret_text.accesskey "e">
+<!ENTITY tbdoamichannel_text.label "Canale d&apos;origine">
+<!ENTITY tbdoamichannel_text.accesskey "o">
+<!ENTITY tbdoamicontext_text.label "Contesto">
+<!ENTITY tbdoamicontext_text.accesskey "C">
+<!ENTITY tbdoamicallerid_text.label "ID del chiamante">
+<!ENTITY tbdoamicallerid_text.accesskey "I">
+<!ENTITY tbdconfighelp_text.label "Contenuti guida">
