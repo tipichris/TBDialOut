@@ -37,7 +37,7 @@
   - the terms of any one of the MPL, the GPL or the LGPL.
   - 
   - ***** END LICENSE BLOCK ***** -->
-
+<?xml-stylesheet href="chrome://tbdialout/skin/options.css" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://tbdialout/locale/prefwindow.dtd">
 <prefwindow id="tbdialoutPreferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="&tbdoprefwindow.title;" buttons="accept,cancel">
   <prefpane id="tbdialoutPrefPane1" label="&tbdopane1.title;" onpaneload="tbdialoutprefs.setCustomOptViz()">
@@ -115,6 +115,7 @@
           <row align="center">
             <label class="tbdocustomoptions" control="custompass_text" value="&tbdocustompass_text.label;:" accesskey="&tbdocustompass_text.accesskey;"/>
             <textbox class="tbdocustomoptions" id="custompass_text" preference="custompass_pref" size="15" type="password" />
+            <image id="tbdo-opt-custompass-img" class="alert-icon" height="24" width="24" onclick="tbdialoutprefs.openPassWarn();" tooltiptext="&tbdconfighelp_text.label;" />
           </row>
           <row align="center">
             <!-- <label class="tbdocustomoptions" control="customexternalapp_cb" value="&tbdocustomexternalapp_cb.label;:" accesskey="&tbdocustomexternalapp_cb.accesskey;"/> -->
@@ -149,6 +150,7 @@
           <row align="center">
             <label class="tbdoamioptions" control="amisecret_text" value="&tbdoamisecret_text.label;:" accesskey="&tbdoamisecret_text.accesskey;"/>
             <textbox class="tbdoamioptions" id="amisecret_text" preference="amisecret_pref" size="15" type="password" />
+            <image id="tbdo-opt-amisecret-img" class="alert-icon" height="24" width="24" onclick="tbdialoutprefs.openPassWarn();" tooltiptext="&tbdconfighelp_text.label;" />
           </row>
           <row align="center">
             <label class="tbdoamioptions" control="amichannel_text" value="&tbdoamichannel_text.label;:" accesskey="&tbdoamichannel_text.accesskey;"/>
@@ -165,7 +167,10 @@
         </rows>
       </grid>
     </groupbox>
-  <label class="text-link" onclick="tbdialoutprefs.openHelp();" value="&tbdconfighelp_text.label;" />
+  <hbox flex="1">
+  <label id="tbdo-opt-help-txt" class="text-link" onclick="tbdialoutprefs.openHelp();" value="&tbdconfighelp_text.label;" />
+  <image id="tbdo-opt-help-img" class="message-icon" height="24" width="24" tooltiptext="&tbdconfighelp_text.label;"  onclick="tbdialoutprefs.openHelp();" />
+  </hbox>
   </prefpane>
   <script src="options.js"/>
 </prefwindow>

@@ -107,5 +107,10 @@ var tbdialoutprefs = {
                         { tabType: "contentTab",
                           tabParams: {contentPage: helpurl,
                                         clickHandler: clickhandler} });
+  },
+  
+  openPassWarn: function () {
+    var warnurl = "chrome://tbdialout/content/passwarn.xul";
+    window.openDialog(warnurl, "tbdo_pass_warn", "width=800px,height=350px");
   }
 }
