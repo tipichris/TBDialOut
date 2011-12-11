@@ -39,8 +39,8 @@
   - ***** END LICENSE BLOCK ***** -->
 <?xml-stylesheet href="chrome://tbdialout/skin/options.css" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://tbdialout/locale/prefwindow.dtd">
-<prefwindow id="tbdialoutPreferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="&tbdoprefwindow.title;" buttons="accept,cancel">
-  <prefpane id="tbdialoutPrefPane1" label="&tbdopane1.title;" onpaneload="tbdialoutprefs.setCustomOptViz()">
+<prefwindow id="tbdialoutPreferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="&tbdoprefwindow.title;" buttons="accept,cancel" onunload="tbdialoutprefs.savePasswords();" >
+  <prefpane id="tbdialoutPrefPane1" label="&tbdopane1.title;" onpaneload="tbdialoutprefs.onLoad()" >
 
     <preferences>
       <preference id="proto_pref" name="extensions.tbdialout.proto" type="string"/>
@@ -55,7 +55,7 @@
       <preference id="amihost_pref" name="extensions.tbdialout.ami.host" type="string"/>
       <preference id="amiport_pref" name="extensions.tbdialout.ami.port" type="int"/>
       <preference id="amiuser_pref" name="extensions.tbdialout.ami.user" type="string"/>
-      <preference id="amisecret_pref" name="extensions.tbdialout.ami.secret" type="string"/>
+      <!-- <preference id="amisecret_pref" name="extensions.tbdialout.ami.secret" type="string"/> -->
       <preference id="amicallerid_pref" name="extensions.tbdialout.ami.callerid" type="string"/>
     </preferences>
     <commandset><command id="custominbackground_change" oncommand="tbdialoutprefs.setCustomAuthViz()"/></commandset>
@@ -149,7 +149,7 @@
           </row>
           <row align="center">
             <label class="tbdoamioptions" control="amisecret_text" value="&tbdoamisecret_text.label;:" accesskey="&tbdoamisecret_text.accesskey;"/>
-            <textbox class="tbdoamioptions" id="amisecret_text" preference="amisecret_pref" size="15" type="password" />
+            <textbox class="tbdoamioptions" id="amisecret_text" size="15"  />
             <image id="tbdo-opt-amisecret-img" class="alert-icon" height="24" width="24" onclick="tbdialoutprefs.openPassWarn();" tooltiptext="&tbdconfighelp_text.label;" />
           </row>
           <row align="center">

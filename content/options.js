@@ -39,6 +39,18 @@
   */
 
 var tbdialoutprefs = {
+  onLoad: function() {
+    this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
+    this.console = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+    this.passwordManager = Components.classes["@mozilla.org/login-manager;1"].
+        getService(Components.interfaces.nsILoginManager);
+    this.nsLoginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1",
+        Components.interfaces.nsILoginInfo, "init");
+    this.setCustomOptViz();
+    this.setCustomAuthViz();
+    this.retrievePasswords();
+  },
+  
   setCustomOptViz: function () {
     var custom_elements = document.getElementsByClassName("tbdocustomoptions");
     var ami_elements = document.getElementsByClassName("tbdoamioptions");
@@ -57,7 +69,6 @@ var tbdialoutprefs = {
         ami_elements[idx].disabled = true;
       }
     }
-    this.setCustomAuthViz();
   },
 
   setCustomAuthViz: function () {
@@ -108,9 +119,62 @@ var tbdialoutprefs = {
                           tabParams: {contentPage: helpurl,
                                         clickHandler: clickhandler} });
   },
-  
+
   openPassWarn: function () {
     var warnurl = "chrome://tbdialout/content/passwarn.xul";
     window.openDialog(warnurl, "tbdo_pass_warn", "width=800px,height=350px");
-  }
+  },
+
+  savePasswords: function () {
+    this.logger(5, "tbdialoutprefs.savePasswords called");
+    var amisecret = document.getElementById("amisecret_text").value;
+    this.setPass('ami.secret', amisecret);
+  },
+
+  retrievePasswords: function () {
+    this.logger(5, "tbdialoutprefs.retrievePasswords called");
+    document.getElementById("amisecret_text").value = this.getPass('ami.secret');
+  },
+
+  getPass: function (passid) {
+   this.logger(5, "Getting password with id " + passid);
+   // Find users for the given parameters
+   var logins = this.passwordManager.findLogins({}, 'chrome://tbdialout', null, passid);
+   var password = "";
+   // Find user from returned array of nsILoginInfo objects
+   for (var i = 0; i < logins.length; i++) {
+      if (logins[i].username == passid) {
+         password = logins[i].password;
+         break;
+      }
+   }
+   return password;
+  },
+
+  setPass: function (passid, passval) {
+    // TODO Get rid of this debugging security leak!!!!
+    //this.logger(5, "Saving new value for " + passid + ": " + passval);
+
+    // first remove any existing login
+    // Find users for this extension 
+    var logins = this.passwordManager.findLogins({}, 'chrome://tbdialout', null, passid);
+    for (var i = 0; i < logins.length; i++) {
+      if (logins[i].username == passid) {
+         this.passwordManager.removeLogin(logins[i]);
+         break;
+      }
+    }
+
+    // now set the new password
+    var LoginInfo = new this.nsLoginInfo('chrome://tbdialout',
+           null, passid, passid, passval, "", "");
+
+    this.passwordManager.addLogin(LoginInfo);
+  },
+
+  logger: function (level, msg) {
+    if( this.prefs.getIntPref("loglevel") >= level ) {
+      this.console.logStringMessage("[TBDialOut] " + msg);
+    }
+  },
 }
