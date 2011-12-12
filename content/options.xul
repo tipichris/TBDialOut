@@ -48,14 +48,12 @@
       <preference id="plus_pref" name="extensions.tbdialout.plus" type="string"/>
       <preference id="customurl_pref" name="extensions.tbdialout.customurl" type="string"/>
       <preference id="customuser_pref" name="extensions.tbdialout.customuser" type="string"/>
-      <preference id="custompass_pref" name="extensions.tbdialout.custompass" type="string"/>
       <preference id="custominbackground_pref" name="extensions.tbdialout.custominbackground" type="bool" />
       <preference id="amichannel_pref" name="extensions.tbdialout.ami.channel" type="string"/>
       <preference id="amicontext_pref" name="extensions.tbdialout.ami.context" type="string"/>
       <preference id="amihost_pref" name="extensions.tbdialout.ami.host" type="string"/>
       <preference id="amiport_pref" name="extensions.tbdialout.ami.port" type="int"/>
       <preference id="amiuser_pref" name="extensions.tbdialout.ami.user" type="string"/>
-      <!-- <preference id="amisecret_pref" name="extensions.tbdialout.ami.secret" type="string"/> -->
       <preference id="amicallerid_pref" name="extensions.tbdialout.ami.callerid" type="string"/>
     </preferences>
     <commandset><command id="custominbackground_change" oncommand="tbdialoutprefs.setCustomAuthViz()"/></commandset>
@@ -114,7 +112,7 @@
           </row>
           <row align="center">
             <label class="tbdocustomoptions" control="custompass_text" value="&tbdocustompass_text.label;:" accesskey="&tbdocustompass_text.accesskey;"/>
-            <textbox class="tbdocustomoptions" id="custompass_text" preference="custompass_pref" size="15" type="password" />
+            <textbox class="tbdocustomoptions" id="custompass_text" size="15" type="password" />
             <image id="tbdo-opt-custompass-img" class="alert-icon" height="24" width="24" onclick="tbdialoutprefs.openPassWarn();" tooltiptext="&tbdconfighelp_text.label;" />
           </row>
           <row align="center">
@@ -149,7 +147,7 @@
           </row>
           <row align="center">
             <label class="tbdoamioptions" control="amisecret_text" value="&tbdoamisecret_text.label;:" accesskey="&tbdoamisecret_text.accesskey;"/>
-            <textbox class="tbdoamioptions" id="amisecret_text" size="15"  />
+            <textbox class="tbdoamioptions" id="amisecret_text" size="15" type="password" />
             <image id="tbdo-opt-amisecret-img" class="alert-icon" height="24" width="24" onclick="tbdialoutprefs.openPassWarn();" tooltiptext="&tbdconfighelp_text.label;" />
           </row>
           <row align="center">
@@ -173,4 +171,5 @@
   </hbox>
   </prefpane>
   <script src="options.js"/>
+  <script src="utils.js"/>
 </prefwindow>

@@ -5,7 +5,7 @@
   * 1.1 (the "License"); you may not use this file except in compliance with
   * the License. You may obtain a copy of the License at
   * http://www.mozilla.org/MPL/
-  * 
+  *
   * Software distributed under the License is distributed on an "AS IS" basis,
   * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
   * for the specific language governing rights and limitations under the
@@ -34,23 +34,23 @@
   * and other provisions required by the GPL or the LGPL. If you do not delete
   * the provisions above, a recipient may use your version of this file under
   * the terms of any one of the MPL, the GPL or the LGPL.
-  * 
-  * ***** END LICENSE BLOCK ***** 
+  *
+  * ***** END LICENSE BLOCK *****
   */
 
 var tbdialoutprefs = {
   onLoad: function() {
-    this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
-    this.console = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
-    this.passwordManager = Components.classes["@mozilla.org/login-manager;1"].
-        getService(Components.interfaces.nsILoginManager);
-    this.nsLoginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1",
-        Components.interfaces.nsILoginInfo, "init");
     this.setCustomOptViz();
     this.setCustomAuthViz();
+    this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService)
+      .getBranch("extensions.tbdialout.");
+    var passmigrated = this.prefs.getBoolPref("passmigrated");
+    if (!passmigrated) {
+      tbdialoututils.migratePass();
+    }
     this.retrievePasswords();
   },
-  
+
   setCustomOptViz: function () {
     var custom_elements = document.getElementsByClassName("tbdocustomoptions");
     var ami_elements = document.getElementsByClassName("tbdoamioptions");
@@ -122,59 +122,22 @@ var tbdialoutprefs = {
 
   openPassWarn: function () {
     var warnurl = "chrome://tbdialout/content/passwarn.xul";
-    window.openDialog(warnurl, "tbdo_pass_warn", "width=800px,height=350px");
+    var dialogWin = window.openDialog(warnurl, "tbdo_pass_warn", "width=800px,height=350px");
   },
 
   savePasswords: function () {
-    this.logger(5, "tbdialoutprefs.savePasswords called");
+    tbdialoututils.logger(5, "tbdialoutprefs.savePasswords called");
     var amisecret = document.getElementById("amisecret_text").value;
-    this.setPass('ami.secret', amisecret);
+    tbdialoututils.setPass('ami.secret', amisecret);
+    var custompass = document.getElementById("custompass_text").value;
+    tbdialoututils.setPass('custompass', custompass);
   },
 
   retrievePasswords: function () {
-    this.logger(5, "tbdialoutprefs.retrievePasswords called");
-    document.getElementById("amisecret_text").value = this.getPass('ami.secret');
+    tbdialoututils.logger(5, "tbdialoutprefs.retrievePasswords called");
+    document.getElementById("amisecret_text").value = tbdialoututils.getPass('ami.secret');
+    document.getElementById("custompass_text").value = tbdialoututils.getPass('custompass');
   },
 
-  getPass: function (passid) {
-   this.logger(5, "Getting password with id " + passid);
-   // Find users for the given parameters
-   var logins = this.passwordManager.findLogins({}, 'chrome://tbdialout', null, passid);
-   var password = "";
-   // Find user from returned array of nsILoginInfo objects
-   for (var i = 0; i < logins.length; i++) {
-      if (logins[i].username == passid) {
-         password = logins[i].password;
-         break;
-      }
-   }
-   return password;
-  },
 
-  setPass: function (passid, passval) {
-    // TODO Get rid of this debugging security leak!!!!
-    //this.logger(5, "Saving new value for " + passid + ": " + passval);
-
-    // first remove any existing login
-    // Find users for this extension 
-    var logins = this.passwordManager.findLogins({}, 'chrome://tbdialout', null, passid);
-    for (var i = 0; i < logins.length; i++) {
-      if (logins[i].username == passid) {
-         this.passwordManager.removeLogin(logins[i]);
-         break;
-      }
-    }
-
-    // now set the new password
-    var LoginInfo = new this.nsLoginInfo('chrome://tbdialout',
-           null, passid, passid, passval, "", "");
-
-    this.passwordManager.addLogin(LoginInfo);
-  },
-
-  logger: function (level, msg) {
-    if( this.prefs.getIntPref("loglevel") >= level ) {
-      this.console.logStringMessage("[TBDialOut] " + msg);
-    }
-  },
 }
