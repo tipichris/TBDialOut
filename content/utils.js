@@ -92,16 +92,14 @@ var tbdialoututils = {
       for (idx in passtypes) {
         pass = this.prefs.getCharPref( passtypes[idx] );
         if (pass.length > 0) {
-          if (!this.setPass(passtypes[idx], pass)) {
-            return false;
-          }
+          this.setPass(passtypes[idx], pass);
         }
         this.prefs.clearUserPref(passtypes[idx]);
       }
-      this.prefs.setBoolPref("passmigrated", true);
     } catch (err) {
       tbdialoututils.logger(1, "Error migrating passwords: " + err.message);
     }
+    this.prefs.setBoolPref("passmigrated", true);
   },
 
 }
