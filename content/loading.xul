@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://tbdialout/locale/tbdialout.dtd">
+<window id="tbdoThrobber" title="Loading..."
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+<vbox flex="1" pack="center" align="center">
+  <hbox flex="1" pack="center" align="center">
+    <image id="tbdo-throbber-img" src="chrome://tbdialout/skin/throbber.gif" height="66" width="66" />
+  </hbox>
+</vbox>
+</window>
