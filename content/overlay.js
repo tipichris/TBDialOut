@@ -278,10 +278,11 @@ var tbdialout = {
         }
         catch (e) {}
       }
-    prefs.setBoolPref("tbbuttonadded", true);
     this.onSelectNewRow();
     }
     catch (e) {}
+    // set this even if it fails - don't want to keep trying
+    prefs.setBoolPref("tbbuttonadded", true);
   },
 
   // #### Class for dealing with connections to Asterisk Manager Interface (AMI) ####
