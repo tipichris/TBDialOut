@@ -94,30 +94,8 @@ var tbdialoutprefs = {
 
   openHelp: function () {
     var helpurl = "http://www.oak-wood.co.uk/tbdialout/#configure";
-    // try to open the page in a new tab with Thunderbird
-    var tabmail = document.getElementById("tabmail");
-    if (!tabmail) {
-      // Try opening new tabs in an existing 3pane window
-      var mail3PaneWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                                      .getService(Components.interfaces.nsIWindowMediator)
-                                      .getMostRecentWindow("mail:3pane");
-      if (mail3PaneWindow) {
-        tabmail = mail3PaneWindow.document.getElementById("tabmail");
-        mail3PaneWindow.focus();
-      }
-    }
-    // allow user to click within the site
     var click_re = "^http://www.oak-wood.co.uk/";
-    var clickhandler = "specialTabs.siteClickHandler(event, new RegExp(\"" + click_re + "\"));";
-    if (tabmail)
-      tabmail.openTab("contentTab", {contentPage: helpurl,
-                                      clickHandler: clickhandler});
-    else
-      window.openDialog("chrome://messenger/content/", "_blank",
-                        "chrome,dialog=no,all", null,
-                        { tabType: "contentTab",
-                          tabParams: {contentPage: helpurl,
-                                        clickHandler: clickhandler} });
+    tbdialoututils.openInTab(helpurl, click_re);
   },
 
   openPassWarn: function () {

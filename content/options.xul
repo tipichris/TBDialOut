@@ -165,9 +165,9 @@
         </rows>
       </grid>
     </groupbox>
-  <hbox flex="1">
-  <label id="tbdo-opt-help-txt" class="text-link" onclick="tbdialoutprefs.openHelp();" value="&tbdconfighelp_text.label;" />
-  <image id="tbdo-opt-help-img" class="message-icon" height="24" width="24" tooltiptext="&tbdconfighelp_text.label;"  onclick="tbdialoutprefs.openHelp();" />
+  <hbox flex="1" align="start">
+      <image id="tbdo-opt-help-img" class="message-icon" height="24" width="24" tooltiptext="&tbdconfighelp_text.label;"  onclick="tbdialoutprefs.openHelp();" />
+      <label id="tbdo-opt-help-txt" class="text-link" onclick="tbdialoutprefs.openHelp();" value="&tbdconfighelp_text.label;" />
   </hbox>
   </prefpane>
   <script src="options.js"/>

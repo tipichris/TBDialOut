@@ -83,6 +83,34 @@ var tbdialoututils = {
     }
   },
 
+  // clickmask is a string representation of a regular expression defining URLs which
+  // may be clicked through to within the tab.
+  openInTab: function (url, clickmask) {
+    // try to open the page in a new tab with Thunderbird
+    var tabmail = document.getElementById("tabmail");
+    if (!tabmail) {
+      // Try opening new tabs in an existing 3pane window
+      var mail3PaneWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                                      .getService(Components.interfaces.nsIWindowMediator)
+                                      .getMostRecentWindow("mail:3pane");
+      if (mail3PaneWindow) {
+        tabmail = mail3PaneWindow.document.getElementById("tabmail");
+        mail3PaneWindow.focus();
+      }
+    }
+    // allow user to click within the sites defined by the regexp mask
+    var clickhandler = "specialTabs.siteClickHandler(event, new RegExp(\"" + clickmask + "\"));";
+    if (tabmail)
+      tabmail.openTab("contentTab", {contentPage: url,
+                                      clickHandler: clickhandler});
+    else
+      window.openDialog("chrome://messenger/content/", "_blank",
+                        "chrome,dialog=no,all", null,
+                        { tabType: "contentTab",
+                          tabParams: {contentPage: url,
+                                        clickHandler: clickhandler} });
+  },
+  
   migratePass: function () {
     tbdialoututils.logger(5, "Migrating passwords to new storage");
     var passtypes = ["custompass", "ami.secret"];

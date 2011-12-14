@@ -192,31 +192,11 @@ var tbdialout = {
             } else {
               // try to open the page in a new tab with Thunderbird
               tbdialoututils.logger(5, "Opening URL in new tab: " + callurl);
-              var tabmail = document.getElementById("tabmail");
-              if (!tabmail) {
-                // Try opening new tabs in an existing 3pane window
-                var mail3PaneWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                                                .getService(Components.interfaces.nsIWindowMediator)
-                                                .getMostRecentWindow("mail:3pane");
-                if (mail3PaneWindow) {
-                  tabmail = mail3PaneWindow.document.getElementById("tabmail");
-                  mail3PaneWindow.focus();
-                }
-              }
               // by very liberal about what the user can click to in the tab
               // they may need to click on to complete the call, and we don't know what
               // the URI is.
               var click_re = "^http";
-              var clickhandler = "specialTabs.siteClickHandler(event, new RegExp(\"" + click_re + "\"));";
-              if (tabmail)
-                tabmail.openTab("contentTab", {contentPage: callurl,
-                                               clickHandler: clickhandler});
-              else
-                window.openDialog("chrome://messenger/content/", "_blank",
-                                  "chrome,dialog=no,all", null,
-                                  { tabType: "contentTab",
-                                    tabParams: {contentPage: callurl,
-                                                 clickHandler: clickhandler} });
+              tbdialoututils.openInTab(callurl, click_re);
             }
           } else {
             // for none http(s) URIs we'll just use LaunchUrl
