@@ -85,7 +85,9 @@ var tbdialoututils = {
 
   // clickmask is a string representation of a regular expression defining URLs which
   // may be clicked through to within the tab.
-  openInTab: function (url, clickmask) {
+  openInTab: function (url, clickmask, setfocus) {
+    setfocus = typeof(setfocus) != 'undefined' ? setfocus : true;
+
     // try to open the page in a new tab with Thunderbird
     var tabmail = document.getElementById("tabmail");
     if (!tabmail) {
@@ -95,7 +97,9 @@ var tbdialoututils = {
                                       .getMostRecentWindow("mail:3pane");
       if (mail3PaneWindow) {
         tabmail = mail3PaneWindow.document.getElementById("tabmail");
-        mail3PaneWindow.focus();
+        if (setfocus) {
+          mail3PaneWindow.focus();
+        }
       }
     }
     // allow user to click within the sites defined by the regexp mask
@@ -116,16 +120,17 @@ var tbdialoututils = {
     var passtypes = ["custompass", "ami.secret"];
     var idx;
     var pass;
-    try {
-      for (idx in passtypes) {
+    for (idx in passtypes)  {
+      try {
         pass = this.prefs.getCharPref( passtypes[idx] );
         if (pass.length > 0) {
           this.setPass(passtypes[idx], pass);
         }
         this.prefs.clearUserPref(passtypes[idx]);
       }
-    } catch (err) {
-      tbdialoututils.logger(1, "Error migrating passwords: " + err.message);
+      catch (err) {
+        tbdialoututils.logger(1, "Error migrating password " + passtypes[idx] + ": " + err.message);
+      }
     }
     this.prefs.setBoolPref("passmigrated", true);
   },

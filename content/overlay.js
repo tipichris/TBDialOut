@@ -56,6 +56,43 @@ var tbdialout = {
     if (!passmigrated) {
       tbdialoututils.migratePass();
     }
+
+    // If TBDialOut has been upgraded since the last time we showed upgrade notes,
+    // show the notes for the current version.
+    var updateshown = this.prefs.getCharPref("updateshown");
+    var showupdatenotes = this.prefs.getBoolPref("showupdatenotes");
+    // a false default should override user prefs, as there probably 
+    // are no notes to display
+    if (showupdatenotes && this.prefs.prefHasUserValue("showupdatenotes")) {
+      showupdatenotes = false;
+    }
+
+    try {
+      Components.utils.import("resource://gre/modules/AddonManager.jsm");
+      AddonManager.getAddonByID("tbdialout@oak-wood.co.uk", function(addon) {
+        // This is an asynchronous callback function that might not be called immediately
+        if (showupdatenotes && addon.version != updateshown) {
+          window.setTimeout(function() {
+            tbdialoututils.openInTab("http://www.oak-wood.co.uk/oss/tbdialout/updates/" + addon.version.replace(/\./g,'-'), "^http://www.oak-wood.co.uk", false);},
+            500);
+          var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
+          prefs.setCharPref("updateshown", addon.version);
+        }
+      });
+    }
+    catch (ex) {
+      // pre Thunderbird 3.3
+      var em = Components.classes["@mozilla.org/extensions/manager;1"]
+           .getService(Components.interfaces.nsIExtensionManager);
+      var addon = em.getItemForID("tbdialout@oak-wood.co.uk");
+      if (showupdatenotes && addon.version != updateshown) {
+        window.setTimeout(function() {
+          tbdialoututils.openInTab("http://www.oak-wood.co.uk/oss/tbdialout/updates/" + addon.version.replace(/\./g,'-'), "^http://www.oak-wood.co.uk", false);},
+          500);
+        this.prefs.setCharPref("updateshown", addon.version);
+      }
+    }
+
   },
 
   // Check whether or not there are phone numbers for the selected

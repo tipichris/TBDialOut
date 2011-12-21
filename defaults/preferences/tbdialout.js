@@ -7,6 +7,8 @@ pref( "extensions.tbdialout.customuser", "" );
 pref( "extensions.tbdialout.custominbackground", true );
 pref( "extensions.tbdialout.loglevel", 2);
 pref( "extensions.tbdialout.passmigrated", false );
+pref( "extensions.tbdialout.updateshown", "" );
+pref( "extensions.tbdialout.showupdatenotes", true);
 pref( "extensions.tbdialout.ami.channel", "" );
 pref( "extensions.tbdialout.ami.context", "default" );
 pref( "extensions.tbdialout.ami.host", "" );
