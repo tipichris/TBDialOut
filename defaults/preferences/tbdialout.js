@@ -5,7 +5,7 @@ pref( "extensions.tbdialout.tbbuttonadded", false );
 pref( "extensions.tbdialout.customurl", "" );
 pref( "extensions.tbdialout.customuser", "" );
 pref( "extensions.tbdialout.custominbackground", true );
-pref( "extensions.tbdialout.loglevel", 2);
+pref( "extensions.tbdialout.loglevel", 5);
 pref( "extensions.tbdialout.passmigrated", false );
 pref( "extensions.tbdialout.updateshown", "" );
 pref( "extensions.tbdialout.showupdatenotes", true);
