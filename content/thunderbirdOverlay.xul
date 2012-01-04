@@ -42,6 +42,7 @@
 <overlay id="tbdialout-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script src="overlay.js"/>
+  <script src="utils.js" />
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="tbdialout-strings" src="chrome://tbdialout/locale/tbdialout.properties"/>

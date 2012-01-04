@@ -5,7 +5,7 @@
   * 1.1 (the "License"); you may not use this file except in compliance with
   * the License. You may obtain a copy of the License at
   * http://www.mozilla.org/MPL/
-  * 
+  *
   * Software distributed under the License is distributed on an "AS IS" basis,
   * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
   * for the specific language governing rights and limitations under the
@@ -34,11 +34,23 @@
   * and other provisions required by the GPL or the LGPL. If you do not delete
   * the provisions above, a recipient may use your version of this file under
   * the terms of any one of the MPL, the GPL or the LGPL.
-  * 
-  * ***** END LICENSE BLOCK ***** 
+  *
+  * ***** END LICENSE BLOCK *****
   */
 
 var tbdialoutprefs = {
+  onLoad: function() {
+    this.setCustomOptViz();
+    this.setCustomAuthViz();
+    this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService)
+      .getBranch("extensions.tbdialout.");
+    var passmigrated = this.prefs.getBoolPref("passmigrated");
+    if (!passmigrated) {
+      tbdialoututils.migratePass();
+    }
+    this.retrievePasswords();
+  },
+
   setCustomOptViz: function () {
     var custom_elements = document.getElementsByClassName("tbdocustomoptions");
     var ami_elements = document.getElementsByClassName("tbdoamioptions");
@@ -57,7 +69,6 @@ var tbdialoutprefs = {
         ami_elements[idx].disabled = true;
       }
     }
-    this.setCustomAuthViz();
   },
 
   setCustomAuthViz: function () {
@@ -82,30 +93,29 @@ var tbdialoutprefs = {
   },
 
   openHelp: function () {
-    var helpurl = "http://www.oak-wood.co.uk/tbdialout/#configure";
-    // try to open the page in a new tab with Thunderbird
-    var tabmail = document.getElementById("tabmail");
-    if (!tabmail) {
-      // Try opening new tabs in an existing 3pane window
-      var mail3PaneWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                                      .getService(Components.interfaces.nsIWindowMediator)
-                                      .getMostRecentWindow("mail:3pane");
-      if (mail3PaneWindow) {
-        tabmail = mail3PaneWindow.document.getElementById("tabmail");
-        mail3PaneWindow.focus();
-      }
-    }
-    // allow user to click within the site
+    var helpurl = "http://www.oak-wood.co.uk/oss/tbdialout/confighelp";
     var click_re = "^http://www.oak-wood.co.uk/";
-    var clickhandler = "specialTabs.siteClickHandler(event, new RegExp(\"" + click_re + "\"));";
-    if (tabmail)
-      tabmail.openTab("contentTab", {contentPage: helpurl,
-                                      clickHandler: clickhandler});
-    else
-      window.openDialog("chrome://messenger/content/", "_blank",
-                        "chrome,dialog=no,all", null,
-                        { tabType: "contentTab",
-                          tabParams: {contentPage: helpurl,
-                                        clickHandler: clickhandler} });
-  }
+    tbdialoututils.openInTab(helpurl, click_re);
+  },
+
+  openPassWarn: function () {
+    var warnurl = "chrome://tbdialout/content/passwarn.xul";
+    var dialogWin = window.openDialog(warnurl, "tbdo_pass_warn", "width=800px,height=350px");
+  },
+
+  savePasswords: function () {
+    tbdialoututils.logger(5, "tbdialoutprefs.savePasswords called");
+    var amisecret = document.getElementById("amisecret_text").value;
+    tbdialoututils.setPass('ami.secret', amisecret);
+    var custompass = document.getElementById("custompass_text").value;
+    tbdialoututils.setPass('custompass', custompass);
+  },
+
+  retrievePasswords: function () {
+    tbdialoututils.logger(5, "tbdialoutprefs.retrievePasswords called");
+    document.getElementById("amisecret_text").value = tbdialoututils.getPass('ami.secret');
+    document.getElementById("custompass_text").value = tbdialoututils.getPass('custompass');
+  },
+
+
 }
