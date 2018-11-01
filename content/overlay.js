@@ -68,7 +68,7 @@ var tbdialout = {
     }
 
     try {
-      Components.utils.import("resource://gre/modules/AddonManager.jsm");
+      ChromeUtils.import("resource://gre/modules/AddonManager.jsm");
       AddonManager.getAddonByID("tbdialout@oak-wood.co.uk", function(addon) {
         // This is an asynchronous callback function that might not be called immediately
         if (showupdatenotes && addon.version != updateshown) {
@@ -342,7 +342,7 @@ var tbdialout = {
       this.pump = Components.classes["@mozilla.org/network/input-stream-pump;1"]
               .createInstance(Components.interfaces.nsIInputStreamPump);
 
-      this.pump.init(this.inStream, -1, -1, 0, 0, false);
+      this.pump.init(this.inStream, -1, -1, null, null, false);
 
       this.pump.asyncRead(this, this);
 

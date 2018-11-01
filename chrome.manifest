@@ -11,4 +11,5 @@ locale	tbdialout	it	locale/it/
 locale	tbdialout	ru	locale/ru/
 skin	tbdialout	classic/1.0	skin/
 overlay	chrome://messenger/content/addressbook/addressbook.xul	chrome://tbdialout/content/thunderbirdOverlay.xul
-style	chrome://global/content/customizeToolbar.xul	chrome://tbdialout/skin/overlay.css
+style	chrome://global/content/customizeToolbar.xul	chrome://tbdialout/skin/overlay.css appversion<59.0a1
+style	chrome://messenger/content/customizeToolbar.xul	chrome://tbdialout/skin/overlay.css appversion>59.0a1
