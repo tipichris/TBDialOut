@@ -71,10 +71,9 @@
           <label control="proto_menu" value="&tbdoproto_menu.label;:" accesskey="&tbdoproto_menu.accesskey;"/>
           <menulist id="proto_menu" preference="proto_pref" oncommand="tbdialoutprefs.setCustomOptViz()">
             <menupopup>
-                <menuitem label="callto:" value="callto:"/>
                 <menuitem label="tel:" value="tel:"/>
                 <menuitem label="sip:" value="sip:"/>
-                <menuitem label="skype:" value="skype:"/>
+                <menuitem label="callto:" value="callto:"/>
                 <menuitem label="&tbdocustomurl_menu.label;" value="custom" />
                 <menuitem label="&tbdoasteriskami_menu.label;" value="asteriskami" />
             </menupopup>
