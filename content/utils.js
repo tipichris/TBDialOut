@@ -12,7 +12,7 @@ var tbdialoututils = {
     this.logger(5, "Getting password with id " + passid);
     try {
       // Find users for the given parameters
-      var logins = this.passwordManager.findLogins({}, 'chrome://tbdialout', null, passid);
+      var logins = this.passwordManager.findLogins('chrome://tbdialout', null, passid);
       var password = "";
       // Find our user from returned array of nsILoginInfo objects - username is value of passid
       for (var i = 0; i < logins.length; i++) {
@@ -25,6 +25,7 @@ var tbdialoututils = {
       tbdialoututils.logger(1, "Error getting password " + passid +": " + err.message);
       return false;
     }
+    tbdialoututils.logger(5, "Retrieved password " + passid +": " + password);
     return password;
   },
 
@@ -38,7 +39,7 @@ var tbdialoututils = {
     try {
       // first remove any existing login
       // Find our user from returned array of nsILoginInfo objects - username is value of passid
-      var logins = this.passwordManager.findLogins({}, 'chrome://tbdialout', null, passid);
+      var logins = this.passwordManager.findLogins('chrome://tbdialout', null, passid);
       for (var i = 0; i < logins.length; i++) {
         if (logins[i].username == passid) {
           this.passwordManager.removeLogin(logins[i]);

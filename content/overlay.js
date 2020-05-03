@@ -366,7 +366,8 @@ var tbdialout = {
 
     // called when data is available on the pump. Gets the data and passes
     // it to parseResponse()
-    onDataAvailable: function (request, context, inputStream, offset, count) {
+    // TODO make backwards compatible with old 5 argument version
+    onDataAvailable: function (request, inputStream, offset, count) {
         this.sInStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
            .createInstance(Components.interfaces.nsIScriptableInputStream);
         this.sInStream.init(this.inStream);
