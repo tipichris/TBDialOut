@@ -40,6 +40,7 @@
 
 var tbdialoutprefs = {
   onLoad: function() {
+    tbdialoututils.logger(5, "tbdialoutprefs.onLoad called");  
     this.setCustomOptViz();
     this.setCustomAuthViz();
     this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService)
@@ -52,6 +53,7 @@ var tbdialoutprefs = {
   },
 
   setCustomOptViz: function () {
+    tbdialoututils.logger(5, "tbdialoutprefs.setCustomOptViz called");
     var custom_elements = document.getElementsByClassName("tbdocustomoptions");
     var ami_elements = document.getElementsByClassName("tbdoamioptions");
     var idx;
@@ -72,6 +74,7 @@ var tbdialoutprefs = {
   },
 
   setCustomAuthViz: function () {
+    tbdialoututils.logger(5, "tbdialoutprefs.setCustomAuthViz called");  
     if (document.getElementById("proto_menu").value == 'custom') {
       var custom_auth_elements = new Array();
       custom_auth_elements.push(document.getElementById("customuser_text"));
@@ -103,14 +106,21 @@ var tbdialoutprefs = {
     var dialogWin = window.openDialog(warnurl, "tbdo_pass_warn", "width=800px,height=350px");
   },
 
-  savePasswords: function () {
-    tbdialoututils.logger(5, "tbdialoutprefs.savePasswords called");
-    var amisecret = document.getElementById("amisecret_text").value;
-    tbdialoututils.setPass('ami.secret', amisecret);
-    var custompass = document.getElementById("custompass_text").value;
-    tbdialoututils.setPass('custompass', custompass);
+
+  saveCustomPassword: function() {
+    this.savePassword("custompass_text", "custompass"); 
   },
 
+  saveAmiPassword: function() {
+    this.savePassword("amisecret_text", "ami.secret"); 
+  },
+
+  savePassword: function (source, type) {
+    tbdialoututils.logger(5, "tbdialoutprefs.savePassword called for type " + type);
+    var secret = document.getElementById(source).value;
+    tbdialoututils.setPass(type, secret);
+  },
+  
   retrievePasswords: function () {
     tbdialoututils.logger(5, "tbdialoutprefs.retrievePasswords called");
     document.getElementById("amisecret_text").value = tbdialoututils.getPass('ami.secret');

@@ -13,7 +13,7 @@
       "type": "xul",
       "options": {
         "page": "chrome://tbdialout/content/options.xul",
-        "open_in_tab": true
+        "open_in_tab": false
       }
     }
 }
