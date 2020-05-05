@@ -4,9 +4,6 @@
 <window id="tbdoPassWarnWnd" title="&tbdialoutButtonMenuHome.label;"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="tbdialoutPassWarn.onPassWarnLoad();">
   <script src="passwarn.js"/>
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="tbdialout-strings" src="chrome://tbdialout/locale/tbdialout.properties"/>
-  </stringbundleset>
   <!-- Initialise iframe with loading.xul to give some feedback to user whilst contact is made with remote site -->
   <iframe type="content" id="tbdoPassWarnBrowser" src="chrome://tbdialout/content/loading.xul" flex="1"/>
 </window>

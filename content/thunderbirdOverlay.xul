@@ -44,10 +44,6 @@
   <script src="overlay.js"/>
   <script src="utils.js" />
 
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="tbdialout-strings" src="chrome://tbdialout/locale/tbdialout.properties"/>
-  </stringbundleset>
-
   <menupopup id="abResultsTreeContext">
     <menuitem id="tbdialout-home" label="&tbdialoutHome.label;" 
               oncommand="tbdialout.onMenuItemCommandDial('HomePhone');"/>

@@ -41,7 +41,7 @@ var tbdialout = {
   onLoad: function() {
     // initialization code
     this.initialized = true;
-    this.strings = document.getElementById("tbdialout-strings");
+    this.strings = Services.strings.createBundle("chrome://tbdialout/locale/tbdialout.properties");
     this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
 
     // listen for changes of selected cards
@@ -80,17 +80,8 @@ var tbdialout = {
         }
       });
     }
-    catch (ex) {
-      // pre Thunderbird 3.3
-      var em = Components.classes["@mozilla.org/extensions/manager;1"]
-           .getService(Components.interfaces.nsIExtensionManager);
-      var addon = em.getItemForID("tbdialout@oak-wood.co.uk");
-      if (showupdatenotes && addon.version != updateshown) {
-        window.setTimeout(function() {
-          tbdialoututils.openInTab("http://www.oak-wood.co.uk/oss/tbdialout/updates/" + addon.version.replace(/\./g,'-'), "^http://www.oak-wood.co.uk", false);},
-          500);
-        this.prefs.setCharPref("updateshown", addon.version);
-      }
+    catch (e) {
+      tbdialoututils.logger(1, "Error displaying update page: " + e.message);
     }
 
   },
@@ -146,8 +137,8 @@ var tbdialout = {
 
     var OKArgs = ["CellularNumber", "WorkPhone", "HomePhone"];
     if ((OKArgs.join(",")+",").indexOf(num + ",") == -1) {
-        promptService.alert(window, this.strings.getString("warningDefaultTitle"),
-                               this.strings.getString("errorBadArgsMsg") );
+        promptService.alert(window, this.strings.GetStringFromName("warningDefaultTitle"),
+                               this.strings.GetStringFromName("errorBadArgsMsg") );
         tbdialoututils.logger(2, "onMenuItemCommandDial called with invalid argument " + num);
         return;
     }
@@ -169,8 +160,8 @@ var tbdialout = {
         custompass = tbdialoututils.getPass("custompass");
         custominbackground = this.prefs.getBoolPref( "custominbackground" );
       } catch (err) {
-        promptService.alert(window, this.strings.getString("warningDefaultTitle"),
-                               this.strings.getString("errorGettingPrefsMsg") + "\n\n" + err.message);
+        promptService.alert(window, this.strings.GetStringFromName("warningDefaultTitle"),
+                               this.strings.GetStringFromName("errorGettingPrefsMsg") + "\n\n" + err.message);
         tbdialoututils.logger(1, "Error retrieving preferences: " + err.message);
         return;
       }
@@ -217,10 +208,8 @@ var tbdialout = {
                 if (req.readyState == 4) {
                   if(req.status != 200) {
                     var errorStatus = [req.status, req.statusText];
-                    // why isn't this.strings already available in this context??
-                    var strings = document.getElementById("tbdialout-strings");
-                    promptService.alert(window, strings.getString("warningDefaultTitle"),
-                                      strings.getFormattedString("errorBadHTTPResponse", errorStatus));
+                    promptService.alert(window, tbdialout.strings.GetStringFromName("warningDefaultTitle"),
+                                      tbdialout.strings.formatStringFromName("errorBadHTTPResponse", errorStatus, 2));
                     tbdialoututils.logger(2, "Unexpected response from HTTP server: " + req.status + ": " + req.statusText);
                   }
                 }
@@ -248,15 +237,15 @@ var tbdialout = {
         }
       }
       else {
-        var phoneType = [this.strings.getString(num)];
-        promptService.alert(window, this.strings.getString("warningDefaultTitle"),
-                               this.strings.getFormattedString("noValidNumberMsg", phoneType));
+        var phoneType = [this.strings.GetStringFromName(num)];
+        promptService.alert(window, this.strings.GetStringFromName("warningDefaultTitle"),
+                               this.strings.formatStringFromName("noValidNumberMsg", phoneType, 1));
         tbdialoututils.logger(2, "No valid " + phoneType + " found for contact");
       }
     }
     else {
-      promptService.alert(window, this.strings.getString("warningDefaultTitle"),
-                               this.strings.getString("selectExactlyOneMsg"));
+      promptService.alert(window, this.strings.GetStringFromName("warningDefaultTitle"),
+                               this.strings.GetStringFromName("selectExactlyOneMsg"));
 
       tbdialoututils.logger(2, "onMenuItemCommandDial called whilst too many cards selected");
     }
@@ -514,8 +503,8 @@ var tbdialout = {
         tbdialoututils.logger(3, "AsteriskAMI is currently busy. Abandoning request (state: " + this.state + ")");
         var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
             .getService(Components.interfaces.nsIPromptService);
-        promptService.alert(window, tbdialout.strings.getString("warningDefaultTitle"),
-                               tbdialout.strings.getFormattedString("warnAmiBusy", [this.extension]) );
+        promptService.alert(window, tbdialout.strings.GetStringFromName("warningDefaultTitle"),
+                               tbdialout.strings.formatStringFromName("warnAmiBusy", [this.extension], 1) );
         return;
       }
 
