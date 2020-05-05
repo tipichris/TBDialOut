@@ -6,9 +6,18 @@
         "strict_min_version": "68.0"
       }
     },
-    "name": "TBDialOut",
-    "description": "Place phone calls directly from Thunderbird's address book",
-    "version": "1.8.0a",
+    "name": "__MSG_extensionName__",
+    "description": "__MSG_extensionDescription__",
+    "author": "Chris Hastie",
+    "homepage_url": "http://www.oak-wood.co.uk/tbdialout",
+    "default_locale": "en",
+    "version": "1.8.0pre1",
+    "icons": {
+      "32": "icons/tbdo32.png",
+      "48": "icons/tbdo48.png",
+      "64": "icons/tbdo64.png",
+      "96": "icons/tbdo96.png"
+    },
     "legacy": {
       "type": "xul",
       "options": {

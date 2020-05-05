@@ -68,8 +68,8 @@ var tbdialout = {
     }
 
     try {
-      ChromeUtils.import("resource://gre/modules/AddonManager.jsm");
-      AddonManager.getAddonByID("tbdialout@oak-wood.co.uk", function(addon) {
+      var {AddonManager} = ChromeUtils.import("resource://gre/modules/AddonManager.jsm");
+      AddonManager.getAddonByID("tbdialout@oak-wood.co.uk").then(function(addon) {
         // This is an asynchronous callback function that might not be called immediately
         if (showupdatenotes && addon.version != updateshown) {
           window.setTimeout(function() {
