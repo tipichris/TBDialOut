@@ -73,7 +73,8 @@ var tbdialout = {
         // This is an asynchronous callback function that might not be called immediately
         if (showupdatenotes && addon.version != updateshown) {
           window.setTimeout(function() {
-            tbdialoututils.openInTab("http://www.oak-wood.co.uk/oss/tbdialout/updates/" + addon.version.replace(/\./g,'-'), "^http://www.oak-wood.co.uk", false);},
+            var url = "https://www.oak-wood.co.uk/oss/tbdialout/updates/" + addon.version.replace(/\./g,'-');
+            tbdialoututils.openInTab(url, url, false);},
             500);
           var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
           prefs.setCharPref("updateshown", addon.version);

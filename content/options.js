@@ -96,8 +96,8 @@ var tbdialoutprefs = {
   },
 
   openHelp: function () {
-    var helpurl = "http://www.oak-wood.co.uk/oss/tbdialout/confighelp";
-    var click_re = "^http://www.oak-wood.co.uk/";
+    var helpurl = "https://www.oak-wood.co.uk/oss/tbdialout/confighelp";
+    var click_re = "^http(s)?://www.oak-wood.co.uk/";
     tbdialoututils.openInTab(helpurl, click_re);
   },
 
