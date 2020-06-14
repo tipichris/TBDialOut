@@ -1,0 +1,39 @@
+<!-- do not translate extension name: TBDialOut -->
+<!ENTITY tbdoprefwindow.title "A Kitárcsázás (TBDialOut) beállításai">
+<!ENTITY tbdopane1.title "A Kitárcsázás beállításai">
+<!ENTITY tbdoproto_menu.label "Használni kívánt URL-séma">
+<!ENTITY tbdoproto_menu.accesskey "U">
+<!ENTITY tbdoprefix_text.label "Előtaggal hívott számok">
+<!ENTITY tbdoprefix_text.accesskey "P">
+<!ENTITY tbdoplus_text.label "Vezető + cseréje">
+<!ENTITY tbdoplus_text.accesskey "R">
+<!ENTITY tbdocustomurl_text.label "Egyéni URL">
+<!ENTITY tbdocustomurl_text.accesskey "C">
+<!ENTITY tbdocustomuser_text.label "Felhasználónév">
+<!ENTITY tbdocustomuser_text.accesskey "s">
+<!ENTITY tbdocustompass_text.label "Jelszó">
+<!ENTITY tbdocustompass_text.accesskey "w">
+<!-- do not translate &#37;NUM&#37; -->
+<!ENTITY tbdocustomhint_text "Adjon meg egy egyéni URL-címet Kitárcsázás számára, akivel kapcsolatba lép. Cserélje ki a telefonszámot a -ra &#37;NUM&#37;" >
+<!ENTITY tbdocustomurl_menu.label  "Egyéni URL">
+<!ENTITY tbdocustomurl_boxcaption.label "Egyéni URL-beállítások">
+<!ENTITY tbdocustominbackground_cb.label "Háttér megnyitása (csak http/https)">
+<!ENTITY tbdocustominbackground_cb.accesskey "b">
+<!-- options relating to the Asterisk Manager Interface -->
+<!ENTITY tbdoasteriskami_menu.label "Asterisk AMI">
+<!ENTITY tbdoami_boxcaption.label "Asterisk AMI beállítások">
+<!ENTITY tbdoamihost_text.label "Gazdagép">
+<!ENTITY tbdoamihost_text.accesskey "H">
+<!ENTITY tbdoamiport_text.label "Kikötő">
+<!ENTITY tbdoamiport_text.accesskey "o">
+<!ENTITY tbdoamiuser_text.label "Felhasználónév">
+<!ENTITY tbdoamiuser_text.accesskey "n">
+<!ENTITY tbdoamisecret_text.label "Titkos">
+<!ENTITY tbdoamisecret_text.accesskey "t">
+<!ENTITY tbdoamichannel_text.label "Kiindulási csatorna">
+<!ENTITY tbdoamichannel_text.accesskey "l">
+<!ENTITY tbdoamicontext_text.label "Környezet">
+<!ENTITY tbdoamicontext_text.accesskey "x">
+<!ENTITY tbdoamicallerid_text.label "Hívó azonosítója">
+<!ENTITY tbdoamicallerid_text.accesskey "I">
+<!ENTITY tbdconfighelp_text.label "Súgó">
