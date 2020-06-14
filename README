@@ -1,8 +1,9 @@
-### TBDialOut
+TBDialOut
+=========
 
-TBDialOut is a Thunderbird [extension](https://addons.thunderbird.net/addon/tbdialout/)
-that adds buttons and context menu items to the Thunderbird address 
-book that allow a user to set up a call to a contact direct from Thunderbird.
+TBDialOut is a Thunderbird extension that adds buttons and context
+menu items to the Thunderbird address book that allow a user to 
+set up a call to a contact direct from Thunderbird.
 
 To build a .xpi file from this source on Linux, cd into the top
 directory of the source and run
