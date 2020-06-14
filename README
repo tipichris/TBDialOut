@@ -9,3 +9,5 @@ To build a .xpi file from this source on Linux, cd into the top
 directory of the source and run
 
 ./build.sh
+
+https://addons.thunderbird.net/addon/tbdialout/
