@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/css" href="chrome://global/skin/"?>
 <?xml-stylesheet type="text/css" href="chrome://messenger/skin/preferences/preferences.css"?>
-<?xml-stylesheet href="chrome://tbdialout/skin/options.css" type="text/css"?>
+<?xml-stylesheet href="resource://tbdialout/skin/options.css" type="text/css"?>
 <?xml-stylesheet type="text/css" href="chrome://messenger/skin/messenger.css"?>
 
 <!-- ***** BEGIN LICENSE BLOCK *****

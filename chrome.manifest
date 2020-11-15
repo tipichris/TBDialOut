@@ -1,15 +1,14 @@
-content	tbdialout	content/
-locale	tbdialout	en-US	locale/en-US/
-locale	tbdialout	en-GB	locale/en-GB/
-locale	tbdialout	de	locale/de/
-locale	tbdialout	es-ES	locale/es-ES/
-locale	tbdialout	zh-CN	locale/zh-CN/
-locale	tbdialout	nl	locale/nl/
-locale	tbdialout	fr	locale/fr/
-locale	tbdialout	sv-SE	locale/sv-SE/
-locale	tbdialout	it	locale/it/
-locale	tbdialout	ru	locale/ru/
-skin	tbdialout	classic/1.0	skin/
+content	tbdialout	chrome/content/
+locale	tbdialout	en-US	chrome/locale/en-US/
+locale	tbdialout	en-GB	chrome/locale/en-GB/
+locale	tbdialout	de	chrome/locale/de/
+locale	tbdialout	es-ES	chrome/locale/es-ES/
+locale	tbdialout	zh-CN	chrome/locale/zh-CN/
+locale	tbdialout	nl	chrome/locale/nl/
+locale	tbdialout	fr	chrome/locale/fr/
+locale	tbdialout	sv-SE	chrome/locale/sv-SE/
+locale	tbdialout	it	chrome/locale/it/
+locale	tbdialout	ru	chrome/locale/ru/
+resource	tbdialout	chrome/
 overlay	chrome://messenger/content/addressbook/addressbook.xul	chrome://tbdialout/content/thunderbirdOverlay.xul
-style	chrome://global/content/customizeToolbar.xul	chrome://tbdialout/skin/overlay.css appversion<59.0a1
-style	chrome://messenger/content/customizeToolbar.xul	chrome://tbdialout/skin/overlay.css appversion>59.0a1
+style	chrome://messenger/content/customizeToolbar.xul	resource://tbdialout/skin/overlay.css

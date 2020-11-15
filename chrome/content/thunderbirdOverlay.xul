@@ -37,7 +37,7 @@
   - the terms of any one of the MPL, the GPL or the LGPL.
   - 
   - ***** END LICENSE BLOCK ***** -->
-<?xml-stylesheet href="chrome://tbdialout/skin/overlay.css" type="text/css"?>
+<?xml-stylesheet href="resource://tbdialout/skin/overlay.css" type="text/css"?>
 <!DOCTYPE overlay SYSTEM "chrome://tbdialout/locale/tbdialout.dtd">
 <overlay id="tbdialout-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">

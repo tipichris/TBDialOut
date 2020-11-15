@@ -94,7 +94,8 @@ done
 
 cd $TMP_DIR
 
-if [ -f "chrome.manifest" ]; then
+#if [ -f "chrome.manifest" ]; then
+if [ -f "nonexistant" ]; then
   echo "Preprocessing chrome.manifest..."
   # You think this is scary?
   #s/^(content\s+\S*\s+)(\S*\/)$/\1jar:chrome\/$APP_NAME\.jar!\/\2/
