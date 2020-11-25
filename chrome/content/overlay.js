@@ -46,6 +46,20 @@ var tbdialout = {
 
     // listen for changes of selected cards
     document.getElementById("abResultsTree").addEventListener("select", this.onSelectNewRow, true);
+    
+    var linkIds = ["cvPhCellular", "cvPhWork", "cvPhHome"];
+    var actions = ["CellularNumber", "WorkPhone", "HomePhone"];
+    // TODO localize this!!
+    var tooltips = ["Place a call to this contact's mobile", "Place a call to this contact's work phone", "Place a call to this contact's home phone"]
+    var idx;
+    var elem;
+    for (idx in linkIds) {
+        elem = document.getElementById(linkIds[idx]);
+        elem.setAttribute("onclick", "window.tbdialout.onLinkClickDial('" + actions[idx] + "')");
+        elem.setAttribute("class", "CardViewLink tbdialout-phone-number-link"); 
+        elem.setAttribute("tooltiptext", tooltips[idx]);
+    }
+    
 
     var tbbuttonadded = this.prefs.getBoolPref("tbbuttonadded");
     if (!tbbuttonadded) {
@@ -631,5 +645,5 @@ var tbdialout = {
 
 };
 
-window.addEventListener("load", function(e) { tbdialout.onLoad(e); }, false);
+//window.addEventListener("load", function(e) { tbdialout.onLoad(e); }, false);
 
