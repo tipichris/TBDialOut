@@ -102,7 +102,7 @@ var tbdialoutprefs = {
   },
 
   openPassWarn: function () {
-    var warnurl = "chrome://tbdialout/content/passwarn.xul";
+    var warnurl = "chrome://tbdialout/content/passwarn.xhtml";
     var dialogWin = window.openDialog(warnurl, "tbdo_pass_warn", "width=800px,height=350px");
   },
 

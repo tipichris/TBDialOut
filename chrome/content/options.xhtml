@@ -3,6 +3,7 @@
 <?xml-stylesheet type="text/css" href="chrome://messenger/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="resource://tbdialout/skin/options.css" type="text/css"?>
 <?xml-stylesheet type="text/css" href="chrome://messenger/skin/messenger.css"?>
+<?xml-stylesheet type="text/css" href="chrome://messenger/skin/input-fields.css"?>
 
 <!-- ***** BEGIN LICENSE BLOCK *****
   -   Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -50,6 +51,7 @@
    buttons="accept"
    title="&tbdoprefwindow.title;"
    onload="tbdialoutprefs.onLoad()"
+   xmlns:html="http://www.w3.org/1999/xhtml"
    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <commandset><command id="custominbackground_change" oncommand="tbdialoutprefs.setCustomAuthViz()"/></commandset>
     <grid flex="1">
@@ -76,12 +78,12 @@
 
         <row align="center">
           <label control="plus_text" value="&tbdoplus_text.label;:" accesskey="&tbdoplus_text.accesskey;"/>
-          <textbox id="plus_text" preference="extensions.tbdialout.plus" size="2" />
+          <html:input id="plus_text" preference="extensions.tbdialout.plus" size="2" />
         </row>
 
         <row align="center">
           <label control="prefix_text" value="&tbdoprefix_text.label;:" accesskey="&tbdoprefix_text.accesskey;"/>
-          <textbox id="prefix_text" preference="extensions.tbdialout.prefix" size="2" />
+          <html:input id="prefix_text" preference="extensions.tbdialout.prefix" size="2" />
         </row>
 
       </rows>
@@ -101,15 +103,15 @@
         <rows>
           <row align="center">
             <label class="tbdocustomoptions" control="customurl_text" value="&tbdocustomurl_text.label;:" accesskey="&tbdocustomurl_text.accesskey;"/>
-            <textbox class="tbdocustomoptions" id="customurl_text" preference="extensions.tbdialout.customurl" size="35" />
+            <html:input class="tbdocustomoptions" id="customurl_text" preference="extensions.tbdialout.customurl" size="35" />
           </row>
           <row align="center">
             <label class="tbdocustomoptions" control="customuser_text" value="&tbdocustomuser_text.label;:" accesskey="&tbdocustomuser_text.accesskey;"/>
-            <textbox class="tbdocustomoptions" id="customuser_text" preference="extensions.tbdialout.customuser" size="15" />
+            <html:input class="tbdocustomoptions" id="customuser_text" preference="extensions.tbdialout.customuser" size="15" />
           </row>
           <row align="center">
             <label class="tbdocustomoptions" control="custompass_text" value="&tbdocustompass_text.label;:" accesskey="&tbdocustompass_text.accesskey;"/>
-            <textbox class="tbdocustomoptions" id="custompass_text" size="15" type="password" onchange="tbdialoutprefs.saveCustomPassword()" />
+            <html:input class="tbdocustomoptions" id="custompass_text" size="15" type="password" onchange="tbdialoutprefs.saveCustomPassword()" />
             <image id="tbdo-opt-custompass-img" class="alert-icon" height="24" width="24" onclick="tbdialoutprefs.openPassWarn();" tooltiptext="&tbdconfighelp_text.label;" />
           </row>
           <row align="center">
@@ -133,32 +135,32 @@
         <rows>
           <row align="center">
             <label class="tbdoamioptions" control="amihost_text" value="&tbdoamihost_text.label;:" accesskey="&tbdoamihost_text.accesskey;"/>
-            <textbox class="tbdoamioptions" id="amihost_text" preference="extensions.tbdialout.ami.host" size="25" />
+            <html:input class="tbdoamioptions" id="amihost_text" preference="extensions.tbdialout.ami.host" size="25" />
           </row>
           <row align="center">
             <label class="tbdoamioptions" control="amiport_text" value="&tbdoamiport_text.label;:" accesskey="&tbdoamiport_text.accesskey;"/>
-            <textbox class="tbdoamioptions" id="amiport_text" preference="extensions.tbdialout.ami.port" size="5" />
+            <html:input class="tbdoamioptions" id="amiport_text" preference="extensions.tbdialout.ami.port" size="5" />
           </row>
           <row align="center">
             <label class="tbdoamioptions" control="amiuser_text" value="&tbdoamiuser_text.label;:" accesskey="&tbdoamiuser_text.accesskey;"/>
-            <textbox class="tbdoamioptions" id="amiuser_text" preference="extensions.tbdialout.ami.user" size="15" />
+            <html:input class="tbdoamioptions" id="amiuser_text" preference="extensions.tbdialout.ami.user" size="15" />
           </row>
           <row align="center">
             <label class="tbdoamioptions" control="amisecret_text" value="&tbdoamisecret_text.label;:" accesskey="&tbdoamisecret_text.accesskey;"/>
-            <textbox class="tbdoamioptions" id="amisecret_text" size="15" type="password" onchange="tbdialoutprefs.saveAmiPassword()" />
+            <html:input class="tbdoamioptions" id="amisecret_text" size="15" type="password" onchange="tbdialoutprefs.saveAmiPassword()" />
             <image id="tbdo-opt-amisecret-img" class="alert-icon" height="24" width="24" onclick="tbdialoutprefs.openPassWarn();" tooltiptext="&tbdconfighelp_text.label;" />
           </row>
           <row align="center">
             <label class="tbdoamioptions" control="amichannel_text" value="&tbdoamichannel_text.label;:" accesskey="&tbdoamichannel_text.accesskey;"/>
-            <textbox class="tbdoamioptions" id="amichannel_text" preference="extensions.tbdialout.ami.channel" size="15" />
+            <html:input class="tbdoamioptions" id="amichannel_text" preference="extensions.tbdialout.ami.channel" size="15" />
           </row>
           <row align="center">
             <label class="tbdoamioptions" control="amicontext_text" value="&tbdoamicontext_text.label;:" accesskey="&tbdoamicontext_text.accesskey;"/>
-            <textbox class="tbdoamioptions" id="amicontext_text" preference="extensions.tbdialout.ami.context" size="15" />
+            <html:input class="tbdoamioptions" id="amicontext_text" preference="extensions.tbdialout.ami.context" size="15" />
           </row>
           <row align="center">
             <label class="tbdoamioptions" control="amicallerid_text" value="&tbdoamicallerid_text.label;:" accesskey="&tbdoamicallerid_text.accesskey;"/>
-            <textbox class="tbdoamioptions" id="amicallerid_text" preference="extensions.tbdialout.ami.callerid" size="15" />
+            <html:input class="tbdoamioptions" id="amicallerid_text" preference="extensions.tbdialout.ami.callerid" size="15" />
           </row>
         </rows>
       </grid>

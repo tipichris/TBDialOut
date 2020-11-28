@@ -49,8 +49,10 @@ var tbdialout = {
     
     var linkIds = ["cvPhCellular", "cvPhWork", "cvPhHome"];
     var actions = ["CellularNumber", "WorkPhone", "HomePhone"];
-    // TODO localize this!!
-    var tooltips = ["Place a call to this contact's mobile", "Place a call to this contact's work phone", "Place a call to this contact's home phone"]
+    var tooltips = [this.strings.GetStringFromName("cellTooltip"), 
+        this.strings.GetStringFromName("workTooltip"), 
+        this.strings.GetStringFromName("homeTooltip")];
+        
     var idx;
     var elem;
     for (idx in linkIds) {
@@ -224,7 +226,7 @@ var tbdialout = {
                   if(req.status != 200) {
                     var errorStatus = [req.status, req.statusText];
                     promptService.alert(window, tbdialout.strings.GetStringFromName("warningDefaultTitle"),
-                                      tbdialout.strings.formatStringFromName("errorBadHTTPResponse", errorStatus, 2));
+                                      tbdialout.strings.formatStringFromName("errorBadHTTPResponse", errorStatus));
                     tbdialoututils.logger(2, "Unexpected response from HTTP server: " + req.status + ": " + req.statusText);
                   }
                 }
@@ -254,7 +256,7 @@ var tbdialout = {
       else {
         var phoneType = [this.strings.GetStringFromName(num)];
         promptService.alert(window, this.strings.GetStringFromName("warningDefaultTitle"),
-                               this.strings.formatStringFromName("noValidNumberMsg", phoneType, 1));
+                               this.strings.formatStringFromName("noValidNumberMsg", phoneType));
         tbdialoututils.logger(2, "No valid " + phoneType + " found for contact");
       }
     }
@@ -329,7 +331,7 @@ var tbdialout = {
         this.socket =
             Components.classes["@mozilla.org/network/socket-transport-service;1"]
               .getService(Components.interfaces.nsISocketTransportService)
-              .createTransport(null,0,hostname,port,null);
+              .createTransport([],hostname,port,null);
       }
       catch (e) { tbdialoututils.logger(1, "Error creating transport service: " + e.message); return false; }
 
@@ -519,7 +521,7 @@ var tbdialout = {
         var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
             .getService(Components.interfaces.nsIPromptService);
         promptService.alert(window, tbdialout.strings.GetStringFromName("warningDefaultTitle"),
-                               tbdialout.strings.formatStringFromName("warnAmiBusy", [this.extension], 1) );
+                               tbdialout.strings.formatStringFromName("warnAmiBusy", [this.extension]) );
         return;
       }
 

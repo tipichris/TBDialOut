@@ -3,7 +3,7 @@
     "applications": {
       "gecko": {
         "id": "tbdialout@oak-wood.co.uk",
-        "strict_min_version": "68.0"
+        "strict_min_version": "78.0"
       }
     },
     "name": "__MSG_extensionName__",
