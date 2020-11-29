@@ -1,0 +1,8 @@
+{
+    "extensionName": {
+        "message": "Kitárcsázás (TBDialOut)"
+    },
+    "extensionDescription": {
+        "message": "Telefonhívásokat kezdeményezhet közvetlenül a Thunderbird címjegyzékéből"
+    }
+}
