@@ -1,0 +1,14 @@
+<!ENTITY tbdialoutHome.label "Hívja az otthoni telefont">
+<!ENTITY tbdialoutToolbarHome.label "Tárcsázza az otthont">
+<!ENTITY tbdialoutToolbarHome.tooltip "Tárcsázza ennek a kapcsolatnak az otthoni számát">
+<!ENTITY tbdialoutWork.label "Hívja a munkahelyi telefont">
+<!ENTITY tbdialoutToolbarWork.label "Tárcsázza a munkát">
+<!ENTITY tbdialoutToolbarWork.tooltip ""Tárcsázza ennek a kapcsolatnak a munkahelyi telefonját>
+<!ENTITY tbdialoutCell.label "Hívja a mobiltelefont">
+<!ENTITY tbdialoutToolbarCell.label "Tárcsázza a mobiltelefont">
+<!ENTITY tbdialoutToolbarCell.tooltip "Tárcsázza ennek a kapcsolatnak a mobiltelefonját">
+<!ENTITY tbdialoutToolbarMenu.label "Tárcsázás">
+<!ENTITY tbdialoutToolbarMenu.tooltip "Hívás kezdeményezése ehhez a kapcsolattartóhoz">
+<!ENTITY tbdialoutButtonMenuHome.label "Otthoni">
+<!ENTITY tbdialoutButtonMenuWork.label "Munkahelyi">
+<!ENTITY tbdialoutButtonMenuCell.label "Mobil">
