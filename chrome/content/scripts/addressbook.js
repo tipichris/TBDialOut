@@ -12,49 +12,48 @@ function onLoad(activatedWhileWindowOpen) {
   WL.injectCSS("resource://tbdialout/skin/overlay.css");
   WL.injectElements(`
     <menupopup id="abResultsTreeContext">
-        <menuitem id="tbdialout-home" label="&tbdialoutHome.label;" 
+        <menuitem id="tbdialout-home" label="__MSG_tbdialoutHome.label__" 
                 oncommand="tbdialout.onMenuItemCommandDial('HomePhone');"/>
-        <menuitem id="tbdialout-work" label="&tbdialoutWork.label;" 
+        <menuitem id="tbdialout-work" label="__MSG_tbdialoutWork.label__" 
                 oncommand="tbdialout.onMenuItemCommandDial('WorkPhone');"/>
-        <menuitem id="tbdialout-cell" label="&tbdialoutCell.label;" 
+        <menuitem id="tbdialout-cell" label="__MSG_tbdialoutCell.label__" 
                 oncommand="tbdialout.onMenuItemCommandDial('CellularNumber');"/>
     </menupopup>
 
     <toolbarpalette id="AddressBookToolbarPalette">
         <toolbarbutton id="tbdialout-home-toolbar-button"
-        label="&tbdialoutToolbarHome.label;"
-        tooltiptext="&tbdialoutToolbarHome.tooltip;"
+        label="__MSG_tbdialoutToolbarHome.label__"
+        tooltiptext="__MSG_tbdialoutToolbarHome.tooltip__"
         oncommand="tbdialout.onToolbarButtonCommandDial('HomePhone')"
         class="toolbarbutton-1 chromeclass-toolbar-additional"/>
         <toolbarbutton id="tbdialout-work-toolbar-button"
-        label="&tbdialoutToolbarWork.label;"
-        tooltiptext="&tbdialoutToolbarWork.tooltip;"
+        label="__MSG_tbdialoutToolbarWork.label__"
+        tooltiptext="__MSG_tbdialoutToolbarWork.tooltip__"
         oncommand="tbdialout.onToolbarButtonCommandDial('WorkPhone')"
         class="toolbarbutton-1 chromeclass-toolbar-additional"/>
         <toolbarbutton id="tbdialout-cell-toolbar-button"
-        label="&tbdialoutToolbarCell.label;"
-        tooltiptext="&tbdialoutToolbarCell.tooltip;"
+        label="__MSG_tbdialoutToolbarCell.label__"
+        tooltiptext="__MSG_tbdialoutToolbarCell.tooltip__"
         oncommand="tbdialout.onToolbarButtonCommandDial('CellularNumber')"
         class="toolbarbutton-1 chromeclass-toolbar-additional"/>
         <toolbarbutton id="tbdialout-menu-toolbar-button"
-        label="&tbdialoutToolbarMenu.label;"
-        tooltiptext="&tbdialoutToolbarMenu.tooltip;"
+        label="__MSG_tbdialoutToolbarMenu.label__"
+        tooltiptext="__MSG_tbdialoutToolbarMenu.tooltip__"
         type="menu"
         class="toolbarbutton-1 chromeclass-toolbar-additional" >
             <menupopup id="tbdialout-menu-toolbar-menu">
-            <menuitem id="tbdialout-menu-toolbar-menu-home" label="&tbdialoutButtonMenuHome.label;" 
+            <menuitem id="tbdialout-menu-toolbar-menu-home" label="__MSG_tbdialoutButtonMenuHome.label__" 
                         oncommand="tbdialout.onToolbarButtonCommandDial('HomePhone');"/>
-            <menuitem id="tbdialout-menu-toolbar-menu-work" label="&tbdialoutButtonMenuWork.label;" 
+            <menuitem id="tbdialout-menu-toolbar-menu-work" label="__MSG_tbdialoutButtonMenuWork.label__" 
                         oncommand="tbdialout.onToolbarButtonCommandDial('WorkPhone');"/>
-            <menuitem id="tbdialout-menu-toolbar-menu-cell" label="&tbdialoutButtonMenuCell.label;" 
+            <menuitem id="tbdialout-menu-toolbar-menu-cell" label="__MSG_tbdialoutButtonMenuCell.label__" 
                         oncommand="tbdialout.onToolbarButtonCommandDial('CellularNumber');"/>
             </menupopup>
         </toolbarbutton>
-    </toolbarpalette>`,
-    ["chrome://tbdialout/locale/tbdialout.dtd"]
+    </toolbarpalette>`
   );
   
-  window.tbdialout.onLoad();
+  window.tbdialout.onLoad(WL.extension);
   
 }
 

@@ -3,22 +3,22 @@
         "message": "TBDialOut"
     },
     "extensionDescription": {
-        "message": "Permette di effettuare chiamate direttamente dalla rubrica di Thunderbird"
+        "message": "Place phone calls directly from Thunderbird's address book"
     },
     "CellularNumber": {
-        "message": "del cellulare"
+        "message": "mobile phone"
     },
     "HomePhone": {
-        "message": "di casa"
+        "message": "home phone"
     },
     "WorkPhone": {
-        "message": "del lavoro"
+        "message": "work phone"
     },
     "errorBadArgsMsg": {
-        "message": "Parametro non valido per onMenuItemCommandDial"
+        "message": "Invalid argument passed to onMenuItemCommandDial"
     },
     "errorBadHTTPResponse": {
-        "message": "Si è verificato un errore sul server remoto: $P1$: $P2$",
+        "message": "The remote server returned the following error: $P1$: $P2$",
         "placeholders": {
             "P1": {
                 "content": "$1"
@@ -29,19 +29,13 @@
         }
     },
     "errorGettingPrefsMsg": {
-        "message": "Si è verificato un errore durante il recupero delle impostazioni"
-    },
-    "extensionDescription": {
-        "message": "Permette di effettuare chiamate direttamente dalla rubrica di Thunderbird"
-    },
-    "extensionName": {
-        "message": "TBDialOut"
+        "message": "An error occurred retrieving preferences"
     },
     "extensions.tbdialout@oak-wood.co.uk.description": {
-        "message": "Permette di effettuare chiamate direttamente dalla rubrica di Thunderbird"
+        "message": "Place phone calls directly from Thunderbird's address book"
     },
     "noValidNumberMsg": {
-        "message": "Non c'è alcun numero $P1$ valido per il contatto selezionato",
+        "message": "There is no valid $P1$ number listed for the selected contact",
         "placeholders": {
             "P1": {
                 "content": "$1"
@@ -49,109 +43,109 @@
         }
     },
     "selectExactlyOneMsg": {
-        "message": "È necessario selezionare il contatto da chiamare"
+        "message": "You must select exactly one contact to place a call"
     },
     "tbdconfighelp_text.label": {
-        "message": "Contenuti guida"
+        "message": "Help"
     },
     "tbdialoutButtonMenuCell.label": {
-        "message": "Numero del cellulare"
+        "message": "Mobile"
     },
     "tbdialoutButtonMenuHome.label": {
-        "message": "Numero di casa"
+        "message": "Home"
     },
     "tbdialoutButtonMenuWork.label": {
-        "message": "Numero del lavoro"
+        "message": "Work"
     },
     "tbdialoutCell.label": {
-        "message": "Chiama il nero del cellulare"
+        "message": "Call mobile phone"
     },
     "tbdialoutHome.label": {
-        "message": "Chiama il numero di casa"
+        "message": "Call home phone"
     },
     "tbdialoutToolbarCell.label": {
-        "message": "Chiama al cellulare"
+        "message": "Dial mobile"
     },
     "tbdialoutToolbarCell.tooltip": {
-        "message": "Chiama il numero del cellulare del contatto selezionato"
+        "message": "Dial this contact's mobile phone"
     },
     "tbdialoutToolbarHome.label": {
-        "message": "Chiama a casa"
+        "message": "Dial home"
     },
     "tbdialoutToolbarHome.tooltip": {
-        "message": "Chiama il numero di casa del contatto selezionato"
+        "message": "Dial this contact's home number"
     },
     "tbdialoutToolbarMenu.label": {
-        "message": "Chiama"
+        "message": "Dial"
     },
     "tbdialoutToolbarMenu.tooltip": {
-        "message": "Chiama il contatto selezionato"
+        "message": "Place a call to this contact"
     },
     "tbdialoutToolbarWork.label": {
-        "message": "Chiama al lavoro"
+        "message": "Dial work"
     },
     "tbdialoutToolbarWork.tooltip": {
-        "message": "Chiama il numero del lavoro del contatto selezionato"
+        "message": "Dial this contact's work phone"
     },
     "tbdialoutWork.label": {
-        "message": "Chiama il numero del lavoro"
+        "message": "Call work phone"
     },
     "tbdoami_boxcaption.label": {
-        "message": "Opzioni dell&apos;interfaccia di Asterisk"
+        "message": "Asterisk AMI options"
     },
     "tbdoamicallerid_text.accesskey": {
         "message": "I"
     },
     "tbdoamicallerid_text.label": {
-        "message": "ID del chiamante"
+        "message": "Caller ID"
     },
     "tbdoamichannel_text.accesskey": {
-        "message": "o"
+        "message": "l"
     },
     "tbdoamichannel_text.label": {
-        "message": "Canale d&apos;origine"
+        "message": "Originating channel"
     },
     "tbdoamicontext_text.accesskey": {
-        "message": "C"
+        "message": "x"
     },
     "tbdoamicontext_text.label": {
-        "message": "Contesto"
+        "message": "Context"
     },
     "tbdoamihost_text.accesskey": {
-        "message": "S"
+        "message": "H"
     },
     "tbdoamihost_text.label": {
-        "message": "Server"
+        "message": "Host"
     },
     "tbdoamiport_text.accesskey": {
-        "message": "P"
+        "message": "o"
     },
     "tbdoamiport_text.label": {
-        "message": "Porta"
+        "message": "Port"
     },
     "tbdoamisecret_text.accesskey": {
-        "message": "e"
+        "message": "t"
     },
     "tbdoamisecret_text.label": {
-        "message": "Segreto"
+        "message": "Secret"
     },
     "tbdoamiuser_text.accesskey": {
-        "message": "N"
+        "message": "n"
     },
     "tbdoamiuser_text.label": {
-        "message": "Nome utente"
+        "message": "User name"
     },
     "tbdoasteriskami_menu.label": {
-        "message": "Interfaccia di Asterisk"
+        "message": "Asterisk AMI"
     },
     "tbdocustomhint_text": {
-        "message": "Immettere l&apos;URL personalizzato che TBDialOut deve contattare. Sostituire il numero di telefono con &#37;NUM&#37;"
+        "message": "Enter a custom URL for TBDialOut to contact. Replace the phone number with &#37;NUM&#37;"
     },
     "tbdocustominbackground_cb.accesskey": {
-        "message": "A"
+        "message": "b"
     },
     "tbdocustominbackground_cb.label": {
-        "message": "Apri in secondo piano (http/https unicamente)"
+        "message": "Open in background (http/https only)"
     },
     "tbdocustompass_text.accesskey": {
         "message": "w"
@@ -160,49 +154,49 @@
         "message": "Password"
     },
     "tbdocustomurl_boxcaption.label": {
-        "message": "Opzioni di URL personalizzato"
+        "message": "Custom URL options"
     },
     "tbdocustomurl_menu.label": {
-        "message": "URL personalizzato"
+        "message": "Custom URL"
     },
     "tbdocustomurl_text.accesskey": {
-        "message": "R"
+        "message": "C"
     },
     "tbdocustomurl_text.label": {
-        "message": "URL personalizzato"
+        "message": "Custom URL"
     },
     "tbdocustomuser_text.accesskey": {
-        "message": "u"
+        "message": "s"
     },
     "tbdocustomuser_text.label": {
-        "message": "Nome utente"
+        "message": "User name"
     },
     "tbdopane1.title": {
-        "message": "Impostazioni di TBDialOut"
+        "message": "TBDialOut preferences"
     },
     "tbdoplus_text.accesskey": {
-        "message": "t"
+        "message": "R"
     },
     "tbdoplus_text.label": {
-        "message": "Sostituisci il segno + con"
+        "message": "Replace leading + with"
     },
     "tbdoprefix_text.accesskey": {
-        "message": "h"
+        "message": "P"
     },
     "tbdoprefix_text.label": {
-        "message": "Prefisso per i numeri da chiamare"
+        "message": "Prefix called numbers with"
     },
     "tbdoprefwindow.title": {
-        "message": "Impostazioni di TBDialOut"
+        "message": "TBDialOut preferences"
     },
     "tbdoproto_menu.accesskey": {
-        "message": "L"
+        "message": "U"
     },
     "tbdoproto_menu.label": {
-        "message": "Schema URL da utilizzare"
+        "message": "URL Scheme to use"
     },
     "warnAmiBusy": {
-        "message": "TBDialOut sta ancora tentando di chiamare $P1$. Riprovare fra poco",
+        "message": "TBDialOut is still busy calling $P1$. Please try again shortly",
         "placeholders": {
             "P1": {
                 "content": "$1"
@@ -210,6 +204,6 @@
         }
     },
     "warningDefaultTitle": {
-        "message": "Avviso di TBDialOut"
+        "message": "TBDialOut warning"
     }
 }

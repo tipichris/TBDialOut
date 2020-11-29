@@ -38,10 +38,14 @@
   * ***** END LICENSE BLOCK *****
   */
 var tbdialout = {
-  onLoad: function() {
+  onLoad: function(extension) {
     // initialization code
     this.initialized = true;
-    this.strings = Services.strings.createBundle("chrome://tbdialout/locale/tbdialout.properties");
+    
+    // this probably isn't the best way to get extension, but I can't figure out how else to do it :(
+    this.extension = extension;
+    
+    //this.strings = Services.strings.createBundle("chrome://tbdialout/locale/tbdialout.properties");
     this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
 
     // listen for changes of selected cards
@@ -49,9 +53,11 @@ var tbdialout = {
     
     var linkIds = ["cvPhCellular", "cvPhWork", "cvPhHome"];
     var actions = ["CellularNumber", "WorkPhone", "HomePhone"];
-    var tooltips = [this.strings.GetStringFromName("cellTooltip"), 
-        this.strings.GetStringFromName("workTooltip"), 
-        this.strings.GetStringFromName("homeTooltip")];
+    var tooltips = [
+        this.getString("tbdialoutToolbarCell.tooltip"),
+        this.getString("tbdialoutToolbarWork.tooltip"),
+        this.getString("tbdialoutToolbarHome.tooltip")
+        ];
         
     var idx;
     var elem;
@@ -101,6 +107,10 @@ var tbdialout = {
       tbdialoututils.logger(1, "Error displaying update page: " + e.message);
     }
 
+  },
+  
+  getString: function(id, args=[]) {
+    return this.extension.localeData.localizeMessage(id, args);
   },
 
   // Check whether or not there are phone numbers for the selected
@@ -154,8 +164,8 @@ var tbdialout = {
 
     var OKArgs = ["CellularNumber", "WorkPhone", "HomePhone"];
     if ((OKArgs.join(",")+",").indexOf(num + ",") == -1) {
-        promptService.alert(window, this.strings.GetStringFromName("warningDefaultTitle"),
-                               this.strings.GetStringFromName("errorBadArgsMsg") );
+        promptService.alert(window, this.getString("warningDefaultTitle"),
+                               this.getString("errorBadArgsMsg") );
         tbdialoututils.logger(2, "onMenuItemCommandDial called with invalid argument " + num);
         return;
     }
@@ -177,8 +187,8 @@ var tbdialout = {
         custompass = tbdialoututils.getPass("custompass");
         custominbackground = this.prefs.getBoolPref( "custominbackground" );
       } catch (err) {
-        promptService.alert(window, this.strings.GetStringFromName("warningDefaultTitle"),
-                               this.strings.GetStringFromName("errorGettingPrefsMsg") + "\n\n" + err.message);
+        promptService.alert(window, this.getString("warningDefaultTitle"),
+                               this.getString("errorGettingPrefsMsg") + "\n\n" + err.message);
         tbdialoututils.logger(1, "Error retrieving preferences: " + err.message);
         return;
       }
@@ -225,8 +235,8 @@ var tbdialout = {
                 if (req.readyState == 4) {
                   if(req.status != 200) {
                     var errorStatus = [req.status, req.statusText];
-                    promptService.alert(window, tbdialout.strings.GetStringFromName("warningDefaultTitle"),
-                                      tbdialout.strings.formatStringFromName("errorBadHTTPResponse", errorStatus));
+                    promptService.alert(window, tbdialout.getString("warningDefaultTitle"),
+                                     tbdialout.getString("errorBadHTTPResponse", errorStatus));
                     tbdialoututils.logger(2, "Unexpected response from HTTP server: " + req.status + ": " + req.statusText);
                   }
                 }
@@ -254,15 +264,15 @@ var tbdialout = {
         }
       }
       else {
-        var phoneType = [this.strings.GetStringFromName(num)];
-        promptService.alert(window, this.strings.GetStringFromName("warningDefaultTitle"),
-                               this.strings.formatStringFromName("noValidNumberMsg", phoneType));
+        var phoneType = [this.getString(num)];
+        promptService.alert(window, this.getString("warningDefaultTitle"),
+                               this.getString("noValidNumberMsg", phoneType));
         tbdialoututils.logger(2, "No valid " + phoneType + " found for contact");
       }
     }
     else {
-      promptService.alert(window, this.strings.GetStringFromName("warningDefaultTitle"),
-                               this.strings.GetStringFromName("selectExactlyOneMsg"));
+      promptService.alert(window, this.getString("warningDefaultTitle"),
+                               this.getString("selectExactlyOneMsg"));
 
       tbdialoututils.logger(2, "onMenuItemCommandDial called whilst too many cards selected");
     }
@@ -520,8 +530,8 @@ var tbdialout = {
         tbdialoututils.logger(3, "AsteriskAMI is currently busy. Abandoning request (state: " + this.state + ")");
         var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
             .getService(Components.interfaces.nsIPromptService);
-        promptService.alert(window, tbdialout.strings.GetStringFromName("warningDefaultTitle"),
-                               tbdialout.strings.formatStringFromName("warnAmiBusy", [this.extension]) );
+        promptService.alert(window, tbdialout.getString("warningDefaultTitle"),
+                               tbdialout.getString("warnAmiBusy", [this.extension]) );
         return;
       }
 
