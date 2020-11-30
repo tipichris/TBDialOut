@@ -54,9 +54,10 @@ function onLoad(activatedWhileWindowOpen) {
     </toolbarpalette>`
   );
   
-  window.tbdialout.onLoad(WL.extension);
+  window.tbdialout.onLoad();
   
 }
 
 function onUnload(deactivatedWhileWindowOpen) {
+    window.tbdialout.onUnload();
 }

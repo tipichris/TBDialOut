@@ -48,25 +48,13 @@ var tbdialout = {
     //this.strings = Services.strings.createBundle("chrome://tbdialout/locale/tbdialout.properties");
     this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
 
+    //set up our links
+    this.createLinks();
+    
     // listen for changes of selected cards
     document.getElementById("abResultsTree").addEventListener("select", this.onSelectNewRow, true);
     
-    var linkIds = ["cvPhCellular", "cvPhWork", "cvPhHome"];
-    var actions = ["CellularNumber", "WorkPhone", "HomePhone"];
-    var tooltips = [
-        this.getString("tbdialoutToolbarCell.tooltip"),
-        this.getString("tbdialoutToolbarWork.tooltip"),
-        this.getString("tbdialoutToolbarHome.tooltip")
-        ];
-        
-    var idx;
-    var elem;
-    for (idx in linkIds) {
-        elem = document.getElementById(linkIds[idx]);
-        elem.setAttribute("onclick", "window.tbdialout.onLinkClickDial('" + actions[idx] + "')");
-        elem.setAttribute("class", "CardViewLink tbdialout-phone-number-link"); 
-        elem.setAttribute("tooltiptext", tooltips[idx]);
-    }
+
     
 
     var tbbuttonadded = this.prefs.getBoolPref("tbbuttonadded");
@@ -112,6 +100,7 @@ var tbdialout = {
   getString: function(id, args=[]) {
     return this.extension.localeData.localizeMessage(id, args);
   },
+  
 
   // Check whether or not there are phone numbers for the selected
   // contact and disable or enable buttons and menu as appropriate
@@ -318,6 +307,56 @@ var tbdialout = {
     this.onSelectNewRow();
   },
 
+  createLinks: function() {
+    tbdialoututils.logger(5, "Creating links");
+    var linkIds = ["cvPhCellular", "cvPhWork", "cvPhHome"];
+    var actions = ["CellularNumber", "WorkPhone", "HomePhone"];
+    var tooltips = [
+        this.getString("tbdialoutToolbarCell.tooltip"),
+        this.getString("tbdialoutToolbarWork.tooltip"),
+        this.getString("tbdialoutToolbarHome.tooltip")
+        ];
+        
+    var idx;
+    var elem;
+    for (idx in linkIds) {
+        elem = document.getElementById(linkIds[idx]);
+        elem.addEventListener("click", () => {
+            tbdialout.onLinkClickDial(actions[idx]);}, true);
+        //elem.setAttribute("onclick", "window.tbdialout.onLinkClickDial('" + actions[idx] + "')");
+        elem.classList.add("tbdialout-phone-number-link");
+        elem.classList.add("CardViewLink");
+        elem.setAttribute("tooltiptext", tooltips[idx]);
+    }      
+  },
+
+  removeLinks: function() {
+    tbdialoututils.logger(5, "Removing links");
+    var linkIds = ["cvPhCellular", "cvPhWork", "cvPhHome"];
+    var actions = ["CellularNumber", "WorkPhone", "HomePhone"];
+    var tooltips = [
+        this.getString("tbdialoutToolbarCell.tooltip"),
+        this.getString("tbdialoutToolbarWork.tooltip"),
+        this.getString("tbdialoutToolbarHome.tooltip")
+        ];
+        
+    var idx;
+    var elem;
+    for (idx in linkIds) {
+        elem = document.getElementById(linkIds[idx]);
+        elem.removeEventListener("click", () => {
+            tbdialout.onLinkClickDial(actions[idx]);}, true);
+        elem.classList.remove("tbdialout-phone-number-link");
+        elem.classList.remove("CardViewLink");
+        elem.removeAttribute("tooltiptext");
+    }      
+  },
+  
+  onUnload: function() {
+     tbdialoututils.logger(5, "tbdialout.onUload() called");
+     tbdialout.removeLinks(); 
+  },
+  
   // #### Class for dealing with connections to Asterisk Manager Interface (AMI) ####
   AsteriskAMI: {
 
