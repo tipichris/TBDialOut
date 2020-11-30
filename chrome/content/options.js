@@ -38,7 +38,12 @@
   * ***** END LICENSE BLOCK *****
   */
 
+var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
+
 var tbdialoutprefs = {
+  
+  extension: ExtensionParent.GlobalManager.getExtension("tbdialout@oak-wood.co.uk"),
+  
   onLoad: function() {
     tbdialoututils.logger(5, "tbdialoutprefs.onLoad called");  
     this.setCustomOptViz();
@@ -103,7 +108,7 @@ var tbdialoutprefs = {
 
   openPassWarn: function () {
     var warnurl = "chrome://tbdialout/content/passwarn.xhtml";
-    var dialogWin = window.openDialog(warnurl, "tbdo_pass_warn", "width=800px,height=350px");
+    var dialogWin = window.openDialog(warnurl, "tbdo_pass_warn", "width=800px,height=350px", this.extension);
   },
 
 
@@ -129,3 +134,10 @@ var tbdialoutprefs = {
 
 
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  i18n.updateDocument({
+      extension: tbdialoutprefs.extension,
+  }
+);
+}, { once: true });

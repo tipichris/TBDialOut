@@ -38,12 +38,12 @@
   * ***** END LICENSE BLOCK *****
   */
 var tbdialout = {
-  onLoad: function(extension) {
+  onLoad: function() {
     // initialization code
     this.initialized = true;
     
-    // this probably isn't the best way to get extension, but I can't figure out how else to do it :(
-    this.extension = extension;
+    var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
+    this.extension = ExtensionParent.GlobalManager.getExtension("tbdialout@oak-wood.co.uk");
     
     //this.strings = Services.strings.createBundle("chrome://tbdialout/locale/tbdialout.properties");
     this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");

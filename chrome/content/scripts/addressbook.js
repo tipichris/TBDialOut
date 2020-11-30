@@ -3,6 +3,7 @@
 //var { gQuicktext } = ChromeUtils.import("chrome://quicktext/content/modules/wzQuicktext.jsm");
 
 // Load additional JavaScript files.
+Services.scriptloader.loadSubScript("chrome://tbdialout/content/scripts/i18n.js", window, "UTF-8");
 Services.scriptloader.loadSubScript("chrome://tbdialout/content/utils.js", window, "UTF-8");
 Services.scriptloader.loadSubScript("chrome://tbdialout/content/overlay.js", window, "UTF-8");
 
