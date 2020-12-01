@@ -11,7 +11,7 @@
     "author": "Chris Hastie",
     "homepage_url": "https://www.oak-wood.co.uk/tbdialout",
     "default_locale": "en",
-    "version": "2.0.0pre1",
+    "version": "2.0.0pre2",
     "icons": {
       "32": "icons/tbdo32.png",
       "48": "icons/tbdo48.png",
