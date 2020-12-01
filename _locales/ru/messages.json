@@ -31,12 +31,6 @@
     "errorGettingPrefsMsg": {
         "message": "Возникла ошибка при получении настроек"
     },
-    "extensionDescription": {
-        "message": "Звонки напрямую из Thunderbird"
-    },
-    "extensionName": {
-        "message": "TBDialOut"
-    },
     "extensions.tbdialout@oak-wood.co.uk.description": {
         "message": "Звонки напрямую из Thunderbird"
     },

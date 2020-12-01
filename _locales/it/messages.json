@@ -31,12 +31,6 @@
     "errorGettingPrefsMsg": {
         "message": "Si è verificato un errore durante il recupero delle impostazioni"
     },
-    "extensionDescription": {
-        "message": "Permette di effettuare chiamate direttamente dalla rubrica di Thunderbird"
-    },
-    "extensionName": {
-        "message": "TBDialOut"
-    },
     "extensions.tbdialout@oak-wood.co.uk.description": {
         "message": "Permette di effettuare chiamate direttamente dalla rubrica di Thunderbird"
     },

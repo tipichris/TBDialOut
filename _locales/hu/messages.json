@@ -31,12 +31,6 @@
     "errorGettingPrefsMsg": {
         "message": "Hiba történt a beállítások lekérésekor"
     },
-    "extensionDescription": {
-        "message": "Telefonhívásokat kezdeményezhet közvetlenül a Thunderbird címjegyzékéből"
-    },
-    "extensionName": {
-        "message": "Kitárcsázás (TBDialOut)"
-    },
     "extensions.tbdialout@oak-wood.co.uk.description": {
         "message": "Telefonhívásokat kezdeményezhet közvetlenül a Thunderbird címjegyzékéből"
     },

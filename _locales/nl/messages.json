@@ -31,12 +31,6 @@
     "errorGettingPrefsMsg": {
         "message": "Er is een fout opgetreden bij het ophalen van de voorkeursinstellingen"
     },
-    "extensionDescription": {
-        "message": "Voer rechtstreeks vanuit het adresboek in Thunderbird telefoongesprekken"
-    },
-    "extensionName": {
-        "message": "TBDialOut"
-    },
     "extensions.tbdialout@oak-wood.co.uk.description": {
         "message": "Voer rechtstreeks vanuit het adresboek in Thunderbird telefoongesprekken"
     },

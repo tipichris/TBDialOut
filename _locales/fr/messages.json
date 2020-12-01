@@ -31,12 +31,6 @@
     "errorGettingPrefsMsg": {
         "message": "Une erreur est survenue lors de la récupération des préférences"
     },
-    "extensionDescription": {
-        "message": "Permet de placer des appels à partir du carnet d'adresses de Thunderbird"
-    },
-    "extensionName": {
-        "message": "TBDialOut"
-    },
     "extensions.tbdialout@oak-wood.co.uk.description": {
         "message": "Permet de placer des appels à partir du carnet d'adresses de Thunderbird"
     },

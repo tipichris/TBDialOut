@@ -31,12 +31,6 @@
     "errorGettingPrefsMsg": {
         "message": "Ein Fehler ist aufgetreten. Prüfen Sie die Einstellungen"
     },
-    "extensionDescription": {
-        "message": "Telefonieren direkt aus dem Thunderbird Adressbuch"
-    },
-    "extensionName": {
-        "message": "TBDialOut"
-    },
     "extensions.tbdialout@oak-wood.co.uk.description": {
         "message": "Telefonieren direkt aus dem Thunderbird Adressbuch"
     },
