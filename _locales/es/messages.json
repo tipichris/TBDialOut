@@ -139,7 +139,7 @@
         "message": "AMI de Asterisk"
     },
     "tbdocustomhint_text": {
-        "message": "Ingresar URL de contacto para TBDialOut. Sustituir el número de tel. por &#37;NUM&#37;"
+        "message": "Ingresar URL de contacto para TBDialOut. Sustituir el número de tel. por %NUM%"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "f"

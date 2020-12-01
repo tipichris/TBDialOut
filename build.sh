@@ -85,7 +85,7 @@ for DIR in $ROOT_DIRS; do
 done
 
 # Copy other files to the root of future XPI.
-for ROOT_FILE in $ROOT_FILES chrome.manifest manifest.json; do
+for ROOT_FILE in $ROOT_FILES manifest.json; do
   cp --verbose $ROOT_FILE $TMP_DIR
   if [ -f $ROOT_FILE ]; then
     echo $ROOT_FILE >> files

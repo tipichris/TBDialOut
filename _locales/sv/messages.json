@@ -139,7 +139,7 @@
         "message": "Asterisk AMI"
     },
     "tbdocustomhint_text": {
-        "message": "Ange en egen URL som TBDialOut skall kontakta. Ersätt telefonnumret med &#37;NUM&#37;"
+        "message": "Ange en egen URL som TBDialOut skall kontakta. Ersätt telefonnumret med %NUM%"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "b"

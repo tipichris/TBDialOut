@@ -1,18 +1,23 @@
 {
     "extensionName": {
-        "message": "TBDialOut"
+        "message": "TBDialOut",
+        "description": "Name of the extension"
     },
     "extensionDescription": {
-        "message": "Place phone calls directly from Thunderbird's address book"
+        "message": "Place phone calls directly from Thunderbird's address book",
+        "description": "Description of the extension used in add on manager etc."
     },
     "CellularNumber": {
-        "message": "cell phone"
+        "message": "cell phone",
+        "description": "Used to replace $P1$ in noValidNumberMsg"
     },
     "HomePhone": {
-        "message": "home phone"
+        "message": "home phone",
+        "description": "Used to replace $P1$ in noValidNumberMsg"
     },
     "WorkPhone": {
-        "message": "work phone"
+        "message": "work phone",
+        "description": "Used to replace $P1$ in noValidNumberMsg"
     },
     "errorBadArgsMsg": {
         "message": "Invalid argument passed to onMenuItemCommandDial"
@@ -26,7 +31,8 @@
             "P2": {
                 "content": "$2"
             }
-        }
+        },
+        "description": "$P1$ is the http error code, $P2$ is the error message"
     },
     "errorGettingPrefsMsg": {
         "message": "An error occurred retrieving preferences"
@@ -38,9 +44,11 @@
         "message": "There is no valid $P1$ number listed for the selected contact",
         "placeholders": {
             "P1": {
-                "content": "$1"
+                "content": "$1",
+                "example": "home phone"
             }
-        }
+        },
+        "description": "$P1$ will be replaced by one of the strings defined for CellularNumber, HomePhone or WorkPhone"
     },
     "selectExactlyOneMsg": {
         "message": "You must select exactly one contact to place a call"
@@ -139,7 +147,8 @@
         "message": "Asterisk AMI"
     },
     "tbdocustomhint_text": {
-        "message": "Enter a custom URL for TBDialOut to contact. Replace the phone number with &#37;NUM&#37;"
+        "message": "Enter a custom URL for TBDialOut to contact. Replace the phone number with %NUM%",
+        "description": "Do not translate %NUM%. This is a place holder"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "b"
@@ -201,7 +210,8 @@
             "P1": {
                 "content": "$1"
             }
-        }
+        },
+        "description": "$P1$ is the number of the phone being called"
     },
     "warningDefaultTitle": {
         "message": "TBDialOut warning"

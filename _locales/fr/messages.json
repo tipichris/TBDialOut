@@ -145,7 +145,7 @@
         "message": "AMI d'Asterisk"
     },
     "tbdocustomhint_text": {
-        "message": "Entrez l'URL personnalisé que TBDialOut doit contacter. Remplacer le numéro de téléphone avec &#37;NUM&#37;"
+        "message": "Entrez l'URL personnalisé que TBDialOut doit contacter. Remplacer le numéro de téléphone avec %NUM%"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "a"

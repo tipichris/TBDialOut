@@ -145,7 +145,7 @@
         "message": "Asterisk AMI"
     },
     "tbdocustomhint_text": {
-        "message": "Adjon meg egy egyéni URL-címet Kitárcsázás számára, akivel kapcsolatba lép. Cserélje ki a telefonszámot a -ra &#37;NUM&#37;"
+        "message": "Adjon meg egy egyéni URL-címet Kitárcsázás számára, akivel kapcsolatba lép. Cserélje ki a telefonszámot a -ra %NUM%"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "b"

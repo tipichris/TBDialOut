@@ -139,7 +139,7 @@
         "message": "Asterisk AMI"
     },
     "tbdocustomhint_text": {
-        "message": "Enter a custom URL for TBDialOut to contact. Replace the phone number with &#37;NUM&#37;"
+        "message": "Enter a custom URL for TBDialOut to contact. Replace the phone number with %NUM%"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "b"

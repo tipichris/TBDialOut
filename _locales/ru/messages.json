@@ -145,7 +145,7 @@
         "message": "Asterisk AMI"
     },
     "tbdocustomhint_text": {
-        "message": "Введите ваш URL для TBDialOut. Замените номер телефона с &#37;NUM&#37;"
+        "message": "Введите ваш URL для TBDialOut. Замените номер телефона с %NUM%"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "b"

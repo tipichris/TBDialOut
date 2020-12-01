@@ -145,7 +145,7 @@
         "message": "Asterisk AMI"
     },
     "tbdocustomhint_text": {
-        "message": "Geben Sie eine benutzerdefinierte URL für die TBDialout Verbindung ein. Ersetzen Sie die Rufnummer mit &#37;NUM&#37;"
+        "message": "Geben Sie eine benutzerdefinierte URL für die TBDialout Verbindung ein. Ersetzen Sie die Rufnummer mit %NUM%"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "g"

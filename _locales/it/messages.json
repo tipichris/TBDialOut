@@ -145,7 +145,7 @@
         "message": "Interfaccia di Asterisk"
     },
     "tbdocustomhint_text": {
-        "message": "Immettere l&apos;URL personalizzato che TBDialOut deve contattare. Sostituire il numero di telefono con &#37;NUM&#37;"
+        "message": "Immettere l&apos;URL personalizzato che TBDialOut deve contattare. Sostituire il numero di telefono con %NUM%"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "A"

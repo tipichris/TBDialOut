@@ -272,9 +272,9 @@ var tbdialout = {
     tbdialout.onMenuItemCommandDial(num);
   },
 
-  onLinkClickDial: function(num) {
-    // just reuse the function above.
-    tbdialout.onMenuItemCommandDial(num);
+  onLinkClickDial: function(e) {
+    var map = { "cvPhCellular": "CellularNumber", "cvPhWork": "WorkPhone", "cvPhHome": "HomePhone" }; 
+    tbdialout.onMenuItemCommandDial(map[e.target.id]);
   },
 
   // Add the combined button to the Address Book tool bar at first run.
@@ -307,8 +307,12 @@ var tbdialout = {
     this.onSelectNewRow();
   },
 
-  createLinks: function() {
-    tbdialoututils.logger(5, "Creating links");
+  // Create the links on phone numbers in the address book. If the remove paramater is true,
+  // remove them instead (for unloading)
+  createLinks: function(remove=false) {
+    var logmsg = remove ? "Removing links" : "Creating links";
+    tbdialoututils.logger(5, logmsg);
+    
     var linkIds = ["cvPhCellular", "cvPhWork", "cvPhHome"];
     var actions = ["CellularNumber", "WorkPhone", "HomePhone"];
     var tooltips = [
@@ -321,35 +325,23 @@ var tbdialout = {
     var elem;
     for (idx in linkIds) {
         elem = document.getElementById(linkIds[idx]);
-        elem.addEventListener("click", () => {
-            tbdialout.onLinkClickDial(actions[idx]);}, true);
-        //elem.setAttribute("onclick", "window.tbdialout.onLinkClickDial('" + actions[idx] + "')");
-        elem.classList.add("tbdialout-phone-number-link");
-        elem.classList.add("CardViewLink");
-        elem.setAttribute("tooltiptext", tooltips[idx]);
+        if(remove) {
+            elem.removeEventListener("click", tbdialout.onLinkClickDial, true);
+            elem.classList.remove("tbdialout-phone-number-link");
+            elem.classList.remove("CardViewLink");
+            elem.removeAttribute("tooltiptext");           
+        } else {
+            elem.addEventListener("click", tbdialout.onLinkClickDial, true);
+            //elem.setAttribute("onclick", "window.tbdialout.onLinkClickDial('" + actions[idx] + "')");
+            elem.classList.add("tbdialout-phone-number-link");
+            elem.classList.add("CardViewLink");
+            elem.setAttribute("tooltiptext", tooltips[idx]);
+        }
     }      
   },
 
   removeLinks: function() {
-    tbdialoututils.logger(5, "Removing links");
-    var linkIds = ["cvPhCellular", "cvPhWork", "cvPhHome"];
-    var actions = ["CellularNumber", "WorkPhone", "HomePhone"];
-    var tooltips = [
-        this.getString("tbdialoutToolbarCell.tooltip"),
-        this.getString("tbdialoutToolbarWork.tooltip"),
-        this.getString("tbdialoutToolbarHome.tooltip")
-        ];
-        
-    var idx;
-    var elem;
-    for (idx in linkIds) {
-        elem = document.getElementById(linkIds[idx]);
-        elem.removeEventListener("click", () => {
-            tbdialout.onLinkClickDial(actions[idx]);}, true);
-        elem.classList.remove("tbdialout-phone-number-link");
-        elem.classList.remove("CardViewLink");
-        elem.removeAttribute("tooltiptext");
-    }      
+     tbdialout.createLinks(true);
   },
   
   onUnload: function() {

@@ -139,7 +139,7 @@
         "message": "Asterisk AMI"
     },
     "tbdocustomhint_text": {
-        "message": "为 TBDialOut 输入自定义 URL 来联系。用 &#37;NUM&#37; 替换电话号码"
+        "message": "为 TBDialOut 输入自定义 URL 来联系。用 %NUM% 替换电话号码"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "b"

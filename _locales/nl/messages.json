@@ -145,7 +145,7 @@
         "message": "Asterisk-AMI"
     },
     "tbdocustomhint_text": {
-        "message": "Voer een aangepaste URL in waarmee TBDialOut contact kan opnemen. Vervang het telefoonnummer door &#37;NUM&#37;"
+        "message": "Voer een aangepaste URL in waarmee TBDialOut contact kan opnemen. Vervang het telefoonnummer door %NUM%"
     },
     "tbdocustominbackground_cb.accesskey": {
         "message": "a"
