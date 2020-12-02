@@ -41,21 +41,18 @@ var tbdialout = {
   onLoad: function() {
     // initialization code
     this.initialized = true;
+	tbdialoututils.logger(5, "tbdialout.onLoad() called");
     
     var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
     this.extension = ExtensionParent.GlobalManager.getExtension("tbdialout@oak-wood.co.uk");
     
-    //this.strings = Services.strings.createBundle("chrome://tbdialout/locale/tbdialout.properties");
     this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
 
-    //set up our links
+    //set up our clickable links
     this.createLinks();
     
     // listen for changes of selected cards
     document.getElementById("abResultsTree").addEventListener("select", this.onSelectNewRow, true);
-    
-
-    
 
     var tbbuttonadded = this.prefs.getBoolPref("tbbuttonadded");
     if (!tbbuttonadded) {
@@ -97,6 +94,7 @@ var tbdialout = {
 
   },
   
+  // utility function for getting localised strings
   getString: function(id, args=[]) {
     return this.extension.localeData.localizeMessage(id, args);
   },
@@ -146,7 +144,7 @@ var tbdialout = {
 
   // Dial the number stored as num
   // num should be "CellularNumber", "WorkPhone" or "HomePhone"
-  onMenuItemCommandDial: function(num) {
+  dialNumber: function(num) {
 
     var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
                                   .getService(Components.interfaces.nsIPromptService);
@@ -155,7 +153,7 @@ var tbdialout = {
     if ((OKArgs.join(",")+",").indexOf(num + ",") == -1) {
         promptService.alert(window, this.getString("warningDefaultTitle"),
                                this.getString("errorBadArgsMsg") );
-        tbdialoututils.logger(2, "onMenuItemCommandDial called with invalid argument " + num);
+        tbdialoututils.logger(2, "dialNumber called with invalid argument " + num);
         return;
     }
 
@@ -263,18 +261,21 @@ var tbdialout = {
       promptService.alert(window, this.getString("warningDefaultTitle"),
                                this.getString("selectExactlyOneMsg"));
 
-      tbdialoututils.logger(2, "onMenuItemCommandDial called whilst too many cards selected");
+      tbdialoututils.logger(2, "dialNumber called whilst too many cards selected");
     }
+  },
+  
+  onMenuItemCommandDial: function(num) {
+	tbdialout.dialNumber(num);
   },
 
   onToolbarButtonCommandDial: function(num) {
-    // just reuse the function above.
-    tbdialout.onMenuItemCommandDial(num);
+    tbdialout.dialNumber(num);
   },
 
   onLinkClickDial: function(e) {
     var map = { "cvPhCellular": "CellularNumber", "cvPhWork": "WorkPhone", "cvPhHome": "HomePhone" }; 
-    tbdialout.onMenuItemCommandDial(map[e.target.id]);
+    tbdialout.dialNumber(map[e.target.id]);
   },
 
   // Add the combined button to the Address Book tool bar at first run.
@@ -332,7 +333,6 @@ var tbdialout = {
             elem.removeAttribute("tooltiptext");           
         } else {
             elem.addEventListener("click", tbdialout.onLinkClickDial, true);
-            //elem.setAttribute("onclick", "window.tbdialout.onLinkClickDial('" + actions[idx] + "')");
             elem.classList.add("tbdialout-phone-number-link");
             elem.classList.add("CardViewLink");
             elem.setAttribute("tooltiptext", tooltips[idx]);
@@ -340,12 +340,13 @@ var tbdialout = {
     }      
   },
 
+  // utility function to remove links. Just calls createLinks with the 'remove' parameter true
   removeLinks: function() {
      tbdialout.createLinks(true);
   },
   
   onUnload: function() {
-     tbdialoututils.logger(5, "tbdialout.onUload() called");
+     tbdialoututils.logger(5, "tbdialout.onUnload() called");
      tbdialout.removeLinks(); 
   },
   
@@ -550,7 +551,7 @@ var tbdialout = {
 
     // ## ENTRY POINT ##
 
-    // dial is the entry point, called from the main tbdialout.onMenuItemCommandDial()
+    // dial is the entry point, called from the main tbdialout.dialNumber()
     // most of the work is actually done in parseResponse
     dial: function(extension) {
 
@@ -687,6 +688,4 @@ var tbdialout = {
   },
 
 };
-
-//window.addEventListener("load", function(e) { tbdialout.onLoad(e); }, false);
 
