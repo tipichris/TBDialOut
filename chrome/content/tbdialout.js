@@ -68,8 +68,8 @@ var tbdialout = {
     // show the notes for the current version.
     var updateshown = this.prefs.getCharPref("updateshown");
     var showupdatenotes = this.prefs.getBoolPref("showupdatenotes");
-    // a false default should override user prefs, as there probably 
-    // are no notes to display
+    // a false default (i.e. defined as false in defaults/preferences) should  
+    // override user prefs, as there probably are no notes to display
     if (showupdatenotes && this.prefs.prefHasUserValue("showupdatenotes")) {
       showupdatenotes = false;
     }
