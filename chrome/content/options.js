@@ -38,11 +38,10 @@
   * ***** END LICENSE BLOCK *****
   */
 
-var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
-
 var tbdialoutprefs = {
   
-  extension: ExtensionParent.GlobalManager.getExtension("tbdialout@oak-wood.co.uk"),
+  // WL is passed to the window as arguments[0] by openDialog
+  extension: window.arguments[0].extension,
   
   onLoad: function() {
     tbdialoututils.logger(5, "tbdialoutprefs.onLoad called");  

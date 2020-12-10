@@ -43,9 +43,6 @@ var tbdialout = {
     this.initialized = true;
 	tbdialoututils.logger(5, "tbdialout.onLoad() called");
     
-    var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
-    this.extension = ExtensionParent.GlobalManager.getExtension("tbdialout@oak-wood.co.uk");
-    
     this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.tbdialout.");
 
     //set up our clickable links
@@ -279,6 +276,9 @@ var tbdialout = {
   },
 
   // Add the combined button to the Address Book tool bar at first run.
+  // TODO Review this: is this a valid way to do things. BrowserToolboxCustomizeDone is now gone
+  // And do we need to undo this in the unLoad method?
+  // Probably disappears when pure webextension anyway
   AddToolbarButton: function() {
     try {
       var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).getBranch("extensions.tbdialout.");
