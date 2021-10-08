@@ -3,7 +3,8 @@
     "applications": {
       "gecko": {
         "id": "tbdialout@oak-wood.co.uk",
-        "strict_min_version": "78.0"
+        "strict_min_version": "78.0",
+        "strict_max_version": "78.*"
       }
     },
     "name": "__MSG_extensionName__",
@@ -11,7 +12,7 @@
     "author": "Chris Hastie",
     "homepage_url": "https://www.oak-wood.co.uk/tbdialout",
     "default_locale": "en",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "icons": {
       "32": "icons/tbdo32.png",
       "48": "icons/tbdo48.png",
